@@ -1,64 +1,97 @@
-# GLOBAL COFFEE — COMMERCIAL MOBILE APPLICATION (COYOTE REDESIGN)
+# GLOBAL COFFEE — COMMERCIAL WEB APPLICATION & AI DELIVERY SYSTEM
 
-This repository contains the visual interface redesign of the **Global Coffee** customer web app, engineered to reflect the design language, layout hierarchy, and visual restraint of the official Global Coffee (Coyote) mobile application.
+[![GitHub Pages Deployment](https://img.shields.io/badge/Deployment-GitHub%20Pages-success)](https://abdimutalikausar9-eng.github.io/global-coffee-app/)
+[![UI Style](https://img.shields.io/badge/Design-Commercial%20Coyote%20App-1F140E)](https://github.com/abdimutalikausar9-eng/global-coffee-app)
+[![Localization](https://img.shields.io/badge/Languages-KZ%20%7C%20RU%20%7C%20EN-D97706)](https://github.com/abdimutalikausar9-eng/global-coffee-app)
 
----
-
-## 🎨 Design System & Visual Redesign Highlights
-
-### 1. Typography & Numerals
-- **Typeface:** `Inter` sans-serif system (`400`, `500`, `600`, and `700` weights).
-- **Tabular Numerals:** Configured with `font-variant-numeric: tabular-nums` and tighter letter-spacing (`-0.011em` to `-0.03em`) for banking/retail-grade price alignment, timer displays, and bonus balances.
-- **Currency System:** Standardized to **₸ (Kazakhstani Tenge)** across the entire store catalog, order calculation, delivery fee, bonuses, and payment summary (e.g. `1 850 ₸`, `2 100 ₸`, `850 ₸`).
-
-### 2. Complete Removal of Unicode Emojis
-- **Zero Decorative Emojis:** All decorative emojis have been eliminated from every screen, modal, and button.
-- **Consistent Minimalist SVG Icons:** Replaced with clean, Lucide-style outline inline SVG icons with unified stroke weight (`1.8px` / `2px`), consistent bounding boxes, and alignment:
-  - Navigation: Home, Compass/Menu, Bag/Orders, Gift/Bonuses, User/Profile.
-  - Action elements: Chevron chevrons, Cart, Clock, Pin, Heart favorites, Sliders filter, Steppers, Call & Message actions.
-
-### 3. Storefront & Menu Layout (Screenshot 2 Reference)
-- **Top Header:** Clean brand identity with Global Coffee mark, real-time branch status with "Change" action, notification trigger, and cart pill with live count and subtotal.
-- **Promotional Hero Banner:** Warm bronze gradient card ("Your Daily Coffee, Ready In One Tap / 60% Off") paired with clean coffee imagery and pill button.
-- **Category Filter Pills:** Horizontal pill navigation ("All", "Hot Coffee", "Cold Coffee", "Matcha & Tea", "Lemonades", "Bakery & Sweets", "Snacks") featuring solid dark espresso active state (`#1F140E`).
-- **Product Cards:** Clean cards with subtle border `#E8E2DB`, rating, calories/volume, price in `₸`, and minimalist add trigger.
-
-### 4. Drink Customization Sheet (Screenshot 2 Reference)
-- Centered product photography with back navigation button and favorite toggle.
-- Product title with inline `[-] 1 [+]` quantity stepper.
-- Rating & preparation time: `4.8 (600) • 20-30 min`.
-- **Cup Size Pills:** Small (+0 ₸), Medium (+300 ₸), Large (+550 ₸).
-- **Sugar Level Pills:** Normal, Less, No sugar, Extra sugar.
-- **Milk Options & Syrups:** Regular milk, Lactose-free milk, Oat milk, Almond milk, Vanilla, Caramel, Hazelnut.
-- **Extra Ingredients:** Extra espresso shot, Extra milk, Extra syrup, Whipped cream.
-- **Sticky CTA Bar:** Dark espresso pill button with dynamic price updates.
-
-### 5. Loyalty & Bonus Dashboard (Screenshot 1 Reference)
-- Directly modeled after the official Global Coffee points screen:
-  - Header: "Your points" with large tabular numeral (`1 500 ₸`).
-  - Card: "Expires on December 31, 2026" with clock icon.
-  - Reward rows: "Your rewards >", "1 000 ₸ off coupon", "Ways to earn >", "Ways to redeem >".
-  - Tier Progress Card: "Gold Barista > Earn 500 Points by Dec 31, 2026 to reach Platinum" with terracotta progress bar.
-
-### 6. Order Tracking & 2GIS Map
-- 5-stage timeline stepper with clean vector badges.
-- Courier card (Daniyar K., 4.95 Rating, E-scooter) with call/message actions.
-- Interactive 2GIS map integration with live route line and simulated GPS courier marker.
-- Stage testing toolbar with quick stage buttons and auto-play simulation.
-
-### 7. Bottom Navigation Bar (Screenshot 2 Reference)
-- Fixed dark espresso bar (`#1F140E`) with outline SVG icons for **Home**, **Menu**, **Orders**, **Bonuses**, and **Profile**.
+A customer-facing web application and AI Delivery Intelligence System for **Global Coffee**, engineered with the visual design language, restrained aesthetic, and layout hierarchy of the official Global Coffee (Coyote) mobile app.
 
 ---
 
-## 🚀 How to Run on Windows in Google Chrome
+## 🔗 Live Application Links
+
+- **Live GitHub Pages URL:** [https://abdimutalikausar9-eng.github.io/global-coffee-app/](https://abdimutalikausar9-eng.github.io/global-coffee-app/)
+- **GitHub Repository:** [https://github.com/abdimutalikausar9-eng/global-coffee-app](https://github.com/abdimutalikausar9-eng/global-coffee-app)
+
+---
+
+## 🌟 Key Architecture & Implemented Modules
+
+### 1. Dynamic Sequential Order Progress & Preparation Countdown Timer
+Replaces static list-style trackers with a dynamic, sequential order experience:
+- **Adaptive Fulfillment Flows:**
+  - **Delivery Flow (6 stages):**
+    1. Order Confirmed
+    2. Preparing Your Coffee
+    3. Quality Check & Packing
+    4. Courier Assigned (with courier card & direct contact triggers)
+    5. On the Way (with live 2GIS route map & simulated GPS tracking)
+    6. Delivered (with bonus claim trigger)
+  - **Pickup Flow (5 stages):**
+    1. Order Confirmed
+    2. Preparing Your Coffee
+    3. Quality Check & Packing
+    4. Ready for Pickup (prominent `#GC-89421` pickup verification code for barista counter; no courier or delivery map)
+    5. Order Collected
+- **Intelligent Countdown Timers:**
+  - Dedicated contextual timer labels: *"Preparation time remaining"*, *"Packaging time"*, *"Estimated courier arrival"*, *"Ready at counter"*.
+  - Tabular numerals with zero-jitter monospace layout (`font-variant-numeric: tabular-nums`).
+  - **Graceful Delay Handling:** Never advances the order simply because a timer reaches zero. If preparation exceeds standard SLA or staff flags a rush, a delay alert banner appears: *"Preparation is taking longer than expected — our barista is taking extra care during peak rush to ensure barista-grade quality."*
+
+### 2. Smart Map & Live Delivery Tracking
+- **2GIS Map Integration:** Interactive map with branch markers (Dostyk Plaza, Mega Alma-Ata, Downtown Flagship, Esentai Mall, Dostyk Medeu).
+- **Interactive Map Address Picker:** In checkout, users can click *"Select on 2GIS map"* to drop a pin and set their delivery coordinates directly from the map.
+- **Provider Abstraction:** Built on a modular `MapProvider` abstraction capable of swapping between 2GIS Tiles, Leaflet/OSM, or custom vector SDKs without changing application logic.
+- **Live Courier Tracking:** Displays delivery route polylines and real-time courier positioning.
+
+### 3. Grounded AI Customer Assistant (AI Concierge)
+- **Floating Trigger & Slide-Up Drawer:** Fast access to the AI Concierge via a minimalist sparkles bot icon.
+- **Context-Aware Knowledge Engine:**
+  - Directly connected to real order state (`State.activeOrder.stage`, `isDelayed`, `fulfillment`, `total`, `bonusBalance`).
+  - Strictly truthful: Never hallucinates delivery coordinates, fake confirmation codes, or invented statuses.
+  - Quick action prompt pills: *"Where is my coffee?"*, *"Recommend a drink"*, *"What plant milk options exist?"*, *"How do bonuses work?"*, *"Why is there a delay?"*.
+  - Answers coffee questions: Specialty bean origin, oat/almond milk options, syrups, and 10% loyalty cashback rules.
+
+### 4. AI Delivery Monitoring & Incident Alert Center (Staff Dashboard)
+- Accessible via the top navigation bar toggle (`Role: Customer ⇄ Staff Hub`) or `#view-staff`:
+  - **Live SLA Metrics:** Average Preparation SLA (8.2m), Courier Pickup SLA (6.4m), SLA Breach Rate (1.2%), Critical Incidents count.
+  - **Incident Resolution Center:** Real-time alert cards for preparation delays, unassigned couriers, and delivery stalls with status workflow (`New` ➔ `In Progress` ➔ `Resolved`).
+  - **Live Barista & Courier Operations:** Barista stage progression controls and delay simulator.
+  - **SLA Threshold Tuning:** Interactive sliders for maximum preparation time, courier dispatch limits, and courier inactivity timeouts.
+
+### 5. Three-Language System (Қазақша / Русский / English)
+- Multi-language switcher available in the top bar (`RU | KZ | EN`) and profile preferences.
+- Dynamic key interpolation via `[data-i18n]` and dynamic rendering.
+- Complete localized dictionaries in:
+  - `translations/kk.json` (Қазақша)
+  - `translations/ru.json` (Русский)
+  - `translations/en.json` (English)
+- **Zero-CORS Embedded Fallback:** Includes `window.TRANSLATIONS` directly inside `index.html` to allow seamless local testing via `file:///` without browser cross-origin policy restrictions.
+
+---
+
+## 🎨 Design System & Commercial Coyote Aesthetic
+
+- **Typography:** `Inter` sans-serif system (`400`, `500`, `600`, and `700` weights).
+- **Numerals:** `font-variant-numeric: tabular-nums` for banking/retail-grade price alignment, timers, and bonus balances.
+- **Currency System:** Standardized to **₸ (Kazakhstani Tenge)** across the store catalog, order calculation, delivery fee, bonuses, and payment summary (e.g. `1 850 ₸`, `2 100 ₸`, `850 ₸`).
+- **Zero Unicode Emojis:** Replaced with clean, Lucide-style outline inline SVG icons with unified stroke weight (`1.8px` / `2px`) and consistent bounding boxes.
+- **Storefront & Menu Layout:** Warm espresso brand palette (`#1F140E`, `#D97706`, `#F8F5F1`), horizontal category filter pills, drink customization sheet with cup size, milk options, syrups, and live price recalculation.
+- **Loyalty & Rewards Dashboard:** Based on the official Global Coffee points screen: tabular points balance, expiration reminder, coupon tiers, and interactive celebratory confetti animation with Web Audio harmonic chime.
+
+---
+
+## 💻 How to Run Locally on Windows in Google Chrome
 
 1. Navigate to:
    ```text
    C:\Users\Admin\.gemini\antigravity\scratch\global-coffee-app
    ```
-2. Double-click [index.html](file:///C:/Users/Admin/.gemini/antigravity/scratch/global-coffee-app/index.html) or right-click and select **Open with → Google Chrome**.
-3. Direct Chrome address:
+2. Double-click [index.html](file:///C:/Users/Admin/.gemini/antigravity/scratch/global-coffee-app/index.html) or open it with Google Chrome:
    ```text
    file:///C:/Users/Admin/.gemini/antigravity/scratch/global-coffee-app/index.html
+   ```
+3. A pre-packaged archive containing all assets and translations is available at:
+   ```text
+   C:\Users\Admin\.gemini\antigravity\scratch\global-coffee-app\global-coffee-app.zip
    ```
