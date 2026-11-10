@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -1479,9 +1479,373 @@
       cursor: pointer;
       color: var(--text-muted);
     }
+      /* ==========================================================================
+       INTRODUCTORY WELCOME SCREEN
+       ========================================================================== */
+    .intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #120B07;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+    }
+    .intro-overlay.dismissed {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .intro-card-modal {
+      max-width: 420px;
+      width: 100%;
+      background: #1B110B;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      padding: 24px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+    }
+    .intro-top-tag {
+      display: inline-flex;
+      padding: 4px 12px;
+      background: rgba(217, 119, 6, 0.15);
+      border: 1px solid rgba(217, 119, 6, 0.3);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #D97706;
+      margin-bottom: 16px;
+    }
+    .intro-media-wrap {
+      width: 100%;
+      max-height: 380px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      background: #0D0704;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .intro-media-img {
+      width: 100%;
+      height: 100%;
+      max-height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+    .intro-app-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .intro-app-subtitle {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.45;
+      max-width: 320px;
+      margin-bottom: 22px;
+    }
+    .intro-enter-btn {
+      width: 100%;
+      height: 52px;
+      background: #D97706;
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 20px rgba(217, 119, 6, 0.35);
+    }
+    .intro-enter-btn:hover {
+      background: #B45309;
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       EMPTY STATE & PITCH MODE ORDER PROGRESS
+       ========================================================================== */
+    .order-empty-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 40px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+    .empty-icon-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .empty-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: -0.01em;
+    }
+    .empty-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 320px;
+      margin-bottom: 8px;
+    }
+    .empty-cta-btn {
+      background: var(--primary);
+      color: #FFF;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 12px 28px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .empty-cta-btn:hover {
+      background: var(--primary-surface);
+      transform: translateY(-1px);
+    }
+
+    /* Pitch Presentation Mode Bar */
+    .pitch-mode-card {
+      background: linear-gradient(135deg, rgba(217, 119, 6, 0.08) 0%, rgba(31, 20, 14, 0.04) 100%);
+      border: 1px dashed var(--accent);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      gap: 10px;
+    }
+    .pitch-mode-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: left;
+    }
+    .pitch-pill {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      background: var(--accent-subtle);
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      width: fit-content;
+    }
+    .pitch-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .pitch-skip-btn {
+      background: var(--accent);
+      color: #FFF;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(217, 119, 6, 0.25);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .pitch-skip-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Voice Assistant & Ordering */
+    .chat-mic-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .chat-mic-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .chat-mic-btn.recording {
+      background: #EF4444;
+      color: #FFF;
+      border-color: #EF4444;
+      animation: pulse-mic 1.2s infinite;
+    }
+    @keyframes pulse-mic {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .voice-status-pill {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      margin: 0 16px 8px;
+      font-size: 11px;
+      color: #991B1B;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .voice-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #EF4444;
+      animation: blink-dot 1s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes blink-dot {
+      50% { opacity: 0.3; }
+    }
+    .voice-stop-btn {
+      background: transparent;
+      border: none;
+      color: #991B1B;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .voice-sound-toggle-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .voice-sound-toggle-btn.muted {
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+    .voice-order-preview-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+    .voice-order-preview-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+    .voice-order-item-line {
+      font-size: 12px;
+      color: var(--text-secondary);
+      padding: 3px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    .voice-order-actions-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .voice-confirm-btn {
+      flex: 1;
+      background: var(--accent);
+      color: #FFF;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .voice-confirm-btn:hover {
+      background: var(--accent-hover);
+    }
+    .voice-cancel-btn {
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+  <!-- =========================================================================
+       INTRODUCTORY WELCOME SCREEN
+       ========================================================================= -->
+  <div id="intro-welcome-screen" class="intro-overlay">
+    <div class="intro-card-modal">
+      <div class="intro-top-tag">
+        <span>SPECIALTY COFFEE & DELIVERY</span>
+      </div>
+      <div class="intro-media-wrap">
+        <img src="image(4).png" onerror="if(this.src!='/mnt/data/image(4).png')this.src='/mnt/data/image(4).png'; else this.src='image4.png';" alt="Global Coffee App" class="intro-media-img">
+      </div>
+      <div class="intro-content">
+        <h1 class="intro-app-title">GLOBAL COFFEE APP</h1>
+        <p class="intro-app-subtitle" data-i18n="intro.subtitle">РџСЂРµРјРёР°Р»СЊРЅС‹Р№ СЃРїРµС€РµР»С‚Рё РєРѕС„Рµ СЃРІРµР¶РµР№ РѕР±Р¶Р°СЂРєРё Рё Р±С‹СЃС‚СЂР°СЏ РґРѕСЃС‚Р°РІРєР° РІ РђР»РјР°С‚С‹</p>
+      </div>
+      <button class="intro-enter-btn" onclick="dismissIntroScreen()">
+        <span data-i18n="intro.enter_btn">Р’РѕР№С‚Рё РІ РїСЂРёР»РѕР¶РµРЅРёРµ</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
 
   <!-- Large Screen Preview Switcher -->
   <button class="view-mode-toggle" id="toggle-view-mode" title="Toggle Mobile vs Desktop Frame">
@@ -1528,10 +1892,7 @@
           </div>
 
           <!-- Staff Hub Switcher -->
-          <button class="role-badge-btn" id="role-switch-btn" onclick="toggleStaffPortal()" title="Switch to Staff Operations Hub">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <span id="role-btn-label">Staff Hub</span>
-          </button>
+          
 
           <!-- Cart Button -->
           <button class="header-cart-btn" onclick="openCartDrawer()" title="Cart">
@@ -1675,119 +2036,125 @@
       <!-- ===================================================================
            VIEW 3: DYNAMIC SEQUENTIAL ORDER PROGRESS & FULL-SCREEN PREPARATION TIMER
            =================================================================== -->
+            <!-- ===================================================================
+           VIEW 3: DYNAMIC SEQUENTIAL ORDER PROGRESS & FULL-SCREEN PREPARATION TIMER
+           =================================================================== -->
       <section class="view-pane" id="view-orders">
         <div class="order-progress-view-layout">
-          
-          <!-- Order Metadata Bar -->
-          <div class="order-header-meta-card">
-            <div>
-              <span class="order-code-badge" data-i18n="header.orders">Заказ</span>
-              <div class="order-code-hero" id="track-order-code">#GC-89421</div>
-              <span style="font-size:11px; color:var(--text-muted);" id="track-branch-label">Downtown Flagship</span>
+
+          <!-- EMPTY STATE (Before order is placed and confirmed) -->
+          <div class="order-empty-card" id="order-empty-state">
+            <div class="empty-icon-circle">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
             </div>
-            <div class="fulfillment-badge-pill" id="track-fulfillment-pill">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.5V14l-3-3 4-3 2 3h2"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/></svg>
-              <span id="track-fulfillment-text" data-i18n="order_progress.delivery_flow">Доставка</span>
-            </div>
+            <h3 class="empty-title" data-i18n="order_empty.title">РќРµС‚ Р°РєС‚РёРІРЅС‹С… Р·Р°РєР°Р·РѕРІ</h3>
+            <p class="empty-desc" data-i18n="order_empty.desc">Р’С‹Р±РµСЂРёС‚Рµ Р»СЋР±РёРјС‹Р№ РЅР°РїРёС‚РѕРє РІ РјРµРЅСЋ Рё РѕС„РѕСЂРјРёС‚Рµ Р·Р°РєР°Р·. Р—РґРµСЃСЊ СЃСЂР°Р·Сѓ РїРѕСЏРІРёС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РїСЂРёРіРѕС‚РѕРІР»РµРЅРёСЏ Рё Р¶РёРІРѕР№ С‚СЂРµРєРёРЅРі РІ СЂРµР°Р»СЊРЅРѕРј РІСЂРµРјРµРЅРё.</p>
+            <button class="empty-cta-btn" onclick="navTo('menu')" data-i18n="order_empty.btn">РџРµСЂРµР№С‚Рё РІ РјРµРЅСЋ</button>
           </div>
 
-          <!-- Progress Stepper Track -->
-          <div class="stepper-progress-bar-wrap">
-            <div class="stepper-header-meta">
-              <span id="stepper-step-indicator">Этап 2 из 6</span>
-              <span id="stepper-percentage-text">35%</span>
-            </div>
-            <div class="stepper-track-bar" id="stepper-segments-container">
-              <!-- Rendered dynamically for 6 (Delivery) or 5 (Pickup) stages -->
-            </div>
-          </div>
-
-          <!-- MAIN SCREEN: ACTIVE FOCUSED STAGE CARD -->
-          <div class="active-stage-focus-card" id="active-stage-card">
-            <div class="stage-icon-hero-circle pulsing" id="stage-icon-circle">
-              <!-- Inline SVG Icon for Current Stage -->
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
-            </div>
-
-            <h2 class="stage-focus-title" id="stage-focus-title">Приготовление напитков</h2>
-            <p class="stage-focus-desc" id="stage-focus-desc">Бариста перемалывает зерно арабики и взбивает шелковистую пенку.</p>
-
-            <!-- INTELLIGENT COUNTDOWN TIMER BOX -->
-            <div class="timer-hero-box" id="timer-hero-box">
-              <span class="timer-descriptive-label" id="timer-title-label">Осталось времени приготовления</span>
-              <div class="timer-large-digits" id="stage-countdown-display">08:45</div>
-            </div>
-
-            <!-- DELAY EXPLANATION ALERT (Appears if delay occurs or timer hits threshold) -->
-            <div class="delay-alert-box" id="delay-alert-banner">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <!-- ACTIVE ORDER CONTENT (Displayed ONLY after payment confirmation) -->
+          <div id="order-active-content" style="display:none;">
+            <!-- Order Metadata Bar -->
+            <div class="order-header-meta-card">
               <div>
-                <strong id="delay-warning-title">Приготовление занимает чуть больше времени</strong>
-                <div style="margin-top:2px;" id="delay-explanation-text">Бариста уделяет особое внимание качеству вашего напитка в час пик.</div>
+                <span class="order-code-badge" data-i18n="header.orders">Р—Р°РєР°Р·</span>
+                <div class="order-code-hero" id="track-order-code">#GC-89421</div>
+                <span style="font-size:11px; color:var(--text-muted);" id="track-branch-label">Downtown Flagship</span>
+              </div>
+              <div class="fulfillment-badge-pill" id="track-fulfillment-pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.5V14l-3-3 4-3 2 3h2"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/></svg>
+                <span id="track-fulfillment-text" data-i18n="order_progress.delivery_flow">Р”РѕСЃС‚Р°РІРєР°</span>
               </div>
             </div>
 
-            <!-- Stage 4 Delivery: Courier Profile Widget -->
-            <div class="stage-sub-widget" id="widget-courier-card">
-              <div class="courier-compact-card">
-                <div style="display:flex; align-items:center; gap:10px;">
-                  <img class="courier-avatar-mini" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Courier">
-                  <div>
-                    <div style="font-size:13px; font-weight:600; color:var(--primary-dark);" id="courier-name-val">Daniyar K.</div>
-                    <div style="font-size:11px; color:var(--text-muted);">4.95 Rating • Electric Scooter</div>
+            <!-- Sleek Smooth Progress Track (Clean Line, No Numbers) -->
+            <div class="stepper-progress-bar-wrap">
+              <div class="stepper-track-bar" id="stepper-track-bar" style="height:6px; background:var(--bg-subtle); border-radius:100px; overflow:hidden;">
+                <div id="stepper-progress-fill" style="height:100%; width:20%; background:var(--accent); border-radius:100px; transition:width 0.4s ease;"></div>
+              </div>
+            </div>
+
+            <!-- MAIN SCREEN: ACTIVE FOCUSED STAGE CARD -->
+            <div class="active-stage-focus-card" id="active-stage-card">
+              <div class="stage-icon-hero-circle pulsing" id="stage-icon-circle">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+              </div>
+
+              <h2 class="stage-focus-title" id="stage-focus-title">Р’Р°С€ Р·Р°РєР°Р· РїСЂРёРЅСЏС‚</h2>
+              <div style="font-size:13px; font-weight:600; color:var(--accent); margin-bottom:4px;" id="stage-focus-subtitle">Р“РѕС‚РѕРІРёРј РІР°С€ РєРѕС„Рµ</div>
+              <p class="stage-focus-desc" id="stage-focus-desc">Р‘Р°СЂРёСЃС‚Р° РїРµСЂРµРјР°Р»С‹РІР°РµС‚ СЃРІРµР¶РµРѕР±Р¶Р°СЂРµРЅРЅСѓСЋ Р°СЂР°Р±РёРєСѓ Рё РіРѕС‚РѕРІРёС‚ РЅР°РїРёС‚РєРё.</p>
+
+              <!-- INTELLIGENT COUNTDOWN TIMER BOX -->
+              <div class="timer-hero-box" id="timer-hero-box">
+                <span class="timer-descriptive-label" id="timer-title-label">РћСЃС‚Р°Р»РѕСЃСЊ РІСЂРµРјРµРЅРё РїСЂРёРіРѕС‚РѕРІР»РµРЅРёСЏ</span>
+                <div class="timer-large-digits" id="stage-countdown-display">10:00</div>
+              </div>
+
+              <!-- DELAY EXPLANATION ALERT -->
+              <div class="delay-alert-box" id="delay-alert-banner">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <div>
+                  <strong id="delay-warning-title">РџСЂРёРіРѕС‚РѕРІР»РµРЅРёРµ Р·Р°РЅРёРјР°РµС‚ Р±РѕР»СЊС€Рµ РІСЂРµРјРµРЅРё, С‡РµРј РѕР¶РёРґР°Р»РѕСЃСЊ</strong>
+                  <div style="margin-top:2px;" id="delay-explanation-text">РќР°С€ Р±Р°СЂРёСЃС‚Р° СѓРґРµР»СЏРµС‚ РѕСЃРѕР±РѕРµ РІРЅРёРјР°РЅРёРµ РєР°С‡РµСЃС‚РІСѓ РЅР°РїРёС‚РєР° РІ С‡Р°СЃ РїРёРє. Р’Р°С€ Р·Р°РєР°Р· СЃРєРѕСЂРѕ Р±СѓРґРµС‚ РіРѕС‚РѕРІ!</div>
+                </div>
+              </div>
+
+              <!-- Stage 3 Delivery: Courier Profile Widget -->
+              <div class="stage-sub-widget" id="widget-courier-card">
+                <div class="courier-compact-card">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <img class="courier-avatar-mini" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Courier">
+                    <div>
+                      <div style="font-size:13px; font-weight:600; color:var(--primary-dark);" id="courier-name-val">Daniyar K.</div>
+                      <div style="font-size:11px; color:var(--text-muted);">4.95 Р РµР№С‚РёРЅРі вЂў Р­Р»РµРєС‚СЂРѕСЃР°РјРѕРєР°С‚</div>
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:6px;">
+                    <button class="sheet-close-btn" onclick="showToast('Р’С‹Р·РѕРІ РєСѓСЂСЊРµСЂР°...')" title="РџРѕР·РІРѕРЅРёС‚СЊ">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </button>
+                    <button class="sheet-close-btn" onclick="openAIChatWithPrompt('Where is courier?')" title="Р§Р°С‚">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </button>
                   </div>
                 </div>
-                <div style="display:flex; gap:6px;">
-                  <button class="sheet-close-btn" onclick="showToast('Calling courier...')" title="Call">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                  </button>
-                  <button class="sheet-close-btn" onclick="openAIChatWithPrompt('Where is courier?')" title="Chat">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                  </button>
+              </div>
+
+              <!-- Stage 3 Pickup: Pickup Code Widget -->
+              <div class="stage-sub-widget" id="widget-pickup-code">
+                <div class="pickup-code-hero">
+                  <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:var(--text-muted);">РљРѕРґ РґР»СЏ РІС‹РґР°С‡Рё РЅР° РєР°СЃСЃРµ</div>
+                  <div class="pickup-code-val" id="pickup-code-display">#GC-89421</div>
+                  <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">РќР°Р·РѕРІРёС‚Рµ СЌС‚РѕС‚ РЅРѕРјРµСЂ Р±Р°СЂРёСЃС‚Р° РІ РєРѕС„РµР№РЅРµ</div>
                 </div>
               </div>
-            </div>
 
-            <!-- Stage 4 Pickup: Pickup Code Widget -->
-            <div class="stage-sub-widget" id="widget-pickup-code">
-              <div class="pickup-code-hero">
-                <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:var(--text-muted);">Код для выдачи на кассе</div>
-                <div class="pickup-code-val" id="pickup-code-display">#GC-89421</div>
-                <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Назовите этот код бариста в кофейне</div>
-              </div>
-            </div>
-
-            <!-- Stage 5 Delivery: Live 2GIS Route Map Widget -->
-            <div class="stage-sub-widget" id="widget-route-map">
-              <div class="tracking-map-container">
-                <div class="map-telemetry-tag">
-                  <span>📍 Маршрут 2GIS: <strong>850м до адреса</strong></span>
-                  <span id="route-eta-badge">ETA: 4 мин</span>
+              <!-- Stage 4 Delivery: Live 2GIS Route Map Widget -->
+              <div class="stage-sub-widget" id="widget-route-map">
+                <div class="tracking-map-container">
+                  <div class="map-telemetry-tag">
+                    <span>РњР°СЂС€СЂСѓС‚ 2GIS: <strong>850 Рј РґРѕ Р°РґСЂРµСЃР°</strong></span>
+                    <span id="route-eta-badge">ETA: ~4 РјРёРЅ</span>
+                  </div>
+                  <div id="tracking-map"></div>
                 </div>
-                <div id="tracking-map"></div>
               </div>
-            </div>
 
-            <!-- Final Completion Button -->
-            <button class="completion-trigger-btn" id="order-complete-trigger-btn" onclick="completeOrderAndClaimReward()">
-              <span id="completion-btn-text">Я получил заказ</span>
-            </button>
-          </div>
-
-          <!-- Interactive Stage Simulation & Testing Toolbar -->
-          <div class="stage-simulation-toolbar">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:11px; font-weight:600; text-transform:uppercase; color:var(--text-muted);" data-i18n="order_progress.stage_test_title">Управление этапами для проверки</span>
-              <button style="border:none; background:transparent; font-size:11px; font-weight:600; color:var(--accent); cursor:pointer;" onclick="toggleAutoPlayStages()">
-                <span id="autoplay-btn-label">Автосимуляция</span>
+              <!-- Final Completion Button -->
+              <button class="completion-trigger-btn" id="order-complete-trigger-btn" onclick="completeOrderAndClaimReward()">
+                <span id="completion-btn-text">РЇ РїРѕР»СѓС‡РёР» Р·Р°РєР°Р·</span>
               </button>
             </div>
-            <div class="simulation-pills-row" id="sim-stages-row">
-              <!-- Dynamically rendered pills for stages 1..6 or 1..5 -->
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-              <button class="sheet-close-btn" style="width:auto; padding:4px 10px; border-radius:4px; font-size:11px;" onclick="toggleSimulatedDelay()">
-                <span id="delay-toggle-label">Смоделировать задержку бариста</span>
+
+            <!-- DEMO PITCH MODE BAR (Allows stepping through full order journey during presentations) -->
+            <div class="pitch-mode-card" id="pitch-demo-bar">
+              <div class="pitch-mode-meta">
+                <span class="pitch-pill">вљЎ Demo Pitch Mode</span>
+                <span class="pitch-desc" data-i18n="order_progress.pitch_desc">Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ РїРѕР»РЅРѕРіРѕ С†РёРєР»Р°</span>
+              </div>
+              <button class="pitch-skip-btn" id="pitch-skip-stage-btn" onclick="pitchSkipToNextStage()">
+                <span data-i18n="order_progress.skip_stage">Skip to next stage</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </button>
             </div>
           </div>
@@ -1887,121 +2254,7 @@
       <!-- ===================================================================
            VIEW 6: STAFF OPERATIONS HUB & AI MONITORING
            =================================================================== -->
-      <section class="view-pane" id="view-staff">
-        <div class="staff-view-layout">
-          
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <h2 style="font-size:17px; font-weight:700; color:var(--primary-dark);" data-i18n="staff.title">Панель управления персоналом</h2>
-              <p style="font-size:11px; color:var(--text-muted);" data-i18n="staff.subtitle">AI Мониторинг заказов и инцидентов доставки</p>
-            </div>
-            <button class="role-badge-btn" onclick="toggleStaffPortal()">
-              <span data-i18n="header.customer_view">Клиент</span>
-            </button>
-          </div>
-
-          <!-- Metrics Row -->
-          <div class="staff-stats-grid">
-            <div class="staff-stat-box">
-              <span class="stat-label">Активные заказы</span>
-              <span class="stat-val-hero" id="staff-active-count">1</span>
-            </div>
-            <div class="staff-stat-box">
-              <span class="stat-label">AI Инциденты</span>
-              <span class="stat-val-hero" style="color:var(--danger);" id="staff-incidents-count">2</span>
-            </div>
-            <div class="staff-stat-box">
-              <span class="stat-label">Среднее время</span>
-              <span class="stat-val-hero">06:20</span>
-            </div>
-            <div class="staff-stat-box">
-              <span class="stat-label">SLA Доставки</span>
-              <span class="stat-val-hero" style="color:var(--success);">98.4%</span>
-            </div>
-          </div>
-
-          <!-- Tabs -->
-          <div class="staff-tabs-row">
-            <button class="staff-tab-btn active" id="staff-tab-alerts" onclick="setStaffTab('alerts')" data-i18n="staff.tab_monitoring">AI Мониторинг</button>
-            <button class="staff-tab-btn" id="staff-tab-ops" onclick="setStaffTab('ops')" data-i18n="staff.tab_orders">Активные заказы</button>
-            <button class="staff-tab-btn" id="staff-tab-sla" onclick="setStaffTab('sla')" data-i18n="staff.tab_thresholds">Пороги SLA</button>
-          </div>
-
-          <!-- Sub-tab 1: AI Alert Center -->
-          <div id="staff-panel-alerts" style="display:flex; flex-direction:column; gap:10px;">
-            <!-- Alert 1 -->
-            <div class="alert-card-item warning" id="alert-card-1">
-              <div class="alert-meta-top">
-                <span class="severity-badge warning" data-i18n="staff.alert_warning">Предупреждение</span>
-                <span style="font-size:11px; color:var(--text-muted);">Order #GC-89421 • 14:32</span>
-              </div>
-              <div style="font-size:13px; font-weight:600; color:var(--primary-dark);">Время приготовления приближается к лимиту SLA (8 мин)</div>
-              <div class="alert-ai-recommendation">
-                <strong data-i18n="staff.action_recommendation">Рекомендация AI:</strong> Бариста рекомендуется подготовить упаковку и передать напиток на контроль качества.
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-                <span style="font-size:11px; font-weight:600; color:var(--accent);" id="alert-status-1">В работе</span>
-                <button class="sheet-close-btn" style="width:auto; padding:4px 10px; font-size:11px; border-radius:4px;" onclick="resolveAlert('alert-card-1', 'alert-status-1')">
-                  Решить инцидент
-                </button>
-              </div>
-            </div>
-
-            <!-- Alert 2 -->
-            <div class="alert-card-item info" id="alert-card-2">
-              <div class="alert-meta-top">
-                <span class="severity-badge info" data-i18n="staff.alert_info">Инфо</span>
-                <span style="font-size:11px; color:var(--text-muted);">Downtown Flagship • 14:28</span>
-              </div>
-              <div style="font-size:13px; font-weight:600; color:var(--primary-dark);">Нагрузка на кофемолку №2 выше среднего (+25%)</div>
-              <div class="alert-ai-recommendation">
-                <strong data-i18n="staff.action_recommendation">Рекомендация AI:</strong> Автоматически распределить заказы на эспрессо-группу №1.
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-                <span style="font-size:11px; font-weight:600; color:var(--success);" id="alert-status-2">Решен</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sub-tab 2: Operations Controls -->
-          <div id="staff-panel-ops" style="display:none; flex-direction:column; gap:10px;">
-            <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px;">
-              <h4 style="font-size:13px; font-weight:700;">Управление жизненным циклом активного заказа</h4>
-              <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Синхронизирует клиентское приложение и AI ассистент в реальном времени.</p>
-              
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;">
-                <button class="branch-select-action-btn" onclick="staffAdvanceStage()">
-                  Перевести этап вперед
-                </button>
-                <button class="branch-select-action-btn" style="background:#4B2E1E;" onclick="staffSimulateDelay()">
-                  Смоделировать задержку
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sub-tab 3: SLA Thresholds -->
-          <div id="staff-panel-sla" style="display:none; flex-direction:column; gap:10px;">
-            <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px; display:flex; flex-direction:column; gap:12px;">
-              <div>
-                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:600;">
-                  <span data-i18n="staff.threshold_prep_time">Максимальное время приготовления</span>
-                  <span id="sla-prep-display">10 мин</span>
-                </div>
-                <input type="range" min="5" max="25" value="10" style="width:100%; margin-top:4px;" oninput="document.getElementById('sla-prep-display').innerText = this.value + ' мин'">
-              </div>
-              <div>
-                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:600;">
-                  <span data-i18n="staff.threshold_courier_assign">Порог назначения курьера</span>
-                  <span id="sla-courier-display">4 мин</span>
-                </div>
-                <input type="range" min="2" max="15" value="4" style="width:100%; margin-top:4px;" oninput="document.getElementById('sla-courier-display').innerText = this.value + ' мин'">
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
+      
 
     </main>
 
@@ -2300,11 +2553,20 @@
        ========================================================================= -->
   <div class="ai-chat-drawer-overlay" id="ai-chat-drawer">
     <div class="ai-chat-drawer-panel">
-      <div class="ai-chat-header">
+            <div class="ai-chat-header">
         <div class="ai-header-title">
           <span class="ai-online-indicator"></span>
-          <span data-i18n="ai_assistant.title">Global Coffee AI Ассистент</span>
+          <span data-i18n="ai_assistant.title">Global Coffee AI Concierge</span>
         </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button class="voice-sound-toggle-btn" id="voice-speech-toggle" onclick="toggleVoiceAudioOutput()" title="Voice readback">
+            <svg id="voice-sound-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          </button>
+          <button class="sheet-close-btn" onclick="closeAIChat()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
         <button class="sheet-close-btn" onclick="closeAIChat()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
@@ -2327,8 +2589,23 @@
       </div>
 
       <!-- Input Bar -->
+            <!-- Voice Status Banner -->
+      <div class="voice-status-pill" id="voice-status-indicator" style="display:none;">
+        <span class="voice-pulse-dot"></span>
+        <span id="voice-status-text">РЎР»СѓС€Р°СЋ... РќР°Р·РѕРІРёС‚Рµ РЅР°РїРёС‚РѕРє, СЂР°Р·РјРµСЂ Рё РјРѕР»РѕРєРѕ</span>
+        <button class="voice-stop-btn" onclick="stopVoiceRecognition()">вњ•</button>
+      </div>
+
+      <!-- Input Bar with Voice Mic Button -->
       <div class="chat-input-bar">
-        <input type="text" class="chat-input-field" id="ai-chat-input" placeholder="Спросите о меню, заказе или доставке..." onkeydown="if(event.key==='Enter') submitAIChatMessage()">
+        <button class="chat-mic-btn" id="ai-mic-btn" onclick="toggleVoiceRecognition()" title="Voice Ordering">
+          <svg class="mic-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+        </button>
+        <input type="text" class="chat-input-field" id="ai-chat-input" placeholder="РЎРїСЂРѕСЃРёС‚Рµ Рѕ РјРµРЅСЋ РёР»Рё Р·Р°РєР°Р¶РёС‚Рµ РіРѕР»РѕСЃРѕРј..." onkeydown="if(event.key==='Enter') submitAIChatMessage()">
         <button class="chat-send-btn" onclick="submitAIChatMessage()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
@@ -2367,216 +2644,314 @@
   <!-- =========================================================================
        APPLICATION SCRIPT CORE
        ========================================================================= -->
-  <script>
-    /* ==========================================================================
-       THREE-LANGUAGE DICTIONARIES (KZ / RU / EN)
-       Embedded directly to ensure 100% offline and file:// protocol execution!
-       ========================================================================== */
+  
+<script>
+    /* Global Coffee Product Catalog */
+    const PRODUCTS = [
+      {
+        id: 'p-flat-white',
+        name: 'Flat White',
+        category: 'coffee',
+        price: 1850,
+        rating: '4.9 (420)',
+        calories: '140 kcal вЂў 250 ml',
+        desc: 'Р”РІРѕР№РЅРѕР№ С€РѕС‚ СЃРїРµС€РµР»С‚Рё СЌСЃРїСЂРµСЃСЃРѕ РёР· РІС‹СЃРѕРєРѕРіРѕСЂРЅРѕР№ Р°СЂР°Р±РёРєРё СЃ С€РµР»РєРѕРІРёСЃС‚РѕР№ Р±Р°СЂС…Р°С‚РёСЃС‚РѕР№ РјРёРєСЂРѕРїРµРЅРєРѕР№.',
+        image: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=500&q=80',
+        badge: 'РҐРёС‚ СЃРµР·РѕРЅР°',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-caramel-latte',
+        name: 'Caramel Velvet Latte',
+        category: 'coffee',
+        price: 2100,
+        rating: '4.95 (580)',
+        calories: '220 kcal вЂў 350 ml',
+        desc: 'РќРµР¶РЅС‹Р№ СЌСЃРїСЂРµСЃСЃРѕ СЃ РЅР°С‚СѓСЂР°Р»СЊРЅРѕР№ РґРѕРјР°С€РЅРµР№ СЃРѕР»РµРЅРѕР№ РєР°СЂР°РјРµР»СЊСЋ Рё РјР°РґР°РіР°СЃРєР°СЂСЃРєРѕР№ РІР°РЅРёР»СЊСЋ.',
+        image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=500&q=80',
+        badge: 'Р’С‹Р±РѕСЂ Р±Р°СЂРёСЃС‚Р°',
+        popular: true,
+        seasonal: true
+      },
+      {
+        id: 'p-cappuccino',
+        name: 'Classic Cappuccino',
+        category: 'coffee',
+        price: 1650,
+        rating: '4.8 (390)',
+        calories: '120 kcal вЂў 250 ml',
+        desc: 'РРґРµР°Р»СЊРЅС‹Р№ Р±Р°Р»Р°РЅСЃ РЅР°СЃС‹С‰РµРЅРЅРѕРіРѕ СЌСЃРїСЂРµСЃСЃРѕ Рё РІРѕР·РґСѓС€РЅРѕР№ РіР»СЏРЅС†РµРІРѕР№ РјРѕР»РѕС‡РЅРѕР№ РїРµРЅРєРё.',
+        image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=500&q=80',
+        badge: '',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-cold-brew',
+        name: 'Iced Salted Cold Brew',
+        category: 'iced',
+        price: 1950,
+        rating: '4.85 (310)',
+        calories: '95 kcal вЂў 400 ml',
+        desc: 'РљРѕР»Рґ Р±СЂСЋ 20-С‡Р°СЃРѕРІРѕР№ С…РѕР»РѕРґРЅРѕР№ СЌРєСЃС‚СЂР°РєС†РёРё СЃРѕ СЃР»РёРІРѕС‡РЅРѕР№ РєР°СЂР°РјРµР»СЊРЅРѕР№ РїРµРЅРєРѕР№.',
+        image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=500&q=80',
+        badge: 'РҐРѕР»РѕРґРЅС‹Р№ С…РёС‚',
+        popular: false,
+        seasonal: true
+      },
+      {
+        id: 'p-caramel-raf',
+        name: 'Caramel Cream Raf',
+        category: 'coffee',
+        price: 2300,
+        rating: '4.9 (240)',
+        calories: '280 kcal вЂў 350 ml',
+        desc: 'РўСЂР°РґРёС†РёРѕРЅРЅС‹Р№ СЂР°С„ РЅР° 11% СЃР»РёРІРєР°С… СЃРѕ РІР·Р±РёС‚РѕР№ РєР°СЂР°РјРµР»СЊСЋ Рё РІР°РЅРёР»СЊРЅС‹Рј СЃР°С…Р°СЂРѕРј.',
+        image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80',
+        badge: 'РЎР»РёРІРѕС‡РЅС‹Р№',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-matcha',
+        name: 'Kyoto Ceremonial Matcha',
+        category: 'tea',
+        price: 2250,
+        rating: '4.75 (190)',
+        calories: '110 kcal вЂў 350 ml',
+        desc: 'РћСЂРіР°РЅРёС‡РµСЃРєР°СЏ С†РµСЂРµРјРѕРЅРёР°Р»СЊРЅР°СЏ РјР°С‚С‡Р° РїРµСЂРІРѕРіРѕ СЃР±РѕСЂР° РёР· РљРёРѕС‚Рѕ РЅР° РѕРІСЃСЏРЅРѕРј РјРѕР»РѕРєРµ.',
+        image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=500&q=80',
+        badge: 'РћСЂРіР°РЅРёРє',
+        popular: false,
+        seasonal: false
+      },
+      {
+        id: 'p-croissant',
+        name: 'Almond French Croissant',
+        category: 'desserts',
+        price: 1450,
+        rating: '4.9 (410)',
+        calories: '340 kcal вЂў 130 Рі',
+        desc: 'РҐСЂСѓСЃС‚СЏС‰РёР№ РїР°СЂРёР¶СЃРєРёР№ РєСЂСѓР°СЃСЃР°РЅ РЅР° СЃР»РёРІРѕС‡РЅРѕРј РјР°СЃР»Рµ 82.5% СЃ С„СЂР°РЅР¶РёРїР°РЅРѕРј Рё Р»РµРїРµСЃС‚РєР°РјРё РјРёРЅРґР°Р»СЏ.',
+        image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=500&q=80',
+        badge: 'РЎРІРµР¶Р°СЏ РІС‹РїРµС‡РєР°',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-cheesecake',
+        name: 'San Sebastian Cheesecake',
+        category: 'desserts',
+        price: 2200,
+        rating: '4.95 (512)',
+        calories: '380 kcal вЂў 160 Рі',
+        desc: 'Р‘Р°СЃРєСЃРєРёР№ РѕР±РѕР¶Р¶РµРЅРЅС‹Р№ С‡РёР·РєРµР№Рє СЃ РЅРµР¶РЅРµР№С€РµР№ С€РµР»РєРѕРІРёСЃС‚РѕР№ РєСЂРµРјРѕРІРѕР№ СЃРµСЂРґС†РµРІРёРЅРѕР№.',
+        image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=500&q=80',
+        badge: 'Bestseller',
+        popular: true,
+        seasonal: true
+      }
+    ];
+
+    /* Branches in Almaty */
+    const BRANCHES = [
+      { id: 'branch-1', name: 'Downtown Flagship', address: 'СѓР». Р”РѕСЃС‚С‹Рє, 43', distance: '350 Рј', hours: '07:30 - 23:00', rating: '4.95', lat: 43.2551, lng: 76.9426 },
+      { id: 'branch-2', name: 'Dostyk Plaza', address: 'РјРєСЂ. РЎР°РјР°Р»-2, 111', distance: '1.2 РєРј', hours: '08:00 - 22:00', rating: '4.90', lat: 43.2335, lng: 76.9567 },
+      { id: 'branch-3', name: 'Mega Alma-Ata', address: 'СѓР». Р РѕР·С‹Р±Р°РєРёРµРІР°, 247', distance: '2.8 РєРј', hours: '09:00 - 22:00', rating: '4.88', lat: 43.2030, lng: 76.8926 },
+      { id: 'branch-4', name: 'Esentai Mall Bar', address: 'РїСЂРѕСЃРї. РђР»СЊ-Р¤Р°СЂР°Р±Рё, 77/8', distance: '3.4 РєРј', hours: '08:00 - 22:00', rating: '4.92', lat: 43.2185, lng: 76.9278 },
+      { id: 'branch-5', name: 'Dostyk Medeu Bar', address: 'СѓР». РљРµСЂРµР№-Р–У™РЅС–Р±РµРє С…Р°РЅРґР°СЂ, 310', distance: '5.1 РєРј', hours: '08:00 - 21:00', rating: '4.94', lat: 43.1900, lng: 76.9800 }
+    ];
+
+    /* Sequential Order Progress Stages (No Numbers) */
+    const STAGE_DEFINITIONS = {
+      delivery: [
+        {
+          id: 'brew',
+          title: { ru: "Р’Р°С€ Р·Р°РєР°Р· РїСЂРёРЅСЏС‚", kk: "РўР°РїСЃС‹СЂС‹СЃС‹ТЈС‹Р· Т›Р°Р±С‹Р»РґР°РЅРґС‹", en: "Order Confirmed" },
+          subtitle: { ru: "Р“РѕС‚РѕРІРёРј РІР°С€ РєРѕС„Рµ", kk: "РљРѕС„РµТЈС–Р· РґР°Р№С‹РЅРґР°Р»СѓРґР°", en: "Brewing Your Coffee" },
+          desc: { ru: "Р‘Р°СЂРёСЃС‚Р° РїРµСЂРµРјР°Р»С‹РІР°РµС‚ СЃРІРµР¶РµРѕР±Р¶Р°СЂРµРЅРЅСѓСЋ Р°СЂР°Р±РёРєСѓ Рё РіРѕС‚РѕРІРёС‚ РЅР°РїРёС‚РєРё РїРѕ РІР°С€РµРјСѓ СЂРµС†РµРїС‚Сѓ.", kk: "Р‘Р°СЂРёСЃС‚Р° Р¶Р°ТЈР° Т›СѓС‹СЂС‹Р»Т“Р°РЅ Р°СЂР°Р±РёРєР° РґУ™РЅС–РЅ ТЇРіС–С‚С–Рї, СЃСѓСЃС‹РЅС‹ТЈС‹Р·РґС‹ РґР°Р№С‹РЅРґР°СѓРґР°.", en: "Barista is grinding specialty beans and brewing your coffee." },
+          timerLabel: { ru: "РћСЃС‚Р°Р»РѕСЃСЊ РІСЂРµРјРµРЅРё РїСЂРёРіРѕС‚РѕРІР»РµРЅРёСЏ", kk: "Р”Р°Р№С‹РЅРґР°Р»СѓРґС‹ТЈ Т›Р°Р»Т“Р°РЅ СѓР°Т›С‹С‚С‹", en: "Preparation time remaining" },
+          initialSeconds: 10 * 60,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>'
+        },
+        {
+          id: 'pack',
+          title: { ru: "РџСЂРѕРІРµСЂРєР° РєР°С‡РµСЃС‚РІР° Рё СѓРїР°РєРѕРІРєР°", kk: "РЎР°РїР°РЅС‹ С‚РµРєСЃРµСЂСѓ Р¶У™РЅРµ РѕСЂР°Сѓ", en: "Quality Check & Packing" },
+          subtitle: { ru: "Р¤РёРЅР°Р»СЊРЅС‹Р№ РєРѕРЅС‚СЂРѕР»СЊ РєР°С‡РµСЃС‚РІР°", kk: "РЎР°РїР°РЅС‹ Т›РѕСЂС‹С‚С‹РЅРґС‹ Р±Р°Т›С‹Р»Р°Сѓ", en: "Final Quality Check" },
+          desc: { ru: "РџСЂРѕРІРµСЂСЏРµРј С‚РµРјРїРµСЂР°С‚СѓСЂСѓ РЅР°РїРёС‚РєРѕРІ Рё Р°РєРєСѓСЂР°С‚РЅРѕ СѓРїР°РєРѕРІС‹РІР°РµРј Р·Р°РєР°Р· РґР»СЏ Р±РµСЂРµР¶РЅРѕР№ РґРѕСЃС‚Р°РІРєРё.", kk: "РЎСѓСЃС‹РЅ С‚РµРјРїРµСЂР°С‚СѓСЂР°СЃС‹ С‚РµРєСЃРµСЂС–Р»С–Рї, Р¶РµС‚РєС–Р·СѓРіРµ СЃРµРЅС–РјРґС– РѕСЂР°Р»СѓРґР°.", en: "Checking drink temperature and packaging securely for delivery." },
+          timerLabel: { ru: "РЈРїР°РєРѕРІРєР° Р·Р°РєР°Р·Р°", kk: "РўР°РїСЃС‹СЂС‹СЃС‚С‹ РѕСЂР°Сѓ", en: "Packaging time" },
+          initialSeconds: 2 * 60,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 11 14 15 10"/></svg>'
+        },
+        {
+          id: 'courier_assigned',
+          title: { ru: "РљСѓСЂСЊРµСЂ РЅР°Р·РЅР°С‡РµРЅ", kk: "РљСѓСЂСЊРµСЂ С‚Р°Т“Р°Р№С‹РЅРґР°Р»РґС‹", en: "Courier Assigned" },
+          subtitle: { ru: "РљСѓСЂСЊРµСЂ РїСЂРёР±С‹Р» РІ РєРѕС„РµР№РЅСЋ", kk: "РљСѓСЂСЊРµСЂ С„РёР»РёР°Р»Т“Р° РєРµР»РґС–", en: "Courier Arrived at Branch" },
+          desc: { ru: "РљСѓСЂСЊРµСЂ РїСЂРёРЅРёРјР°РµС‚ РІР°С€ Р·Р°РєР°Р· РІ РєРѕС„РµР№РЅРµ Рё РіРѕС‚РѕРІРёС‚СЃСЏ Рє РІС‹РµР·РґСѓ.", kk: "РљСѓСЂСЊРµСЂ С‚Р°РїСЃС‹СЂС‹СЃС‚С‹ РєРѕС„РµС…Р°РЅР°РґР°РЅ Т›Р°Р±С‹Р»РґР°Рї Р°Р»С‹Рї, Р¶РѕР»Т“Р° С€С‹Т“СѓРґР°.", en: "Courier is collecting your order at the coffee bar and preparing to depart." },
+          timerLabel: { ru: "РџРµСЂРµРґР°С‡Р° Р·Р°РєР°Р·Р° РєСѓСЂСЊРµСЂСѓ", kk: "РљСѓСЂСЊРµСЂРіРµ С‚Р°РїСЃС‹СЂСѓ", en: "Courier handover" },
+          initialSeconds: 1 * 60 + 30,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>'
+        },
+        {
+          id: 'on_way',
+          title: { ru: "РљСѓСЂСЊРµСЂ РІ РїСѓС‚Рё", kk: "РљСѓСЂСЊРµСЂ Р¶РѕР»РґР° РєРµР»РµРґС–", en: "Courier On the Way" },
+          subtitle: { ru: "Р”РѕСЃС‚Р°РІРєР° РїРѕ РІР°С€РµРјСѓ Р°РґСЂРµСЃСѓ", kk: "РњРµРєРµРЅР¶Р°Р№Т“Р° Р¶РµС‚РєС–Р·Сѓ", en: "Heading to Your Address" },
+          desc: { ru: "РљСѓСЂСЊРµСЂ РІРµР·РµС‚ РІР°С€ РіРѕСЂСЏС‡РёР№ РєРѕС„Рµ РїРѕ РѕРїС‚РёРјР°Р»СЊРЅРѕРјСѓ РјР°СЂС€СЂСѓС‚Сѓ 2GIS.", kk: "РљСѓСЂСЊРµСЂ 2GIS РЅР°РІРёРіР°С†РёСЏСЃС‹ Р±РѕР№С‹РЅС€Р° РµТЈ РѕТЈС‚Р°Р№Р»С‹ Р±Р°Т“С‹С‚РїРµРЅ РєРµР»Рµ Р¶Р°С‚С‹СЂ.", en: "Courier is navigating to your address via 2GIS live route." },
+          timerLabel: { ru: "Р Р°СЃС‡РµС‚РЅРѕРµ РІСЂРµРјСЏ РїСЂРёР±С‹С‚РёСЏ РєСѓСЂСЊРµСЂР°", kk: "РљСѓСЂСЊРµСЂРґС–ТЈ РєРµР»Сѓ СѓР°Т›С‹С‚С‹", en: "Estimated courier arrival" },
+          initialSeconds: 6 * 60,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.5V14l-3-3 4-3 2 3h2"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/></svg>'
+        },
+        {
+          id: 'delivered',
+          title: { ru: "Р—Р°РєР°Р· РґРѕСЃС‚Р°РІР»РµРЅ", kk: "РўР°РїСЃС‹СЂС‹СЃ Р¶РµС‚РєС–Р·С–Р»РґС–", en: "Order Delivered" },
+          subtitle: { ru: "РџСЂРёСЏС‚РЅРѕРіРѕ Р°РїРїРµС‚РёС‚Р°!", kk: "РђСЃС‹ТЈС‹Р· РґУ™РјРґС– Р±РѕР»СЃС‹РЅ!", en: "Enjoy Your Coffee!" },
+          desc: { ru: "РљСѓСЂСЊРµСЂ РїСЂРёР±С‹Р» РїРѕ РІР°С€РµРјСѓ Р°РґСЂРµСЃСѓ. РЎРїР°СЃРёР±Рѕ, С‡С‚Рѕ РІС‹Р±СЂР°Р»Рё Global Coffee!", kk: "РљСѓСЂСЊРµСЂ РјРµРєРµРЅР¶Р°Р№С‹ТЈС‹Р·Т“Р° Р¶РµС‚С‚С–. Global Coffee-РґС– С‚Р°ТЈРґР°Т“Р°РЅС‹ТЈС‹Р·Т“Р° СЂР°Т›РјРµС‚!", en: "Courier has arrived at your door. Thank you for choosing Global Coffee!" },
+          timerLabel: { ru: "Р—Р°РєР°Р· Р·Р°РІРµСЂС€РµРЅ", kk: "РўР°РїСЃС‹СЂС‹СЃ Р°СЏТ›С‚Р°Р»РґС‹", en: "Order Complete" },
+          initialSeconds: 0,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
+        }
+      ],
+      pickup: [
+        {
+          id: 'brew',
+          title: { ru: "Р’Р°С€ Р·Р°РєР°Р· РїСЂРёРЅСЏС‚", kk: "РўР°РїСЃС‹СЂС‹СЃС‹ТЈС‹Р· Т›Р°Р±С‹Р»РґР°РЅРґС‹", en: "Order Confirmed" },
+          subtitle: { ru: "Р“РѕС‚РѕРІРёРј РІР°С€ РєРѕС„Рµ", kk: "РљРѕС„РµТЈС–Р· РґР°Р№С‹РЅРґР°Р»СѓРґР°", en: "Brewing Your Coffee" },
+          desc: { ru: "Р‘Р°СЂРёСЃС‚Р° РїРµСЂРµРјР°Р»С‹РІР°РµС‚ Р°СЂР°Р±РёРєСѓ Рё РіРѕС‚РѕРІРёС‚ РЅР°РїРёС‚РєРё РїРѕ РІР°С€РµРјСѓ СЂРµС†РµРїС‚Сѓ.", kk: "Р‘Р°СЂРёСЃС‚Р° Р°СЂР°Р±РёРєР° РґУ™РЅС–РЅ ТЇРіС–С‚С–Рї, С‚Р°РїСЃС‹СЂС‹СЃС‚С‹ РґР°Р№С‹РЅРґР°СѓРґР°.", en: "Barista is grinding specialty beans and brewing your coffee." },
+          timerLabel: { ru: "РћСЃС‚Р°Р»РѕСЃСЊ РІСЂРµРјРµРЅРё РїСЂРёРіРѕС‚РѕРІР»РµРЅРёСЏ", kk: "Р”Р°Р№С‹РЅРґР°Р»СѓРґС‹ТЈ Т›Р°Р»Т“Р°РЅ СѓР°Т›С‹С‚С‹", en: "Preparation time remaining" },
+          initialSeconds: 8 * 60,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>'
+        },
+        {
+          id: 'pack',
+          title: { ru: "РџСЂРѕРІРµСЂРєР° РєР°С‡РµСЃС‚РІР° Рё СѓРїР°РєРѕРІРєР°", kk: "РЎР°РїР°РЅС‹ С‚РµРєСЃРµСЂСѓ Р¶У™РЅРµ РѕСЂР°Сѓ", en: "Quality Check & Packing" },
+          subtitle: { ru: "РљРѕРјРїР»РµРєС‚Р°С†РёСЏ Р·Р°РєР°Р·Р°", kk: "РўР°РїСЃС‹СЂС‹СЃС‚С‹ Р¶РёРЅР°Т›С‚Р°Сѓ", en: "Assembling Takeaway" },
+          desc: { ru: "РџСЂРѕРІРµСЂСЏРµРј РєРѕРјРїР»РµРєС‚Р°С†РёСЋ Рё СѓРїР°РєРѕРІС‹РІР°РµРј Р·Р°РєР°Р· РґР»СЏ СѓРґРѕР±РЅРѕР№ РІС‹РґР°С‡Рё РЅР°РІС‹РЅРѕСЃ.", kk: "РђР»С‹Рї РєРµС‚СѓРіРµ С‹ТЈТ“Р°Р№Р»С‹ РµС‚С–Рї Р¶РёРЅР°Т›С‚Р°Р»С‹Рї, РѕСЂР°Р»СѓРґР°.", en: "Checking quality and packaging securely for takeaway." },
+          timerLabel: { ru: "РЈРїР°РєРѕРІРєР° Р·Р°РєР°Р·Р°", kk: "РўР°РїСЃС‹СЂС‹СЃС‚С‹ РѕСЂР°Сѓ", en: "Packaging time" },
+          initialSeconds: 1 * 60 + 30,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 11 14 15 10"/></svg>'
+        },
+        {
+          id: 'ready_pickup',
+          title: { ru: "Р—Р°РєР°Р· РіРѕС‚РѕРІ Рє РІС‹РґР°С‡Рµ", kk: "РўР°РїСЃС‹СЂС‹СЃ Р°Р»СѓТ“Р° РґР°Р№С‹РЅ", en: "Ready for Pickup" },
+          subtitle: { ru: "РћР¶РёРґР°РµС‚ РЅР° РєР°СЃСЃРµ РєРѕС„РµР№РЅРё", kk: "РљР°СЃСЃР°РґР° РєТЇС‚С–Рї С‚Т±СЂ", en: "Waiting at the Counter" },
+          desc: { ru: "Р’Р°С€ РЅР°РїРёС‚РѕРє РіРѕС‚РѕРІ Рё Р¶РґРµС‚ РІР°СЃ РЅР° СЃС‚РѕР№РєРµ РІС‹РґР°С‡Рё РєРѕС„РµР№РЅРё.", kk: "РўР°РїСЃС‹СЂС‹СЃС‹ТЈС‹Р· РєРѕС„РµС…Р°РЅР°РЅС‹ТЈ Р±РµСЂСѓ СЃУ©СЂРµСЃС–РЅРґРµ РґР°Р№С‹РЅ С‚Т±СЂ.", en: "Your drink is waiting for you at the pickup counter." },
+          timerLabel: { ru: "РћР¶РёРґР°РµС‚ РІС‹РґР°С‡Рё", kk: "РљТЇС‚С–Рї С‚Т±СЂ", en: "Ready at counter" },
+          initialSeconds: 0,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>'
+        },
+        {
+          id: 'collected',
+          title: { ru: "Р—Р°РєР°Р· РїРѕР»СѓС‡РµРЅ", kk: "РўР°РїСЃС‹СЂС‹СЃ Р°Р»С‹РЅРґС‹", en: "Order Collected" },
+          subtitle: { ru: "Р—Р°РєР°Р· Р·Р°РІРµСЂС€РµРЅ", kk: "РўР°РїСЃС‹СЂС‹СЃ Р°СЏТ›С‚Р°Р»РґС‹", en: "Completed" },
+          desc: { ru: "РЎРїР°СЃРёР±Рѕ, С‡С‚Рѕ РІС‹Р±СЂР°Р»Рё Global Coffee! РџСЂРёСЏС‚РЅРѕРіРѕ РґРЅСЏ.", kk: "Global Coffee-РґС– С‚Р°ТЈРґР°Т“Р°РЅС‹ТЈС‹Р·Т“Р° СЂР°Т›РјРµС‚! РљТЇРЅС–ТЈС–Р· СЃУ™С‚С‚С– У©С‚СЃС–РЅ.", en: "Thank you for choosing Global Coffee! Have a great day." },
+          timerLabel: { ru: "Р—Р°РєР°Р· Р·Р°РІРµСЂС€РµРЅ", kk: "РўР°РїСЃС‹СЂС‹СЃ Р°СЏТ›С‚Р°Р»РґС‹", en: "Order Completed" },
+          initialSeconds: 0,
+          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
+        }
+      ]
+    };
+
+    /* Full 3-Language Dictionaries */
     window.TRANSLATIONS = {
       ru: {
-        "header.change": "Изменить",
-        "header.delivery": "Доставка",
-        "header.pickup": "Самовывоз",
-        "header.customer_view": "Клиент",
-        "header.staff_view": "Сотрудник",
-        "header.orders": "Заказ",
-        "app_subtitle": "Specialty Bar & Coyote",
-        "nav.home": "Главная",
-        "nav.menu": "Меню",
-        "nav.orders": "Заказ",
-        "nav.bonuses": "Бонусы",
-        "nav.profile": "Профиль",
-        "home.greeting": "Доброе утро, Алекс",
-        "home.greeting_sub": "Свежеобжаренный спешелти кофе под заказ",
-        "home.your_points": "Ваши бонусы",
+        "intro.title": "GLOBAL COFFEE APP",
+        "intro.subtitle": "РџСЂРµРјРёР°Р»СЊРЅС‹Р№ СЃРїРµС€РµР»С‚Рё РєРѕС„Рµ СЃРІРµР¶РµР№ РѕР±Р¶Р°СЂРєРё Рё Р±С‹СЃС‚СЂР°СЏ РґРѕСЃС‚Р°РІРєР° РІ РђР»РјР°С‚С‹",
+        "intro.enter_btn": "Р’РѕР№С‚Рё РІ РїСЂРёР»РѕР¶РµРЅРёРµ",
+        "header.change": "РЎРјРµРЅРёС‚СЊ",
+        "header.delivery": "Р”РѕСЃС‚Р°РІРєР°",
+        "header.pickup": "РЎР°РјРѕРІС‹РІРѕР·",
+        "header.orders": "Р—Р°РєР°Р·",
+        "nav.home": "Р“Р»Р°РІРЅР°СЏ",
+        "nav.menu": "РњРµРЅСЋ",
+        "nav.orders": "Р—Р°РєР°Р·",
+        "nav.bonuses": "Р‘РѕРЅСѓСЃС‹",
+        "nav.profile": "РџСЂРѕС„РёР»СЊ",
+        "home.greeting": "Р”РѕР±СЂРѕРµ СѓС‚СЂРѕ, РђР»РµРєСЃ",
+        "home.greeting_sub": "РЎРІРµР¶РµРѕР±Р¶Р°СЂРµРЅРЅС‹Р№ СЃРїРµС€РµР»С‚Рё РєРѕС„Рµ РїРѕ РІР°С€РµРјСѓ РІРєСѓСЃСѓ",
+        "home.your_points": "Р’Р°С€Рё Р±РѕРЅСѓСЃС‹",
         "home.gold_barista": "Gold Barista",
-        "home.next_tier_progress": "Наберите 350 бонусов до статуса Platinum",
-        "home.banner_badge": "Осенний сезон",
-        "home.banner_title": "Ваш ежедневный кофе в одно касание",
-        "home.order_now": "Заказать сейчас",
-        "home.popular": "Популярный кофе",
-        "home.seasonal": "Новинки и хиты",
-        "home.see_all": "Все",
-        "home.explore": "Смотреть",
-        "menu.search_placeholder": "Поиск напитков, десертов, выпечки...",
-        "menu.cat_all": "Все",
-        "menu.cat_coffee": "Горячий кофе",
-        "menu.cat_iced": "Холодный кофе",
-        "menu.cat_tea": "Матча и Чай",
-        "menu.cat_lemonades": "Лимонады",
-        "menu.cat_desserts": "Выпечка и Десерты",
-        "menu.cat_snacks": "Закуски",
-        "customization.cup_size": "Размер напитка",
-        "customization.size_small": "Маленький (250 мл)",
-        "customization.size_medium": "Средний (350 мл)",
-        "customization.size_large": "Большой (450 мл)",
-        "customization.sugar": "Уровень сахара",
-        "customization.sugar_normal": "Стандартный",
-        "customization.sugar_less": "Меньше сахара",
-        "customization.sugar_no": "Без сахара",
-        "customization.milk": "Выбор молока",
-        "customization.milk_regular": "Обычное молоко",
-        "customization.milk_lactose_free": "Безлактозное молоко",
-        "customization.milk_oat": "Овсяное молоко (Barista)",
-        "customization.add_to_cart": "Добавить в корзину",
-        "cart.title": "Корзина и оформление",
-        "cart.delivery_mode": "Доставка (20-30 мин)",
-        "cart.pickup_mode": "Самовывоз (7-10 мин)",
-        "cart.delivery_address": "Адрес доставки",
-        "cart.select_on_map": "Выбрать на карте 2GIS",
-        "cart.apply_bonuses": "Списать бонусы",
-        "cart.available": "Доступно:",
-        "cart.subtotal": "Сумма заказа",
-        "cart.delivery_fee": "Стоимость доставки",
-        "cart.bonus_discount": "Скидка бонусами",
-        "cart.total": "Итого к оплате",
-        "cart.proceed_payment": "Перейти к оплате",
-        "payment.title": "Способ оплаты",
-        "payment.demo_notice": "Демо-режим прототипа. Реальные списания не производятся.",
-        "payment.card": "Банковская карта",
-        "payment.fast_pay": "Fast Pay",
-        "payment.cash": "Наличными",
-        "payment.final_amount": "Итоговая сумма:",
-        "payment.confirm_pay": "Подтвердить и оплатить",
-        "order_progress.delivery_flow": "Доставка",
-        "order_progress.pickup_flow": "Самовывоз",
-        "order_progress.stage_test_title": "Управление этапами для проверки",
-        "bonuses.your_points": "Ваши бонусы",
-        "bonuses.expires": "Действуют до 31 декабря 2026",
-        "bonuses.coupon_1000": "Купон на 1 000 ₸",
-        "bonuses.cashback_info": "10% кэшбэк на каждый заказ кофе",
-        "bonuses.success_title": "Бонусы успешно начислены!",
-        "bonuses.success_desc": "Спасибо за заказ в Global Coffee. Вам начислен кэшбэк.",
-        "bonuses.new_balance": "Новый баланс бонусов:",
-        "profile.order_history": "История заказов",
-        "profile.status_preparing": "Готовится",
-        "profile.track": "Трекинг",
-        "profile.audio_effects": "Звуковые эффекты наград",
-        "profile.reset_demo": "Сбросить демо-данные",
-        "ai_assistant.title": "Global Coffee AI Ассистент",
-        "ai_assistant.welcome": "Здравствуйте! Я AI-ассистент Global Coffee. Чем могу помочь? Могу подсказать статус заказа, рассказать о зерне или помочь выбрать напиток.",
-        "ai_assistant.quick_status": "Где мой кофе?",
-        "ai_assistant.quick_recommend": "Что посоветуешь?",
-        "ai_assistant.quick_oat": "Растительное молоко",
-        "ai_assistant.quick_bonuses": "Как работают бонусы?",
-        "ai_assistant.quick_delay": "Почему задержка?",
-        "staff.title": "Панель управления персоналом",
-        "staff.subtitle": "AI Мониторинг заказов и инцидентов доставки",
-        "staff.tab_monitoring": "AI Мониторинг",
-        "staff.tab_orders": "Активные заказы",
-        "staff.tab_thresholds": "Пороги SLA",
-        "staff.alert_warning": "Предупреждение",
-        "staff.alert_info": "Инфо",
-        "staff.action_recommendation": "Рекомендация AI:",
-        "staff.threshold_prep_time": "Максимальное время приготовления",
-        "staff.threshold_courier_assign": "Порог назначения курьера"
+        "home.next_tier_progress": "РќР°РєРѕРїРёС‚Рµ РµС‰Рµ 350 Р±РѕРЅСѓСЃРѕРІ РґРѕ Platinum",
+        "home.banner_badge": "РћСЃРµРЅРЅРёР№ СЂРµР»РёР·",
+        "home.banner_title": "Р’Р°С€ РєРѕС„Рµ РЅР° РєР°Р¶РґС‹Р№ РґРµРЅСЊ РІ РѕРґРЅРѕ РєР°СЃР°РЅРёРµ",
+        "home.order_now": "Р—Р°РєР°Р·Р°С‚СЊ СЃРµР№С‡Р°СЃ",
+        "home.popular": "РџРѕРїСѓР»СЏСЂРЅС‹Р№ РєРѕС„Рµ",
+        "home.seasonal": "РќРѕРІРёРЅРєРё СЃРµР·РѕРЅР°",
+        "home.see_all": "Р’СЃРµ",
+        "cart.delivery_mode": "Р”РѕСЃС‚Р°РІРєР° (20-30 РјРёРЅ)",
+        "cart.pickup_mode": "РЎР°РјРѕРІС‹РІРѕР· (7-10 РјРёРЅ)",
+        "order_empty.title": "РќРµС‚ Р°РєС‚РёРІРЅС‹С… Р·Р°РєР°Р·РѕРІ",
+        "order_empty.desc": "Р’С‹Р±РµСЂРёС‚Рµ Р»СЋР±РёРјС‹Р№ РЅР°РїРёС‚РѕРє РІ РјРµРЅСЋ Рё РѕС„РѕСЂРјРёС‚Рµ Р·Р°РєР°Р·. Р—РґРµСЃСЊ СЃСЂР°Р·Сѓ РїРѕСЏРІРёС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РїСЂРёРіРѕС‚РѕРІР»РµРЅРёСЏ Рё Р¶РёРІРѕР№ С‚СЂРµРєРёРЅРі РІ СЂРµР°Р»СЊРЅРѕРј РІСЂРµРјРµРЅРё.",
+        "order_empty.btn": "РџРµСЂРµР№С‚Рё РІ РјРµРЅСЋ",
+        "order_progress.delivery_flow": "Р”РѕСЃС‚Р°РІРєР°",
+        "order_progress.pickup_flow": "РЎР°РјРѕРІС‹РІРѕР·",
+        "order_progress.skip_stage": "Skip to next stage (РЎР»РµРґСѓСЋС‰РёР№ СЌС‚Р°Рї)",
+        "order_progress.pitch_desc": "Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ РїРѕР»РЅРѕРіРѕ С†РёРєР»Р° Р·Р°РєР°Р·Р°",
+        "bonuses.your_points": "Р’Р°С€Рё Р±РѕРЅСѓСЃС‹",
+        "bonuses.expires": "Р”РµР№СЃС‚РІСѓСЋС‚ РґРѕ 31 РґРµРєР°Р±СЂСЏ 2026",
+        "bonuses.success_title": "Р‘РѕРЅСѓСЃС‹ РЅР°С‡РёСЃР»РµРЅС‹!",
+        "bonuses.success_desc": "РЎРїР°СЃРёР±Рѕ Р·Р° Р·Р°РєР°Р· РІ Global Coffee. РљСЌС€Р±СЌРє СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ РІ РєРѕС€РµР»РµРє.",
+        "ai_assistant.title": "Global Coffee AI РљРѕРЅСЃСЊРµСЂР¶",
+        "ai_assistant.welcome": "Р—РґСЂР°РІСЃС‚РІСѓР№С‚Рµ! РЇ РІР°С€ AI-Р°СЃСЃРёСЃС‚РµРЅС‚ Global Coffee. Р’С‹ РјРѕР¶РµС‚Рµ СЃРїСЂРѕСЃРёС‚СЊ Рѕ РјРµРЅСЋ, РїСЂРѕРІРµСЂРёС‚СЊ СЃС‚Р°С‚СѓСЃ Р·Р°РєР°Р·Р° РёР»Рё Р·Р°РєР°Р·Р°С‚СЊ РєРѕС„Рµ РіРѕР»РѕСЃРѕРј!",
+        "ai_assistant.quick_status": "Р“РґРµ РјРѕР№ РєРѕС„Рµ?",
+        "ai_assistant.quick_recommend": "Р§С‚Рѕ РїРѕСЃРѕРІРµС‚СѓРµС€СЊ?",
+        "ai_assistant.quick_oat": "Р Р°СЃС‚РёС‚РµР»СЊРЅРѕРµ РјРѕР»РѕРєРѕ?",
+        "ai_assistant.quick_bonuses": "РљР°Рє СЂР°Р±РѕС‚Р°СЋС‚ Р±РѕРЅСѓСЃС‹?",
+        "ai_assistant.quick_delay": "РџРѕС‡РµРјСѓ Р·Р°РґРµСЂР¶РєР°?"
       },
       kk: {
-        "header.change": "Өзгерту",
-        "header.delivery": "Жеткізу",
-        "header.pickup": "Алып кету",
-        "header.customer_view": "Тұтынушы",
-        "header.staff_view": "Қызметкер",
-        "header.orders": "Тапсырыс",
-        "app_subtitle": "Specialty Bar & Coyote",
-        "nav.home": "Басты бет",
-        "nav.menu": "Мәзір",
-        "nav.orders": "Тапсырыс",
-        "nav.bonuses": "Бонустар",
-        "nav.profile": "Профиль",
-        "home.greeting": "Қайырлы таң, Алекс",
-        "home.greeting_sub": "Тапсырысқа сай жаңа қуырылған спешелти кофе",
-        "home.your_points": "Сіздің бонустарыңыз",
+        "intro.title": "GLOBAL COFFEE APP",
+        "intro.subtitle": "Р–Р°ТЈР° Т›СѓС‹СЂС‹Р»Т“Р°РЅ РїСЂРµРјРёСѓРј СЃРїРµС€РµР»С‚Рё РєРѕС„Рµ Р¶У™РЅРµ РђР»РјР°С‚С‹РґР° Р¶С‹Р»РґР°Рј Р¶РµС‚РєС–Р·Сѓ",
+        "intro.enter_btn": "ТљРѕСЃС‹РјС€Р°Т“Р° РєС–СЂСѓ",
+        "header.change": "УЁР·РіРµСЂС‚Сѓ",
+        "header.delivery": "Р–РµС‚РєС–Р·Сѓ",
+        "header.pickup": "РђР»С‹Рї РєРµС‚Сѓ",
+        "header.orders": "РўР°РїСЃС‹СЂС‹СЃ",
+        "nav.home": "Р‘Р°СЃС‚С‹",
+        "nav.menu": "РњУ™Р·С–СЂ",
+        "nav.orders": "РўР°РїСЃС‹СЂС‹СЃ",
+        "nav.bonuses": "Р‘РѕРЅСѓСЃС‚Р°СЂ",
+        "nav.profile": "РџСЂРѕС„РёР»СЊ",
+        "home.greeting": "ТљР°Р№С‹СЂР»С‹ С‚Р°ТЈ, РђР»РµРєСЃ",
+        "home.greeting_sub": "Р–Р°ТЈР° Т›СѓС‹СЂС‹Р»Т“Р°РЅ СЃРїРµС€РµР»С‚Рё РєРѕС„Рµ РґУ™РјС–",
+        "home.your_points": "РЎС–Р·РґС–ТЈ Т±РїР°Р№Р»Р°СЂС‹ТЈС‹Р·",
         "home.gold_barista": "Gold Barista",
-        "home.next_tier_progress": "Platinum деңгейіне жету үшін 350 бонус жинаңыз",
-        "home.banner_badge": "Күзгі маусым",
-        "home.banner_title": "Күнделікті кофеңіз бір ғана басу арқылы дайын",
-        "home.order_now": "Қазір тапсырыс беру",
-        "home.popular": "Танымал кофе",
-        "home.seasonal": "Жаңа өнімдер мен хиттер",
-        "home.see_all": "Барлығы",
-        "home.explore": "Қарау",
-        "menu.search_placeholder": "Сусындар, десерттер, тәттілерді іздеу...",
-        "menu.cat_all": "Барлығы",
-        "menu.cat_coffee": "Ыстық кофе",
-        "menu.cat_iced": "Салқын кофе",
-        "menu.cat_tea": "Матча және Шай",
-        "menu.cat_lemonades": "Лимонадтар",
-        "menu.cat_desserts": "Тәттілер мен Десерттер",
-        "menu.cat_snacks": "Тағамдар",
-        "customization.cup_size": "Сусын көлемі",
-        "customization.size_small": "Кіші (250 мл)",
-        "customization.size_medium": "Орташа (350 мл)",
-        "customization.size_large": "Үлкен (450 мл)",
-        "customization.sugar": "Қант мөлшері",
-        "customization.sugar_normal": "Қалыпты",
-        "customization.sugar_less": "Аз қант",
-        "customization.sugar_no": "Қантсыз",
-        "customization.milk": "Сүт таңдау",
-        "customization.milk_regular": "Қалыпты сүт",
-        "customization.milk_lactose_free": "Лактозасыз сүт",
-        "customization.milk_oat": "Сұлы сүті (Barista)",
-        "customization.add_to_cart": "Себетке қосу",
-        "cart.title": "Себет және рәсімдеу",
-        "cart.delivery_mode": "Жеткізу (20-30 мин)",
-        "cart.pickup_mode": "Алып кету (7-10 мин)",
-        "cart.delivery_address": "Жеткізу мекенжайы",
-        "cart.select_on_map": "2GIS картасынан таңдау",
-        "cart.apply_bonuses": "Бонустарды қолдану",
-        "cart.available": "Қолжетімді:",
-        "cart.subtotal": "Тапсырыс сомасы",
-        "cart.delivery_fee": "Жеткізу құны",
-        "cart.bonus_discount": "Бонус жеңілдігі",
-        "cart.total": "Барлығы төлеуге",
-        "cart.proceed_payment": "Төлемге өту",
-        "payment.title": "Төлем тәсілі",
-        "payment.demo_notice": "Прототиптің демо-режимі. Нақты қаражат ұсталмайды.",
-        "payment.card": "Банк картасы",
-        "payment.fast_pay": "Fast Pay",
-        "payment.cash": "Қолма-қол",
-        "payment.final_amount": "Төленетін сома:",
-        "payment.confirm_pay": "Растау және төлеу",
-        "order_progress.delivery_flow": "Жеткізу",
-        "order_progress.pickup_flow": "Алып кету",
-        "order_progress.stage_test_title": "Тексеру үшін кезеңдерді ауыстыру",
-        "bonuses.your_points": "Сіздің бонустарыңыз",
-        "bonuses.expires": "2026 жылғы 31 желтоқсанға дейін жарамды",
-        "bonuses.coupon_1000": "1 000 ₸ купон",
-        "bonuses.cashback_info": "Әрбір кофе тапсырысына 10% кэшбэк",
-        "bonuses.success_title": "Бонустар сәтті қосылды!",
-        "bonuses.success_desc": "Global Coffee-де тапсырыс бергеніңізге рақмет. Кэшбэк берілді.",
-        "bonuses.new_balance": "Жаңа бонус балансы:",
-        "profile.order_history": "Тапсырыстар тарихы",
-        "profile.status_preparing": "Дайындалуда",
-        "profile.track": "Бақылау",
-        "profile.audio_effects": "Дыбыстық марапат эффектілері",
-        "profile.reset_demo": "Демо деректерді қалпына келтіру",
-        "ai_assistant.title": "Global Coffee AI Көмекшісі",
-        "ai_assistant.welcome": "Сәлеметсіз бе! Мен Global Coffee AI көмекшісімін. Қалай көмектесе аламын? Тапсырыс күйін анықтауға, дәмді кофе таңдауға көмектесе аламын.",
-        "ai_assistant.quick_status": "Менің кофем қайда?",
-        "ai_assistant.quick_recommend": "Нені ұсынасыз?",
-        "ai_assistant.quick_oat": "Өсімдік сүті",
-        "ai_assistant.quick_bonuses": "Бонустар қалай жұмыс істейді?",
-        "ai_assistant.quick_delay": "Неге кідіріс болып жатыр?",
-        "staff.title": "Қызметкерлерді басқару тақтасы",
-        "staff.subtitle": "AI Тапсырыстар мен жеткізу инциденттерін бақылау",
-        "staff.tab_monitoring": "AI Мониторинг",
-        "staff.tab_orders": "Белсенді тапсырыстар",
-        "staff.tab_thresholds": "SLA шектері",
-        "staff.alert_warning": "Ескерту",
-        "staff.alert_info": "Ақпарат",
-        "staff.action_recommendation": "AI ұсынысы:",
-        "staff.threshold_prep_time": "Дайындаудың шекті уақыты",
-        "staff.threshold_courier_assign": "Курьер тағайындау шегі"
+        "home.next_tier_progress": "Platinum РґРµТЈРіРµР№С–РЅРµ Р¶РµС‚Сѓ ТЇС€С–РЅ С‚Р°Т“С‹ 350 Т±РїР°Р№ Р¶РёРЅР°ТЈС‹Р·",
+        "home.banner_badge": "РљТЇР·РіС– Т±СЃС‹РЅС‹СЃ",
+        "home.banner_title": "РљТЇРЅРґРµР»С–РєС‚С– РєРѕС„РµТЈС–Р· Р±С–СЂ С‚ТЇСЂС‚СѓРґРµ РґР°Р№С‹РЅ",
+        "home.order_now": "ТљР°Р·С–СЂ С‚Р°РїСЃС‹СЂС‹СЃ Р±РµСЂСѓ",
+        "home.popular": "РўР°РЅС‹РјР°Р» РєРѕС„Рµ",
+        "home.seasonal": "РњР°СѓСЃС‹Рј Р¶Р°ТЈР°Р»С‹Т›С‚Р°СЂС‹",
+        "home.see_all": "Р‘Р°СЂР»С‹Т“С‹",
+        "cart.delivery_mode": "Р–РµС‚РєС–Р·Сѓ (20-30 РјРёРЅ)",
+        "cart.pickup_mode": "РђР»С‹Рї РєРµС‚Сѓ (7-10 РјРёРЅ)",
+        "order_empty.title": "Р‘РµР»СЃРµРЅРґС– С‚Р°РїСЃС‹СЂС‹СЃС‚Р°СЂ Р¶РѕТ›",
+        "order_empty.desc": "РњУ™Р·С–СЂРґРµРЅ СЃТЇР№С–РєС‚С– СЃСѓСЃС‹РЅС‹ТЈС‹Р·РґС‹ С‚Р°ТЈРґР°Рї, С‚Р°РїСЃС‹СЂС‹СЃ Р±РµСЂС–ТЈС–Р·. РњТ±РЅРґР° РЅР°Т›С‚С‹ СѓР°Т›С‹С‚С‚Р°Т“С‹ РґР°Р№С‹РЅРґР°Р»Сѓ Р±Р°СЂС‹СЃС‹ РјРµРЅ С‚СЂРµРєРёРЅРі РєУ©СЂСЃРµС‚С–Р»РµРґС–.",
+        "order_empty.btn": "РњУ™Р·С–СЂРіРµ У©С‚Сѓ",
+        "order_progress.delivery_flow": "Р–РµС‚РєС–Р·Сѓ",
+        "order_progress.pickup_flow": "РђР»С‹Рї РєРµС‚Сѓ",
+        "order_progress.skip_stage": "РљРµР»РµСЃС– РєРµР·РµТЈРіРµ У©С‚Сѓ (Skip)",
+        "order_progress.pitch_desc": "РўР°РїСЃС‹СЂС‹СЃС‚С‹ТЈ С‚РѕР»С‹Т› С†РёРєР»С–РЅ РєУ©СЂСЃРµС‚Сѓ",
+        "bonuses.your_points": "РЎС–Р·РґС–ТЈ Р±РѕРЅСѓСЃС‚Р°СЂС‹ТЈС‹Р·",
+        "bonuses.expires": "2026 Р¶С‹Р»Т“С‹ 31 Р¶РµР»С‚РѕТ›СЃР°РЅТ“Р° РґРµР№С–РЅ Р¶Р°СЂР°РјРґС‹",
+        "bonuses.success_title": "Р‘РѕРЅСѓСЃС‚Р°СЂ РµСЃРµРїС‚РµР»РґС–!",
+        "bonuses.success_desc": "Global Coffee-РіРµ С‚Р°РїСЃС‹СЂС‹СЃ Р±РµСЂРіРµРЅС–ТЈС–Р·РіРµ СЂР°Т›РјРµС‚. РљСЌС€Р±СЌРє СЃУ™С‚С‚С– Т›РѕСЃС‹Р»РґС‹.",
+        "ai_assistant.title": "Global Coffee AI РљУ©РјРµРєС€С–СЃС–",
+        "ai_assistant.welcome": "РЎУ™Р»РµРјРµС‚СЃС–Р· Р±Рµ! РњРµРЅ Global Coffee AI РєУ©РјРµРєС€С–СЃС–РјС–РЅ. РњУ™Р·С–СЂ С‚СѓСЂР°Р»С‹ СЃТ±СЂР°Р№ Р°Р»Р°СЃС‹Р·, С‚Р°РїСЃС‹СЂС‹СЃС‹ТЈС‹Р·РґС‹ С‚РµРєСЃРµСЂРµ Р°Р»Р°СЃС‹Р· РЅРµРјРµСЃРµ РґР°СѓС‹СЃРїРµРЅ РєРѕС„РµРіРµ С‚Р°РїСЃС‹СЂС‹СЃ Р±РµСЂРµ Р°Р»Р°СЃС‹Р·!",
+        "ai_assistant.quick_status": "РњРµРЅС–ТЈ РєРѕС„РµРј Т›Р°Р№РґР°?",
+        "ai_assistant.quick_recommend": "РќРµРЅС– Т±СЃС‹РЅР°СЃС‹Р·?",
+        "ai_assistant.quick_oat": "УЁСЃС–РјРґС–Рє СЃТЇС‚С– Р±Р°СЂ РјР°?",
+        "ai_assistant.quick_bonuses": "Р‘РѕРЅСѓСЃС‚Р°СЂ Т›Р°Р»Р°Р№ С–СЃС‚РµР№РґС–?",
+        "ai_assistant.quick_delay": "РќРµРіРµ РєС–РґС–СЂС–СЃ Р±РѕР»С‹Рї Р¶Р°С‚С‹СЂ?"
       },
       en: {
+        "intro.title": "GLOBAL COFFEE APP",
+        "intro.subtitle": "Premium specialty coffee freshly roasted with fast delivery in Almaty",
+        "intro.enter_btn": "Enter Application",
         "header.change": "Change",
         "header.delivery": "Delivery",
         "header.pickup": "Pickup",
-        "header.customer_view": "Customer",
-        "header.staff_view": "Staff",
         "header.orders": "Order",
-        "app_subtitle": "Specialty Bar & Coyote",
         "nav.home": "Home",
         "nav.menu": "Menu",
         "nav.orders": "Orders",
@@ -2593,375 +2968,61 @@
         "home.popular": "Popular Coffee",
         "home.seasonal": "Bestsellers & New",
         "home.see_all": "See all",
-        "home.explore": "Explore",
-        "menu.search_placeholder": "Search coffee, tea, bakery...",
-        "menu.cat_all": "All",
-        "menu.cat_coffee": "Hot Coffee",
-        "menu.cat_iced": "Cold Coffee",
-        "menu.cat_tea": "Matcha & Tea",
-        "menu.cat_lemonades": "Lemonades",
-        "menu.cat_desserts": "Bakery & Sweets",
-        "menu.cat_snacks": "Snacks",
-        "customization.cup_size": "Cup Size",
-        "customization.size_small": "Small (250 ml)",
-        "customization.size_medium": "Medium (350 ml)",
-        "customization.size_large": "Large (450 ml)",
-        "customization.sugar": "Sugar",
-        "customization.sugar_normal": "Normal",
-        "customization.sugar_less": "Less sugar",
-        "customization.sugar_no": "No sugar",
-        "customization.milk": "Milk options",
-        "customization.milk_regular": "Regular milk",
-        "customization.milk_lactose_free": "Lactose-free milk",
-        "customization.milk_oat": "Oat milk (Barista)",
-        "customization.add_to_cart": "Add To Cart",
-        "cart.title": "Cart & Checkout",
         "cart.delivery_mode": "Delivery (20-30m)",
         "cart.pickup_mode": "Pickup (7-10m)",
-        "cart.delivery_address": "Delivery Address",
-        "cart.select_on_map": "Select on 2GIS map",
-        "cart.apply_bonuses": "Apply Bonus Balance",
-        "cart.available": "Available:",
-        "cart.subtotal": "Subtotal",
-        "cart.delivery_fee": "Delivery Fee",
-        "cart.bonus_discount": "Bonus Discount",
-        "cart.total": "Total",
-        "cart.proceed_payment": "Proceed To Payment",
-        "payment.title": "Payment Method",
-        "payment.demo_notice": "Demo mode simulation. No real financial transaction will take place.",
-        "payment.card": "Bank Card",
-        "payment.fast_pay": "Fast Pay",
-        "payment.cash": "Cash",
-        "payment.final_amount": "Final Payment Amount:",
-        "payment.confirm_pay": "Confirm & Pay",
+        "order_empty.title": "No Active Orders",
+        "order_empty.desc": "Choose your favorite coffee from the menu and place an order. Real-time preparation progress and live tracking will appear here.",
+        "order_empty.btn": "Explore Menu",
         "order_progress.delivery_flow": "Delivery",
         "order_progress.pickup_flow": "Pickup",
-        "order_progress.stage_test_title": "Interactive Stage Control (Testing)",
+        "order_progress.skip_stage": "Skip to next stage",
+        "order_progress.pitch_desc": "Demonstrate complete order journey",
         "bonuses.your_points": "Your Points",
         "bonuses.expires": "Expires on December 31, 2026",
-        "bonuses.coupon_1000": "1 000 ₸ off coupon",
-        "bonuses.cashback_info": "10% cashback points on every coffee order",
-        "bonuses.success_title": "Bonuses successfully added!",
-        "bonuses.success_desc": "Thank you for ordering with Global Coffee. Cashback credited.",
-        "bonuses.new_balance": "New bonus balance:",
-        "profile.order_history": "Order History",
-        "profile.status_preparing": "Preparing",
-        "profile.track": "Track",
-        "profile.audio_effects": "Reward Audio Effects",
-        "profile.reset_demo": "Reset Prototype Data",
+        "bonuses.success_title": "Bonuses credited!",
+        "bonuses.success_desc": "Thank you for ordering with Global Coffee. Cashback added.",
         "ai_assistant.title": "Global Coffee AI Concierge",
-        "ai_assistant.welcome": "Hello! I am your Global Coffee AI Concierge. How can I help? I can provide live order status, explain roast profiles, or recommend customized drinks.",
+        "ai_assistant.welcome": "Hello! I am your Global Coffee AI Concierge. Ask me about the menu, check order status, or order via voice!",
         "ai_assistant.quick_status": "Where is my coffee?",
         "ai_assistant.quick_recommend": "Recommend a drink",
-        "ai_assistant.quick_oat": "Plant milk options",
+        "ai_assistant.quick_oat": "Plant milk options?",
         "ai_assistant.quick_bonuses": "How do bonuses work?",
-        "ai_assistant.quick_delay": "Why is there a delay?",
-        "staff.title": "Staff Operations Hub",
-        "staff.subtitle": "AI Delivery Monitoring & Incident Alert Center",
-        "staff.tab_monitoring": "AI Monitoring",
-        "staff.tab_orders": "Active Orders",
-        "staff.tab_thresholds": "SLA Thresholds",
-        "staff.alert_warning": "Warning",
-        "staff.alert_info": "Info",
-        "staff.action_recommendation": "AI Recommendation:",
-        "staff.threshold_prep_time": "Max Preparation Time",
-        "staff.threshold_courier_assign": "Courier Assignment Threshold"
+        "ai_assistant.quick_delay": "Why is there a delay?"
       }
-    };
-
-    /* ==========================================================================
-       DATA CATALOG
-       ========================================================================== */
-    const BRANCHES = [
-      {
-        id: 'branch-1',
-        name: 'Global Coffee — Downtown Flagship',
-        address: 'Abylai Khan Ave 14, Almaty',
-        distance: '0.4 km',
-        hours: '07:30 - 23:00',
-        rating: 4.9,
-        lat: 43.2551,
-        lng: 76.9426
-      },
-      {
-        id: 'branch-2',
-        name: 'Global Coffee — Business Center Dostyk',
-        address: 'Dostyk Ave 42, Financial Tower',
-        distance: '1.2 km',
-        hours: '08:00 - 22:00',
-        rating: 4.8,
-        lat: 43.2425,
-        lng: 76.9560
-      },
-      {
-        id: 'branch-3',
-        name: 'Global Coffee — Green Quarter Park',
-        address: 'Mangilik El Ave 88, Promenade',
-        distance: '2.7 km',
-        hours: '08:00 - 23:00',
-        rating: 4.9,
-        lat: 43.2280,
-        lng: 76.9310
-      },
-      {
-        id: 'branch-4',
-        name: 'Global Coffee — Mega Silk Way West',
-        address: 'Kabanbay Batyr Ave, West Wing',
-        distance: '3.8 km',
-        hours: '09:00 - 22:00',
-        rating: 4.7,
-        lat: 43.2195,
-        lng: 76.9050
-      }
-    ];
-
-    const PRODUCTS = [
-      {
-        id: 'p-flat-white',
-        category: 'coffee',
-        name: 'Specialty Flat White',
-        desc: 'Double shot of velvety espresso layered with silky microfoam milk.',
-        price: 1850,
-        calories: '160 kcal • 250ml',
-        badge: 'Bestseller',
-        rating: '4.9 (420)',
-        image: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=500&q=80',
-        popular: true,
-        seasonal: false
-      },
-      {
-        id: 'p-caramel-latte',
-        category: 'coffee',
-        name: 'Salted Caramel Latte',
-        desc: 'Espresso with steamed milk, artisanal salted caramel syrup and sea salt.',
-        price: 2100,
-        calories: '240 kcal • 350ml',
-        badge: 'Seasonal',
-        rating: '4.9 (680)',
-        image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=500&q=80',
-        popular: true,
-        seasonal: true
-      },
-      {
-        id: 'p-cappuccino',
-        category: 'coffee',
-        name: 'Velvet Cappuccino',
-        desc: 'Rich dark espresso topped with deep aerated milk foam and cocoa dust.',
-        price: 1750,
-        calories: '140 kcal • 300ml',
-        badge: 'Classic',
-        rating: '4.8 (310)',
-        image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=500&q=80',
-        popular: true,
-        seasonal: false
-      },
-      {
-        id: 'p-spanish-latte',
-        category: 'coffee',
-        name: 'Spanish Latte',
-        desc: 'Sweet condensed milk blended with double espresso and velvety steamed milk.',
-        price: 2000,
-        calories: '280 kcal • 350ml',
-        badge: 'Popular',
-        rating: '4.8 (290)',
-        image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80',
-        popular: true,
-        seasonal: false
-      },
-      {
-        id: 'p-cold-brew',
-        category: 'iced',
-        name: 'Iced Salted Caramel Cold Brew',
-        desc: 'Slow-steeped 20-hour cold brew layered with sweet salted caramel cream cap.',
-        price: 2150,
-        calories: '190 kcal • 450ml',
-        badge: 'Nitro',
-        rating: '4.9 (530)',
-        image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=500&q=80',
-        popular: true,
-        seasonal: true
-      },
-      {
-        id: 'p-iced-vanilla-oat',
-        category: 'iced',
-        name: 'Iced Vanilla Oat Latte',
-        desc: 'Barista oat milk, double espresso, pure Madagascar vanilla over crystalline ice.',
-        price: 2250,
-        calories: '210 kcal • 400ml',
-        badge: 'Plant Based',
-        rating: '4.8 (340)',
-        image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=80',
-        popular: true,
-        seasonal: false
-      },
-      {
-        id: 'p-matcha-latte',
-        category: 'tea',
-        name: 'Ceremonial Matcha Latte',
-        desc: 'Grade-A Japanese ceremonial matcha whisked with warm oat milk and agave.',
-        price: 2200,
-        calories: '170 kcal • 350ml',
-        badge: 'Organic',
-        rating: '4.9 (410)',
-        image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=500&q=80',
-        popular: true,
-        seasonal: false
-      },
-      {
-        id: 'p-butter-croissant',
-        category: 'desserts',
-        name: 'Artisanal Butter Croissant',
-        desc: 'Flaky 72-layer golden pastry baked fresh daily with European butter.',
-        price: 1350,
-        calories: '260 kcal • 80g',
-        badge: 'Fresh',
-        rating: '4.9 (780)',
-        image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=500&q=80',
-        popular: true,
-        seasonal: false
-      },
-      {
-        id: 'p-basque-cheesecake',
-        category: 'desserts',
-        name: 'San Sebastian Cheesecake',
-        desc: 'Creamy caramelised crust with molten vanilla bean center.',
-        price: 2250,
-        calories: '380 kcal • 140g',
-        badge: 'Signature',
-        rating: '4.9 (610)',
-        image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=500&q=80',
-        popular: false,
-        seasonal: true
-      }
-    ];
-
-    /* Dynamic Sequential Stage Definitions (Adaptive to Fulfillment) */
-    const STAGE_DEFINITIONS = {
-      delivery: [
-        {
-          num: 1,
-          title: { ru: "Заказ подтвержден", kk: "Тапсырыс расталды", en: "Order Confirmed" },
-          desc: { ru: "Заказ успешно принят и передан бариста кофейни.", kk: "Тапсырыс сәтті қабылданып, баристаға берілді.", en: "Your order has been accepted and dispatched to the baristas." },
-          timerLabel: { ru: "Расчетное время готовности", kk: "Дайын болудың болжамды уақыты", en: "Estimated Readiness" },
-          initialSeconds: 15 * 60,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
-        },
-        {
-          num: 2,
-          title: { ru: "Приготовление напитков", kk: "Сусындарды дайындау", en: "Preparing Your Coffee" },
-          desc: { ru: "Бариста перемалывает зерно арабики и взбивает шелковистую пенку.", kk: "Бариста арабика дәнін үгітіп, жібектей сүт көпіршігін дайындауда.", en: "Barista is grinding specialty beans and frothing silky microfoam." },
-          timerLabel: { ru: "Осталось времени приготовления", kk: "Дайындаудың қалған уақыты", en: "Preparation time remaining" },
-          initialSeconds: 8 * 60 + 45,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>'
-        },
-        {
-          num: 3,
-          title: { ru: "Контроль качества и упаковка", kk: "Сапаны тексеру және орау", en: "Quality Check & Packing" },
-          desc: { ru: "Проверка комплектации, температуры и герметичная упаковка.", kk: "Құрамы, температурасы тексеріліп, сенімді оралуда.", en: "Checking temperature, aroma, and packaging securely." },
-          timerLabel: { ru: "Время до передачи курьеру", kk: "Курьерге берілгенге дейінгі уақыт", en: "Packaging completion time" },
-          initialSeconds: 2 * 60 + 30,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 11 14 15 10"/></svg>'
-        },
-        {
-          num: 4,
-          title: { ru: "Курьер назначен", kk: "Курьер тағайындалды", en: "Courier Assigned" },
-          desc: { ru: "Курьер прибыл в кофейню и принимает ваш заказ.", kk: "Курьер кофеханаға жетіп, тапсырысты қабылдап жатыр.", en: "Courier has arrived at the branch and collected your package." },
-          timerLabel: { ru: "Курьер забирает заказ", kk: "Курьер тапсырысты алып жатыр", en: "Courier collection time" },
-          initialSeconds: 1 * 60 + 50,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>'
-        },
-        {
-          num: 5,
-          title: { ru: "Курьер в пути", kk: "Курьер жолда келеді", en: "On the Way" },
-          desc: { ru: "Курьер везет заказ по безопасному маршруту 2GIS.", kk: "Курьер 2GIS қауіпсіз бағыты бойынша жол тартып келеді.", en: "Courier is heading to your address via live 2GIS navigation." },
-          timerLabel: { ru: "Расчетное время прибытия курьера", kk: "Курьердің келуіне дейінгі уақыт", en: "Estimated courier arrival" },
-          initialSeconds: 6 * 60 + 15,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.5V14l-3-3 4-3 2 3h2"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/></svg>'
-        },
-        {
-          num: 6,
-          title: { ru: "Заказ доставлен", kk: "Тапсырыс жеткізілді", en: "Order Delivered" },
-          desc: { ru: "Курьер прибыл по указанному адресу. Приятного кофе!", kk: "Курьер көрсетілген мекенжайға жетті. Асыңыз дәмді болсын!", en: "Courier has arrived at your address. Enjoy your coffee!" },
-          timerLabel: { ru: "Заказ завершен", kk: "Тапсырыс аяқталды", en: "Order Arrived" },
-          initialSeconds: 0,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
-        }
-      ],
-      pickup: [
-        {
-          num: 1,
-          title: { ru: "Заказ подтвержден", kk: "Тапсырыс расталды", en: "Order Confirmed" },
-          desc: { ru: "Заказ успешно принят и передан бариста кофейни.", kk: "Тапсырыс сәтті қабылданып, баристаға берілді.", en: "Your order has been accepted and dispatched to the baristas." },
-          timerLabel: { ru: "Расчетное время готовности", kk: "Дайын болудың болжамды уақыты", en: "Estimated Readiness" },
-          initialSeconds: 10 * 60,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
-        },
-        {
-          num: 2,
-          title: { ru: "Приготовление напитков", kk: "Сусындарды дайындау", en: "Preparing Your Coffee" },
-          desc: { ru: "Бариста перемалывает зерно арабики и готовит заказ.", kk: "Бариста арабика дәнін үгітіп, тапсырысты дайындауда.", en: "Barista is grinding specialty beans and brewing your coffee." },
-          timerLabel: { ru: "Осталось времени приготовления", kk: "Дайындаудың қалған уақыты", en: "Preparation time remaining" },
-          initialSeconds: 6 * 60 + 30,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>'
-        },
-        {
-          num: 3,
-          title: { ru: "Контроль качества и упаковка", kk: "Сапаны тексеру және орау", en: "Quality Check & Packing" },
-          desc: { ru: "Проверка комплектации для удобной выдачи навынос.", kk: "Алып кетуге ыңғайлы етіп жинақталуда.", en: "Checking quality and packaging securely for takeaway." },
-          timerLabel: { ru: "Упаковка заказа", kk: "Тапсырысты орау", en: "Packaging time" },
-          initialSeconds: 1 * 60 + 30,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 11 14 15 10"/></svg>'
-        },
-        {
-          num: 4,
-          title: { ru: "Готов к выдаче", kk: "Алып кетуге дайын", en: "Ready for Pickup" },
-          desc: { ru: "Ваш заказ ждет вас на стойке выдачи кофейни.", kk: "Тапсырысыңыз кофехананың беру сөресінде дайын тұр.", en: "Your drink is waiting for you at the pickup counter." },
-          timerLabel: { ru: "Ожидает на кассе", kk: "Кассада күтіп тұр", en: "Ready at counter" },
-          initialSeconds: 0,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>'
-        },
-        {
-          num: 5,
-          title: { ru: "Заказ получен", kk: "Тапсырыс алынды", en: "Order Collected" },
-          desc: { ru: "Спасибо, что выбрали Global Coffee! Приятного дня.", kk: "Global Coffee-ді таңдағаныңызға рақмет! Күніңіз сәтті өтсін.", en: "Thank you for choosing Global Coffee! Have a great day." },
-          timerLabel: { ru: "Заказ завершен", kk: "Тапсырыс аяқталды", en: "Order Completed" },
-          initialSeconds: 0,
-          icon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'
-        }
-      ]
     };
 
     /* Unified State */
     const State = {
       lang: 'ru',
-      role: 'customer', // 'customer' or 'staff'
       branch: null,
       cart: [],
-      orderFulfillment: 'delivery', // 'delivery' or 'pickup'
+      orderFulfillment: 'delivery',
       bonusBalance: 1500,
-      activeOrder: {
-        id: '#GC-89421',
-        stage: 2,
-        fulfillment: 'delivery',
-        courier: 'Daniyar K.',
-        total: 3950,
-        isDelayed: false,
-        secondsLeft: 8 * 60 + 45
-      },
-      favorites: ['p-flat-white', 'p-caramel-latte'],
+      activeOrder: null, // Strictly null until real confirmed payment!
+      pendingVoiceOrder: null,
+      voiceAudioEnabled: true,
       sound: true,
-      autoTracking: false,
-      autoTrackingTimer: null,
       countdownTimer: null
     };
 
     function formatTenge(amount) {
-      return Number(amount).toLocaleString('ru-RU') + ' ₸';
+      return Number(amount).toLocaleString('ru-RU') + ' в‚ё';
     }
 
-    /* ==========================================================================
-       THREE-LANGUAGE TRANSLATION ENGINE
-       ========================================================================== */
+    /* Intro Welcome Screen Handlers */
+    function dismissIntroScreen() {
+      const el = document.getElementById('intro-welcome-screen');
+      if (el) el.classList.add('dismissed');
+      sessionStorage.setItem('gc_intro_dismissed', 'true');
+    }
+
+    function showIntroScreen() {
+      const el = document.getElementById('intro-welcome-screen');
+      if (el) el.classList.remove('dismissed');
+      sessionStorage.removeItem('gc_intro_dismissed');
+    }
+
+    /* Three-Language Switcher */
     function switchLanguage(langCode) {
       if (!window.TRANSLATIONS[langCode]) return;
       State.lang = langCode;
@@ -2971,7 +3032,6 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang') === langCode);
       });
 
-      // Update static DOM elements bound with data-i18n
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         const translated = window.TRANSLATIONS[langCode][key];
@@ -2980,7 +3040,6 @@
         }
       });
 
-      // Re-render dynamic components
       renderActiveStageScreen();
       renderCartList();
       calculateCartTotals();
@@ -2988,24 +3047,6 @@
       updateBranchHeader();
       renderShelves();
       renderMenuGrid(PRODUCTS);
-    }
-
-    /* ==========================================================================
-       ROLE SWITCHER (CUSTOMER ⇄ STAFF DASHBOARD)
-       ========================================================================== */
-    function toggleStaffPortal() {
-      if (State.role === 'customer') {
-        State.role = 'staff';
-        document.getElementById('role-switch-btn').classList.add('staff-active');
-        document.getElementById('role-btn-label').innerText = State.lang === 'ru' ? 'Клиент' : (State.lang === 'kk' ? 'Тұтынушы' : 'Customer');
-        navTo('staff');
-        showToast('Вход в панель управления персоналом и AI мониторинга');
-      } else {
-        State.role = 'customer';
-        document.getElementById('role-switch-btn').classList.remove('staff-active');
-        document.getElementById('role-btn-label').innerText = 'Staff Hub';
-        navTo('home');
-      }
     }
 
     /* Tab Navigation */
@@ -3027,48 +3068,78 @@
       }
     }
 
-    /* ==========================================================================
-       DYNAMIC SEQUENTIAL ORDER PROGRESS & FULL-SCREEN PREPARATION TIMER ENGINE
-       ========================================================================== */
+    /* Storage persistence for active order */
+    function saveActiveOrder() {
+      if (State.activeOrder) {
+        localStorage.setItem('gc_active_order', JSON.stringify(State.activeOrder));
+      } else {
+        localStorage.removeItem('gc_active_order');
+      }
+    }
+
+    function loadActiveOrderFromStorage() {
+      try {
+        const raw = localStorage.getItem('gc_active_order');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.id && parsed.startTime) {
+            const elapsed = Math.floor((Date.now() - parsed.startTime) / 1000);
+            parsed.secondsLeft = Math.max(0, parsed.totalSeconds - elapsed);
+            if (parsed.secondsLeft === 0 && parsed.stage === 1) {
+              parsed.isDelayed = true;
+            }
+            State.activeOrder = parsed;
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Error reading stored order:', e);
+      }
+      State.activeOrder = null;
+    }
+
+    /* Dynamic Sequential Order Progress (No Numbers) */
     function getActiveStages() {
+      if (!State.activeOrder) return STAGE_DEFINITIONS.delivery;
       return State.activeOrder.fulfillment === 'pickup' ? STAGE_DEFINITIONS.pickup : STAGE_DEFINITIONS.delivery;
     }
 
     function renderActiveStageScreen() {
+      const emptyCard = document.getElementById('order-empty-state');
+      const activeContent = document.getElementById('order-active-content');
+
+      // Before order payment confirmation, NO order preparation timer runs
+      if (!State.activeOrder) {
+        if (emptyCard) emptyCard.style.display = 'flex';
+        if (activeContent) activeContent.style.display = 'none';
+        clearInterval(State.countdownTimer);
+        return;
+      }
+
+      if (emptyCard) emptyCard.style.display = 'none';
+      if (activeContent) activeContent.style.display = 'block';
+
       const stages = getActiveStages();
-      const currentStageNum = State.activeOrder.stage;
-      const stageObj = stages.find(s => s.num === currentStageNum) || stages[0];
+      const currentStageNum = Math.min(State.activeOrder.stage, stages.length);
+      const stageObj = stages[currentStageNum - 1] || stages[0];
       const maxStages = stages.length;
 
-      // Update Header Text & Badge
+      // Metadata Bar
       document.getElementById('track-order-code').innerText = State.activeOrder.id;
       const isPickup = State.activeOrder.fulfillment === 'pickup';
       const fulfillmentText = isPickup 
-        ? (State.lang === 'ru' ? 'Самовывоз' : (State.lang === 'kk' ? 'Алып кету' : 'Pickup'))
-        : (State.lang === 'ru' ? 'Доставка' : (State.lang === 'kk' ? 'Жеткізу' : 'Delivery'));
+        ? (State.lang === 'ru' ? 'РЎР°РјРѕРІС‹РІРѕР·' : (State.lang === 'kk' ? 'РђР»С‹Рї РєРµС‚Сѓ' : 'Pickup'))
+        : (State.lang === 'ru' ? 'Р”РѕСЃС‚Р°РІРєР°' : (State.lang === 'kk' ? 'Р–РµС‚РєС–Р·Сѓ' : 'Delivery'));
       document.getElementById('track-fulfillment-text').innerText = fulfillmentText;
 
-      // Update Stepper Progress
-      document.getElementById('stepper-step-indicator').innerText = State.lang === 'ru' 
-        ? `Этап ${currentStageNum} из ${maxStages}` 
-        : (State.lang === 'kk' ? `${maxStages} кезеңнен ${currentStageNum}-кезең` : `Stage ${currentStageNum} of ${maxStages}`);
-      
+      // Smooth Progress Bar (No Numbers)
       const pct = Math.round((currentStageNum / maxStages) * 100);
-      document.getElementById('stepper-percentage-text').innerText = `${pct}%`;
+      const fillBar = document.getElementById('stepper-progress-fill');
+      if (fillBar) fillBar.style.width = `${pct}%`;
 
-      // Render Segmented Progress Track
-      const segContainer = document.getElementById('stepper-segments-container');
-      if (segContainer) {
-        segContainer.innerHTML = stages.map(s => {
-          let cls = 'stepper-segment';
-          if (s.num < currentStageNum) cls += ' completed';
-          else if (s.num === currentStageNum) cls += ' active';
-          return `<div class="${cls}"></div>`;
-        }).join('');
-      }
-
-      // Update Stage Focus Card
+      // Update Main Focused Stage Card
       document.getElementById('stage-focus-title').innerText = stageObj.title[State.lang] || stageObj.title.ru;
+      document.getElementById('stage-focus-subtitle').innerText = stageObj.subtitle[State.lang] || stageObj.subtitle.ru;
       document.getElementById('stage-focus-desc').innerText = stageObj.desc[State.lang] || stageObj.desc.ru;
       document.getElementById('stage-icon-circle').innerHTML = stageObj.icon;
       document.getElementById('timer-title-label').innerText = stageObj.timerLabel[State.lang] || stageObj.timerLabel.ru;
@@ -3080,9 +3151,9 @@
       const completeBtn = document.getElementById('order-complete-trigger-btn');
       const timerHero = document.getElementById('timer-hero-box');
 
-      courierWidget.classList.toggle('active', !isPickup && currentStageNum === 4);
-      pickupWidget.classList.toggle('active', isPickup && currentStageNum === 4);
-      mapWidget.classList.toggle('active', !isPickup && currentStageNum === 5);
+      courierWidget.classList.toggle('active', !isPickup && currentStageNum === 3);
+      pickupWidget.classList.toggle('active', isPickup && currentStageNum === 3);
+      mapWidget.classList.toggle('active', !isPickup && currentStageNum === 4);
 
       // Final Stage Actions
       const isFinalStage = currentStageNum === maxStages;
@@ -3090,55 +3161,49 @@
       timerHero.style.display = isFinalStage ? 'none' : 'flex';
 
       const completeLabel = isPickup
-        ? (State.lang === 'ru' ? 'Я забрал заказ' : (State.lang === 'kk' ? 'Тапсырысты алып кеттім' : 'I Collected My Order'))
-        : (State.lang === 'ru' ? 'Я получил заказ' : (State.lang === 'kk' ? 'Тапсырысты алдым' : 'I Received My Order'));
+        ? (State.lang === 'ru' ? 'РЇ Р·Р°Р±СЂР°Р» Р·Р°РєР°Р·' : (State.lang === 'kk' ? 'РўР°РїСЃС‹СЂС‹СЃС‚С‹ Р°Р»С‹Рї РєРµС‚С‚С–Рј' : 'I Collected My Order'))
+        : (State.lang === 'ru' ? 'РЇ РїРѕР»СѓС‡РёР» Р·Р°РєР°Р·' : (State.lang === 'kk' ? 'РўР°РїСЃС‹СЂС‹СЃС‚С‹ Р°Р»РґС‹Рј' : 'I Received My Order'));
       document.getElementById('completion-btn-text').innerText = completeLabel;
 
       // Delay Banner Handling
       const delayBanner = document.getElementById('delay-alert-banner');
-      delayBanner.classList.toggle('active', State.activeOrder.isDelayed);
+      delayBanner.classList.toggle('active', !!State.activeOrder.isDelayed);
 
-      // Update Simulation Pills
-      renderSimulationPills(stages);
-
-      // Reset or start timer
-      initStageTimer(stageObj.initialSeconds);
+      // Start Countdown Timer
+      initStageTimer(State.activeOrder.secondsLeft);
     }
 
-    function renderSimulationPills(stages) {
-      const row = document.getElementById('sim-stages-row');
-      if (!row) return;
-      row.innerHTML = stages.map(s => `
-        <button class="sim-stage-btn ${s.num === State.activeOrder.stage ? 'active' : ''}" onclick="setStage(${s.num})">
-          Этап ${s.num}
-        </button>
-      `).join('');
-    }
-
-    function setStage(stageNum) {
-      State.activeOrder.stage = stageNum;
-      renderActiveStageScreen();
-    }
-
-    function initStageTimer(defaultSecs) {
+    function initStageTimer(remainingSecs) {
       clearInterval(State.countdownTimer);
-      if (defaultSecs <= 0) {
+      if (!State.activeOrder) return;
+
+      if (remainingSecs <= 0) {
         document.getElementById('stage-countdown-display').innerText = '00:00';
+        if (State.activeOrder.stage < getActiveStages().length) {
+          State.activeOrder.isDelayed = true;
+          document.getElementById('delay-alert-banner').classList.add('active');
+        }
         return;
       }
 
-      State.activeOrder.secondsLeft = defaultSecs;
-      updateTimerDigits(State.activeOrder.secondsLeft);
+      updateTimerDigits(remainingSecs);
 
       State.countdownTimer = setInterval(() => {
+        if (!State.activeOrder) {
+          clearInterval(State.countdownTimer);
+          return;
+        }
+
         if (State.activeOrder.secondsLeft > 0) {
           State.activeOrder.secondsLeft--;
           updateTimerDigits(State.activeOrder.secondsLeft);
+          saveActiveOrder();
         } else {
-          // Timer reached 0 without barista advancement -> show Delay Banner!
+          // Timer reached zero: NEVER auto-advance order! Show delay notice!
           State.activeOrder.isDelayed = true;
           document.getElementById('delay-alert-banner').classList.add('active');
           document.getElementById('stage-countdown-display').innerText = '00:00';
+          saveActiveOrder();
           clearInterval(State.countdownTimer);
         }
       }, 1000);
@@ -3147,47 +3212,204 @@
     function updateTimerDigits(secs) {
       const m = Math.floor(secs / 60);
       const s = secs % 60;
-      document.getElementById('stage-countdown-display').innerText = 
+      document.getElementById('stage-countdown-display').innerText =
         `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
     }
 
-    function toggleSimulatedDelay() {
-      State.activeOrder.isDelayed = !State.activeOrder.isDelayed;
-      document.getElementById('delay-alert-banner').classList.toggle('active', State.activeOrder.isDelayed);
-      document.getElementById('delay-toggle-label').innerText = State.activeOrder.isDelayed 
-        ? 'Снять задержку' 
-        : 'Смоделировать задержку бариста';
-      showToast(State.activeOrder.isDelayed ? 'Задержка активирована: AI ассистент и мониторинг обновлены' : 'Задержка снята');
+    /* Pitch Demo Mode Skip Control (Step through entire order journey) */
+    function pitchSkipToNextStage() {
+      if (!State.activeOrder) {
+        showToast('РћС„РѕСЂРјРёС‚Рµ Р·Р°РєР°Р·, С‡С‚РѕР±С‹ РїСЂРѕРґРµРјРѕРЅСЃС‚СЂРёСЂРѕРІР°С‚СЊ СЌС‚Р°РїС‹');
+        return;
+      }
+
+      const stages = getActiveStages();
+      if (State.activeOrder.stage >= stages.length) {
+        // Final stage -> Complete order & award bonuses
+        completeOrderAndClaimReward();
+        return;
+      }
+
+      State.activeOrder.stage++;
+      const nextStageObj = stages[State.activeOrder.stage - 1];
+      State.activeOrder.isDelayed = false;
+      State.activeOrder.totalSeconds = nextStageObj.initialSeconds;
+      State.activeOrder.secondsLeft = nextStageObj.initialSeconds;
+      State.activeOrder.startTime = Date.now();
+
+      saveActiveOrder();
+      renderActiveStageScreen();
+
+      const stageName = nextStageObj.title[State.lang] || nextStageObj.title.ru;
+      showToast(`РџРµСЂРµС…РѕРґ: ${stageName}`);
     }
 
-    function toggleAutoPlayStages() {
-      if (State.autoTracking) {
-        clearInterval(State.autoTrackingTimer);
-        State.autoTracking = false;
-        document.getElementById('autoplay-btn-label').innerText = 'Автосимуляция';
-        showToast('Симуляция приостановлена');
-      } else {
-        State.autoTracking = true;
-        document.getElementById('autoplay-btn-label').innerText = 'Пауза';
-        showToast('Автоматическое переключение этапов активно');
-        const stages = getActiveStages();
-        State.autoTrackingTimer = setInterval(() => {
-          let next = State.activeOrder.stage + 1;
-          if (next > stages.length) next = 1;
-          setStage(next);
-        }, 3600);
+    /* Cart, Checkout & Payment */
+    function openCartDrawer() {
+      renderCartList();
+      calculateCartTotals();
+      document.getElementById('cart-drawer-modal').classList.add('active');
+    }
+
+    function closeCartDrawer() {
+      document.getElementById('cart-drawer-modal').classList.remove('active');
+    }
+
+    function setOrderFulfillment(mode) {
+      State.orderFulfillment = mode;
+      document.getElementById('btn-mode-delivery').classList.toggle('active', mode === 'delivery');
+      document.getElementById('btn-mode-pickup').classList.toggle('active', mode === 'pickup');
+      document.getElementById('delivery-details-card').style.display = mode === 'delivery' ? 'block' : 'none';
+      document.getElementById('bill-delivery-row').style.display = mode === 'delivery' ? 'flex' : 'none';
+      calculateCartTotals();
+    }
+
+    function renderCartList() {
+      const container = document.getElementById('cart-items-list-container');
+      if (!container) return;
+
+      if (State.cart.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:12px;">
+            Р’Р°С€Р° РєРѕСЂР·РёРЅР° РїСѓСЃС‚Р°
+          </div>
+        `;
+        return;
       }
+
+      container.innerHTML = State.cart.map((item, idx) => `
+        <div class="cart-item-row" style="background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-md); display:flex; gap:10px; border:1px solid var(--border-subtle); align-items:center;">
+          <img style="width:48px; height:48px; border-radius:var(--radius-sm); object-fit:cover;" src="${item.image}" alt="${item.name}">
+          <div style="flex:1;">
+            <div style="font-size:13px; font-weight:600;">${item.name}</div>
+            <div style="font-size:11px; color:var(--text-muted);">${item.size.toUpperCase()} вЂў ${item.milk}</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+              <span style="font-size:12px; font-weight:700;">${formatTenge(item.unitPrice * item.qty)}</span>
+              <span style="font-size:11px; color:var(--text-muted);">${item.qty} С€С‚</span>
+            </div>
+          </div>
+          <button style="border:none; background:transparent; color:var(--text-muted); cursor:pointer; font-size:14px; padding:4px;" onclick="removeCartItem(${idx})">вњ•</button>
+        </div>
+      `).join('');
+
+      document.getElementById('cart-available-bonus-txt').innerText = State.bonusBalance.toLocaleString('ru-RU');
+    }
+
+    function removeCartItem(idx) {
+      State.cart.splice(idx, 1);
+      renderCartList();
+      calculateCartTotals();
+      updateCartCounter();
+    }
+
+    function calculateCartTotals() {
+      let subtotal = 0;
+      State.cart.forEach(i => subtotal += i.unitPrice * i.qty);
+
+      const deliveryFee = (State.orderFulfillment === 'delivery' && subtotal > 0) ? 850 : 0;
+      const useBonuses = document.getElementById('cart-use-bonuses-toggle')?.checked;
+      const discount = (useBonuses && subtotal > 0) ? Math.min(500, State.bonusBalance, subtotal) : 0;
+      const total = Math.max(0, subtotal + deliveryFee - discount);
+
+      document.getElementById('bill-subtotal-val').innerText = formatTenge(subtotal);
+      document.getElementById('bill-delivery-val').innerText = formatTenge(deliveryFee);
+      document.getElementById('bill-total-val').innerText = formatTenge(total);
+      document.getElementById('cart-checkout-btn-total').innerText = formatTenge(total);
+      document.getElementById('header-cart-total').innerText = formatTenge(total);
+
+      const discountRow = document.getElementById('bill-discount-row');
+      if (discountRow) {
+        discountRow.style.display = discount > 0 ? 'flex' : 'none';
+        document.getElementById('bill-discount-val').innerText = `-${formatTenge(discount)}`;
+      }
+
+      return { subtotal, deliveryFee, discount, total };
+    }
+
+    function openPaymentModal() {
+      if (State.cart.length === 0) {
+        showToast('РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РґРѕР±Р°РІСЊС‚Рµ РЅР°РїРёС‚РєРё РІ РєРѕСЂР·РёРЅСѓ');
+        return;
+      }
+      const bill = calculateCartTotals();
+      document.getElementById('pay-final-amount-txt').innerText = formatTenge(bill.total);
+      closeCartDrawer();
+      document.getElementById('payment-modal-overlay').classList.add('active');
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal-overlay').classList.remove('active');
+    }
+
+    function setPayMethod(m, tab) {
+      document.querySelectorAll('.payment-tab-item').forEach(el => el.classList.remove('active'));
+      tab.classList.add('active');
+    }
+
+    /* REAL PAYMENT CONFIRMATION & ORDER INITIALIZATION */
+    function processPaymentAndStartOrder() {
+      const btn = document.getElementById('confirm-pay-btn');
+      btn.innerText = 'РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РїР»Р°С‚РµР¶Р°...';
+
+      setTimeout(() => {
+        btn.innerText = 'РћРїР»Р°С‚РёС‚СЊ';
+        const orderId = `#GC-${Math.floor(10000 + Math.random() * 90000)}`;
+
+        // Dynamic Preparation Estimate based on drink quantity
+        const totalItems = State.cart.reduce((sum, item) => sum + item.qty, 0);
+        const prepMinutes = Math.min(18, Math.max(8, 6 + totalItems * 2)); // e.g. 10 to 14 minutes
+        const totalSecs = prepMinutes * 60;
+
+        // ONLY NOW IS ORDER CREATED AND TIMER STARTED
+        State.activeOrder = {
+          id: orderId,
+          stage: 1, // Stage 1: Accepted / Brewing
+          fulfillment: State.orderFulfillment,
+          courier: 'Daniyar K.',
+          address: document.getElementById('deliv-street-input')?.value || 'Рі. РђР»РјР°С‚С‹, СѓР». Р”РѕСЃС‚С‹Рє, 43',
+          total: calculateCartTotals().total,
+          isDelayed: false,
+          prepMinutes: prepMinutes,
+          startTime: Date.now(),
+          totalSeconds: totalSecs,
+          secondsLeft: totalSecs,
+          items: [...State.cart]
+        };
+
+        saveActiveOrder();
+
+        // Clear cart
+        State.cart = [];
+        updateCartCounter();
+        closePaymentModal();
+
+        // Prominent Notification immediately after confirmation
+        const notificationMsg = State.lang === 'ru'
+          ? `Р’Р°С€ Р·Р°РєР°Р· РїСЂРёРЅСЏС‚! Р’Р°С€ Р·Р°РєР°Р· Р±СѓРґРµС‚ РіРѕС‚РѕРІ РїСЂРёРјРµСЂРЅРѕ С‡РµСЂРµР· ${prepMinutes} РјРёРЅСѓС‚.`
+          : (State.lang === 'kk'
+             ? `РўР°РїСЃС‹СЂС‹СЃС‹ТЈС‹Р· Т›Р°Р±С‹Р»РґР°РЅРґС‹! РўР°РїСЃС‹СЂС‹СЃ С€Р°РјР°РјРµРЅ ${prepMinutes} РјРёРЅСѓС‚С‚Р°РЅ РєРµР№С–РЅ РґР°Р№С‹РЅ Р±РѕР»Р°РґС‹.`
+             : `Order accepted! Your order will be ready in approximately ${prepMinutes} minutes.`);
+        showToast(notificationMsg, 4000);
+
+        // Transition to Orders Progress screen
+        navTo('orders');
+        renderActiveStageScreen();
+      }, 1000);
     }
 
     /* ==========================================================================
-       AI CUSTOMER ASSISTANT ENGINE (Context-Aware & Grounded)
+       AI CHAT & VOICE ORDERING ENGINE
        ========================================================================== */
+    let speechRecognitionInstance = null;
+    let isRecordingSpeech = false;
+
     function openAIChat() {
       document.getElementById('ai-chat-drawer').classList.add('active');
     }
 
     function closeAIChat() {
       document.getElementById('ai-chat-drawer').classList.remove('active');
+      stopVoiceRecognition();
     }
 
     function openAIChatWithPrompt(type) {
@@ -3197,11 +3419,11 @@
 
     function sendQuickPrompt(type) {
       let promptText = '';
-      if (type === 'status') promptText = State.lang === 'ru' ? 'Где мой кофе?' : (State.lang === 'kk' ? 'Менің кофем қайда?' : 'Where is my coffee?');
-      else if (type === 'recommend') promptText = State.lang === 'ru' ? 'Что посоветуешь?' : (State.lang === 'kk' ? 'Нені ұсынасыз?' : 'Recommend a drink');
-      else if (type === 'oat') promptText = State.lang === 'ru' ? 'Какое есть растительное молоко?' : (State.lang === 'kk' ? 'Қандай өсімдік сүті бар?' : 'What plant milk options exist?');
-      else if (type === 'bonuses') promptText = State.lang === 'ru' ? 'Как работают бонусы?' : (State.lang === 'kk' ? 'Бонустар қалай жұмыс істейді?' : 'How do bonuses work?');
-      else if (type === 'delay') promptText = State.lang === 'ru' ? 'Почему задержка?' : (State.lang === 'kk' ? 'Неге кідіріс болып жатыр?' : 'Why is there a delay?');
+      if (type === 'status') promptText = State.lang === 'ru' ? 'Р“РґРµ РјРѕР№ РєРѕС„Рµ?' : (State.lang === 'kk' ? 'РњРµРЅС–ТЈ РєРѕС„РµРј Т›Р°Р№РґР°?' : 'Where is my coffee?');
+      else if (type === 'recommend') promptText = State.lang === 'ru' ? 'Р§С‚Рѕ РїРѕСЃРѕРІРµС‚СѓРµС€СЊ?' : (State.lang === 'kk' ? 'РќРµРЅС– Т±СЃС‹РЅР°СЃС‹Р·?' : 'Recommend a drink');
+      else if (type === 'oat') promptText = State.lang === 'ru' ? 'РљР°РєРѕРµ РµСЃС‚СЊ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРµ РјРѕР»РѕРєРѕ?' : (State.lang === 'kk' ? 'ТљР°РЅРґР°Р№ У©СЃС–РјРґС–Рє СЃТЇС‚С– Р±Р°СЂ?' : 'What plant milk options exist?');
+      else if (type === 'bonuses') promptText = State.lang === 'ru' ? 'РљР°Рє СЂР°Р±РѕС‚Р°СЋС‚ Р±РѕРЅСѓСЃС‹?' : (State.lang === 'kk' ? 'Р‘РѕРЅСѓСЃС‚Р°СЂ Т›Р°Р»Р°Р№ Р¶Т±РјС‹СЃ С–СЃС‚РµР№РґС–?' : 'How do bonuses work?');
+      else if (type === 'delay') promptText = State.lang === 'ru' ? 'РџРѕС‡РµРјСѓ Р·Р°РґРµСЂР¶РєР°?' : (State.lang === 'kk' ? 'РќРµРіРµ РєС–РґС–СЂС–СЃ Р±РѕР»С‹Рї Р¶Р°С‚С‹СЂ?' : 'Why is there a delay?');
 
       appendUserChatMessage(promptText);
       generateGroundedAIResponse(promptText, type);
@@ -3213,7 +3435,7 @@
       if (!val) return;
       input.value = '';
       appendUserChatMessage(val);
-      generateGroundedAIResponse(val, 'custom');
+      processAiCommandOrQuery(val);
     }
 
     function appendUserChatMessage(text) {
@@ -3225,62 +3447,349 @@
       box.scrollTop = box.scrollHeight;
     }
 
-    function appendAssistantChatMessage(text) {
+    function appendAssistantChatMessage(htmlOrText, isHtml = false) {
       const box = document.getElementById('ai-chat-messages');
       const bubble = document.createElement('div');
       bubble.className = 'chat-bubble assistant';
-      bubble.innerText = text;
+      if (isHtml) bubble.innerHTML = htmlOrText;
+      else bubble.innerText = htmlOrText;
       box.appendChild(bubble);
       box.scrollTop = box.scrollHeight;
     }
 
-    function generateGroundedAIResponse(query, contextKey) {
-      const stage = State.activeOrder.stage;
-      const orderId = State.activeOrder.id;
-      const isPickup = State.activeOrder.fulfillment === 'pickup';
-      const delay = State.activeOrder.isDelayed;
+    /* Voice Recognition */
+    function toggleVoiceRecognition() {
+      if (isRecordingSpeech) {
+        stopVoiceRecognition();
+      } else {
+        startVoiceRecognition();
+      }
+    }
 
+    function startVoiceRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showToast('Р“РѕР»РѕСЃРѕРІРѕР№ РІРІРѕРґ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ РІ РґР°РЅРЅРѕРј Р±СЂР°СѓР·РµСЂРµ. РСЃРїРѕР»СЊР·СѓР№С‚Рµ С‚РµРєСЃС‚РѕРІС‹Р№ РІРІРѕРґ.');
+        return;
+      }
+
+      try {
+        speechRecognitionInstance = new SpeechRecognition();
+        speechRecognitionInstance.continuous = false;
+        speechRecognitionInstance.interimResults = false;
+
+        // Set recognition language
+        if (State.lang === 'kk') speechRecognitionInstance.lang = 'kk-KZ';
+        else if (State.lang === 'en') speechRecognitionInstance.lang = 'en-US';
+        else speechRecognitionInstance.lang = 'ru-RU';
+
+        speechRecognitionInstance.onstart = () => {
+          isRecordingSpeech = true;
+          document.getElementById('ai-mic-btn').classList.add('recording');
+          const indicator = document.getElementById('voice-status-indicator');
+          if (indicator) indicator.style.display = 'flex';
+          const txt = State.lang === 'kk' ? 'РўС‹ТЈРґР°Рї С‚Т±СЂРјС‹РЅ... РўР°РїСЃС‹СЂС‹СЃС‹ТЈС‹Р·РґС‹ Р°Р№С‚С‹ТЈС‹Р·' : (State.lang === 'en' ? 'Listening... Say your order' : 'РЎР»СѓС€Р°СЋ... РќР°Р·РѕРІРёС‚Рµ РЅР°РїРёС‚РѕРє, СЂР°Р·РјРµСЂ Рё РјРѕР»РѕРєРѕ');
+          document.getElementById('voice-status-text').innerText = txt;
+        };
+
+        speechRecognitionInstance.onresult = (e) => {
+          const transcript = e.results[0][0].transcript;
+          stopVoiceRecognition();
+          appendUserChatMessage(transcript);
+          processAiCommandOrQuery(transcript);
+        };
+
+        speechRecognitionInstance.onerror = (e) => {
+          console.warn('Speech recognition error:', e.error);
+          stopVoiceRecognition();
+          if (e.error !== 'no-speech') {
+            showToast('РњРёРєСЂРѕС„РѕРЅ РЅРµ СЂР°СЃРїРѕР·РЅР°Р» СЂРµС‡СЊ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р· РёР»Рё РЅР°РїРёС€РёС‚Рµ С‚РµРєСЃС‚РѕРј.');
+          }
+        };
+
+        speechRecognitionInstance.onend = () => {
+          stopVoiceRecognition();
+        };
+
+        speechRecognitionInstance.start();
+      } catch (err) {
+        console.warn('Speech start error:', err);
+        stopVoiceRecognition();
+      }
+    }
+
+    function stopVoiceRecognition() {
+      isRecordingSpeech = false;
+      const micBtn = document.getElementById('ai-mic-btn');
+      if (micBtn) micBtn.classList.remove('recording');
+      const indicator = document.getElementById('voice-status-indicator');
+      if (indicator) indicator.style.display = 'none';
+
+      if (speechRecognitionInstance) {
+        try { speechRecognitionInstance.stop(); } catch (e) {}
+        speechRecognitionInstance = null;
+      }
+    }
+
+    function toggleVoiceAudioOutput() {
+      State.voiceAudioEnabled = !State.voiceAudioEnabled;
+      const btn = document.getElementById('voice-speech-toggle');
+      if (btn) btn.classList.toggle('muted', !State.voiceAudioEnabled);
+      showToast(State.voiceAudioEnabled ? 'Р“РѕР»РѕСЃРѕРІРѕРµ РѕР·РІСѓС‡РёРІР°РЅРёРµ РІРєР»СЋС‡РµРЅРѕ' : 'РћР·РІСѓС‡РёРІР°РЅРёРµ РѕС‚РєР»СЋС‡РµРЅРѕ');
+    }
+
+    function speakAiResponse(text) {
+      if (!State.voiceAudioEnabled || !window.speechSynthesis) return;
+      try {
+        window.speechSynthesis.cancel();
+        const cleanText = text.replace(/<[^>]*>/g, '');
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = State.lang === 'kk' ? 'kk-KZ' : (State.lang === 'en' ? 'en-US' : 'ru-RU');
+        utterance.rate = 1.0;
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {}
+    }
+
+    /* Natural Language & Voice Order Parser */
+    function processAiCommandOrQuery(rawText) {
+      const text = rawText.toLowerCase().trim();
+
+      // 1. Check Voice Confirmation for Pending Voice Order
+      if (State.pendingVoiceOrder && (text.includes('РґР°') || text.includes('РІРµСЂРЅРѕ') || text.includes('РїРѕРґС‚РІРµСЂР¶РґР°СЋ') || text.includes('РґРѕР±Р°РІСЊ') || text.includes('yes') || text.includes('correct') || text.includes('РёУ™') || text.includes('Р¶Р°СЂР°Р№РґС‹'))) {
+        confirmVoiceOrder();
+        return;
+      }
+      if (State.pendingVoiceOrder && (text.includes('РЅРµС‚') || text.includes('РѕС‚РјРµРЅР°') || text.includes('РЅРµ РЅР°РґРѕ') || text.includes('no') || text.includes('cancel') || text.includes('Р¶РѕТ›'))) {
+        cancelVoiceOrder();
+        return;
+      }
+
+      // 2. Cart Clear / Remove Voice Commands
+      if (text.includes('РѕС‡РёСЃС‚Рё РєРѕСЂР·РёРЅСѓ') || text.includes('РѕС‡РёСЃС‚РёС‚СЊ РєРѕСЂР·РёРЅСѓ') || text.includes('clear cart') || text.includes('СЃРµР±РµС‚С‚С– С‚Р°Р·Р°Р»Р°')) {
+        State.cart = [];
+        updateCartCounter();
+        const reply = State.lang === 'ru' ? 'Р’Р°С€Р° РєРѕСЂР·РёРЅР° РѕС‡РёС‰РµРЅР°.' : (State.lang === 'kk' ? 'РЎРµР±РµС‚С–ТЈС–Р· С‚Р°Р·Р°СЂС‚С‹Р»РґС‹.' : 'Your cart has been cleared.');
+        appendAssistantChatMessage(reply);
+        speakAiResponse(reply);
+        return;
+      }
+
+      // 3. Check for Voice Order Intent (detect drink, size, milk, qty)
+      const detectedItems = parseVoiceOrder(text);
+      if (detectedItems.length > 0) {
+        State.pendingVoiceOrder = detectedItems;
+
+        const itemsSummary = detectedItems.map(i => `${i.sizeName} ${i.name} РЅР° ${i.milk} (${i.qty} С€С‚.)`).join(' Рё ');
+        const confirmQuestion = State.lang === 'ru'
+          ? `Р’С‹ РІС‹Р±СЂР°Р»Рё: ${itemsSummary}. Р’СЃС‘ РІРµСЂРЅРѕ? РЎРєР°Р¶РёС‚Рµ В«Р”Р°В» РёР»Рё РЅР°Р¶РјРёС‚Рµ РєРЅРѕРїРєСѓ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ.`
+          : (State.lang === 'kk'
+             ? `РЎС–Р· С‚Р°ТЈРґР°РґС‹ТЈС‹Р·: ${itemsSummary}. Р‘Р°СЂР»С‹Т“С‹ РґТ±СЂС‹СЃ РїР°? В«РУ™В» РґРµРї Р°Р№С‚С‹ТЈС‹Р· РЅРµРјРµСЃРµ СЂР°СЃС‚Р°Сѓ С‚ТЇР№РјРµСЃС–РЅ Р±Р°СЃС‹ТЈС‹Р·.`
+             : `You selected: ${itemsSummary}. Is that correct? Say "Yes" or confirm below.`);
+
+        const cardHtml = `
+          <div>${confirmQuestion}</div>
+          <div class="voice-order-preview-card">
+            <div class="voice-order-preview-title">Р“РѕР»РѕСЃРѕРІРѕР№ Р·Р°РєР°Р·:</div>
+            ${detectedItems.map(i => `
+              <div class="voice-order-item-line">
+                <span>${i.name} (${i.size.toUpperCase()}, ${i.milk})</span>
+                <strong>${formatTenge(i.unitPrice * i.qty)}</strong>
+              </div>
+            `).join('')}
+            <div class="voice-order-actions-row">
+              <button class="voice-confirm-btn" onclick="confirmVoiceOrder()">вњ“ Р”Р°, РІСЃС‘ РІРµСЂРЅРѕ</button>
+              <button class="voice-cancel-btn" onclick="cancelVoiceOrder()">вњ• РћС‚РјРµРЅР°</button>
+            </div>
+          </div>
+        `;
+
+        setTimeout(() => {
+          appendAssistantChatMessage(cardHtml, true);
+          speakAiResponse(confirmQuestion);
+        }, 300);
+        return;
+      }
+
+      // 4. Grounded AI Assistance on Menu, Order Status, Bonuses
+      generateGroundedAIResponse(rawText, 'custom');
+    }
+
+    function parseVoiceOrder(text) {
+      const results = [];
+
+      // Keyword matching dictionary
+      const drinkMatches = [
+        { key: 'Р»Р°С‚С‚Рµ', id: 'p-caramel-latte', name: 'Caramel Velvet Latte', basePrice: 2100 },
+        { key: 'latte', id: 'p-caramel-latte', name: 'Caramel Velvet Latte', basePrice: 2100 },
+        { key: 'СЂР°С„', id: 'p-caramel-raf', name: 'Caramel Cream Raf', basePrice: 2300 },
+        { key: 'raf', id: 'p-caramel-raf', name: 'Caramel Cream Raf', basePrice: 2300 },
+        { key: 'РєР°РїСѓС‡РёРЅРѕ', id: 'p-cappuccino', name: 'Classic Cappuccino', basePrice: 1650 },
+        { key: 'cappuccino', id: 'p-cappuccino', name: 'Classic Cappuccino', basePrice: 1650 },
+        { key: 'С„Р»СЌС‚', id: 'p-flat-white', name: 'Flat White', basePrice: 1850 },
+        { key: 'flat white', id: 'p-flat-white', name: 'Flat White', basePrice: 1850 },
+        { key: 'РєРѕР»Рґ Р±СЂСЋ', id: 'p-cold-brew', name: 'Iced Salted Cold Brew', basePrice: 1950 },
+        { key: 'cold brew', id: 'p-cold-brew', name: 'Iced Salted Cold Brew', basePrice: 1950 },
+        { key: 'РјР°С‚С‡Р°', id: 'p-matcha', name: 'Kyoto Ceremonial Matcha', basePrice: 2250 },
+        { key: 'matcha', id: 'p-matcha', name: 'Kyoto Ceremonial Matcha', basePrice: 2250 },
+        { key: 'РєСЂСѓР°СЃСЃР°РЅ', id: 'p-croissant', name: 'Almond French Croissant', basePrice: 1450 },
+        { key: 'croissant', id: 'p-croissant', name: 'Almond French Croissant', basePrice: 1450 },
+        { key: 'С‡РёР·РєРµР№Рє', id: 'p-cheesecake', name: 'San Sebastian Cheesecake', basePrice: 2200 },
+        { key: 'cheesecake', id: 'p-cheesecake', name: 'San Sebastian Cheesecake', basePrice: 2200 }
+      ];
+
+      // Parse size
+      let size = 'small';
+      let sizeDelta = 0;
+      let sizeName = 'РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№';
+      if (text.includes('Р±РѕР»СЊС€') || text.includes('large') || text.includes('ТЇР»РєРµРЅ')) {
+        size = 'large';
+        sizeDelta = 550;
+        sizeName = 'Р‘РѕР»СЊС€РѕР№';
+      } else if (text.includes('СЃСЂРµРґРЅ') || text.includes('medium') || text.includes('РѕСЂС‚Р°С€Р°')) {
+        size = 'medium';
+        sizeDelta = 300;
+        sizeName = 'РЎСЂРµРґРЅРёР№';
+      }
+
+      // Parse milk
+      let milk = 'Regular milk';
+      let milkDelta = 0;
+      if (text.includes('РѕРІСЃСЏРЅ') || text.includes('oat') || text.includes('СЃТ±Р»С‹')) {
+        milk = 'Oat milk (Barista)';
+        milkDelta = 350;
+      } else if (text.includes('РјРёРЅРґР°Р»СЊРЅ') || text.includes('almond') || text.includes('Р±Р°РґР°Рј')) {
+        milk = 'Almond milk';
+        milkDelta = 350;
+      } else if (text.includes('Р±РµР·Р»Р°РєС‚РѕР·РЅ') || text.includes('lactose-free')) {
+        milk = 'Lactose-free milk';
+        milkDelta = 200;
+      }
+
+      // Check drinks mentioned
+      drinkMatches.forEach(item => {
+        if (text.includes(item.key) && !results.some(r => r.id === item.id)) {
+          const productObj = PRODUCTS.find(p => p.id === item.id);
+          results.push({
+            id: item.id,
+            name: item.name,
+            size: size,
+            sizeName: sizeName,
+            milk: milk,
+            qty: 1,
+            unitPrice: item.basePrice + sizeDelta + milkDelta,
+            image: productObj ? productObj.image : ''
+          });
+        }
+      });
+
+      return results;
+    }
+
+    function confirmVoiceOrder() {
+      if (!State.pendingVoiceOrder || State.pendingVoiceOrder.length === 0) return;
+
+      State.pendingVoiceOrder.forEach(item => {
+        State.cart.push({
+          id: 'cart-' + Date.now() + Math.random(),
+          name: item.name,
+          image: item.image,
+          unitPrice: item.unitPrice,
+          qty: item.qty,
+          size: item.size,
+          milk: item.milk
+        });
+      });
+
+      const count = State.pendingVoiceOrder.length;
+      State.pendingVoiceOrder = null;
+      updateCartCounter();
+
+      const successReply = State.lang === 'ru'
+        ? `РћС‚Р»РёС‡РЅРѕ! РќР°РїРёС‚РєРё РґРѕР±Р°РІР»РµРЅС‹ РІ РІР°С€Сѓ РєРѕСЂР·РёРЅСѓ. РџСЂРѕРІРµСЂСЊС‚Рµ Р·Р°РєР°Р· Рё РїРµСЂРµР№РґРёС‚Рµ Рє РѕРїР»Р°С‚Рµ, РєРѕРіРґР° Р±СѓРґРµС‚Рµ РіРѕС‚РѕРІС‹.`
+        : (State.lang === 'kk'
+           ? `РљРµСЂРµРјРµС‚! РЎСѓСЃС‹РЅРґР°СЂ СЃРµР±РµС‚С–ТЈС–Р·РіРµ Т›РѕСЃС‹Р»РґС‹. РўР°РїСЃС‹СЂС‹СЃС‚С‹ С‚РµРєСЃРµСЂС–Рї, С‚У©Р»РµРј Р¶Р°СЃР°СѓТ“Р° У©С‚С–ТЈС–Р·.`
+           : `Great! Drinks have been added to your cart. Review your order and proceed to checkout whenever you are ready.`);
+
+      const btnHtml = `
+        <div>${successReply}</div>
+        <div style="margin-top:10px;">
+          <button class="voice-confirm-btn" style="width:100%; padding:10px;" onclick="openCartDrawer(); closeAIChat();">
+            РћС‚РєСЂС‹С‚СЊ РєРѕСЂР·РёРЅСѓ Рё РѕС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·
+          </button>
+        </div>
+      `;
+
+      appendAssistantChatMessage(btnHtml, true);
+      speakAiResponse(successReply);
+    }
+
+    function cancelVoiceOrder() {
+      State.pendingVoiceOrder = null;
+      const cancelReply = State.lang === 'ru'
+        ? 'РҐРѕСЂРѕС€Рѕ, РіРѕР»РѕСЃРѕРІРѕР№ Р·Р°РєР°Р· РѕС‚РјРµРЅРµРЅ. Р§РµРј РµС‰Рµ СЏ РјРѕРіСѓ РІР°Рј РїРѕРјРѕС‡СЊ?'
+        : (State.lang === 'kk'
+           ? 'Р–Р°Т›СЃС‹, С‚Р°РїСЃС‹СЂС‹СЃ С‚РѕТ›С‚Р°С‚С‹Р»РґС‹. Р‘Р°СЃТ›Р° РЅРµ РєУ©РјРµРє Т›Р°Р¶РµС‚?'
+           : 'Voice order cancelled. What else can I help you with?');
+      appendAssistantChatMessage(cancelReply);
+      speakAiResponse(cancelReply);
+    }
+
+    function generateGroundedAIResponse(query, contextKey) {
       let answer = "";
 
-      if (contextKey === 'status' || query.toLowerCase().includes('где') || query.toLowerCase().includes('қайда') || query.toLowerCase().includes('status')) {
-        if (stage === 1) {
-          answer = `Заказ ${orderId} подтвержден и принят в работу. Бариста начинает помол зерна.`;
-        } else if (stage === 2) {
-          answer = `Заказ ${orderId} сейчас готовится в филиале ${State.branch.name}. ${delay ? 'Есть небольшая задержка из-за часа пик.' : 'Ориентировочное время готовности: 8 минут.'}`;
-        } else if (stage === 3) {
-          answer = `Напитки готовы и проходят финальный контроль качества и упаковку.`;
-        } else if (stage === 4) {
-          answer = isPickup 
-            ? `Ваш заказ готов к выдаче в кофейне! Назовите код ${orderId} бариста на кассе.`
-            : `Курьер ${State.activeOrder.courier} прибыл в кофейню и принимает ваш заказ.`;
-        } else if (stage === 5) {
-          answer = isPickup
-            ? `Заказ получен. Приятного дня!`
-            : `Курьер ${State.activeOrder.courier} в пути к вам. Расчетное время прибытия: 4 минуты.`;
+      if (contextKey === 'status' || query.toLowerCase().includes('РіРґРµ') || query.toLowerCase().includes('Т›Р°Р№РґР°') || query.toLowerCase().includes('status')) {
+        if (!State.activeOrder) {
+          answer = State.lang === 'ru'
+            ? 'РЈ РІР°СЃ РїРѕРєР° РЅРµС‚ Р°РєС‚РёРІРЅС‹С… Р·Р°РєР°Р·РѕРІ. Р’С‹Р±РµСЂРёС‚Рµ РєРѕС„Рµ РІ РјРµРЅСЋ РёР»Рё РїСЂРѕСЃС‚Рѕ СЃРєР°Р¶РёС‚Рµ, РЅР°РїСЂРёРјРµСЂ: В«РҐРѕС‡Сѓ Р±РѕР»СЊС€РѕР№ Р»Р°С‚С‚Рµ РЅР° РѕРІСЃСЏРЅРѕРј РјРѕР»РѕРєРµВ»!'
+            : (State.lang === 'kk'
+               ? 'РЎС–Р·РґРµ У™Р·С–СЂРіРµ Р±РµР»СЃРµРЅРґС– С‚Р°РїСЃС‹СЂС‹СЃ Р¶РѕТ›. РњУ™Р·С–СЂРґРµРЅ РєРѕС„Рµ С‚Р°ТЈРґР°ТЈС‹Р· РЅРµРјРµСЃРµ В«Т®Р»РєРµРЅ Р»Р°С‚С‚Рµ Т›РѕСЃВ» РґРµРї РґР°СѓС‹СЃРїРµРЅ Р°Р№С‚С‹ТЈС‹Р·!'
+               : 'You have no active orders yet. Choose a brew from the menu or order via voice!');
         } else {
-          answer = `Заказ ${orderId} доставлен. Приятного аппетита!`;
+          const stage = State.activeOrder.stage;
+          const orderId = State.activeOrder.id;
+          const isPickup = State.activeOrder.fulfillment === 'pickup';
+          const delay = State.activeOrder.isDelayed;
+
+          if (stage === 1) {
+            answer = `Р—Р°РєР°Р· ${orderId} РїРѕРґС‚РІРµСЂР¶РґРµРЅ Рё РіРѕС‚РѕРІРёС‚СЃСЏ РІ С„РёР»РёР°Р»Рµ ${State.branch.name}. ${delay ? 'Р•СЃС‚СЊ РЅРµР±РѕР»СЊС€Р°СЏ Р·Р°РґРµСЂР¶РєР° РёР·-Р·Р° С‡Р°СЃР° РїРёРє.' : `РћСЂРёРµРЅС‚РёСЂРѕРІРѕС‡РЅРѕРµ РІСЂРµРјСЏ: ${State.activeOrder.prepMinutes} РјРёРЅ.`}`;
+          } else if (stage === 2) {
+            answer = `Р—Р°РєР°Р· ${orderId} РїСЂРѕС…РѕРґРёС‚ РєРѕРЅС‚СЂРѕР»СЊ РєР°С‡РµСЃС‚РІР° Рё СѓРїР°РєРѕРІС‹РІР°РµС‚СЃСЏ.`;
+          } else if (stage === 3) {
+            answer = isPickup
+              ? `Р’Р°С€ РЅР°РїРёС‚РѕРє РіРѕС‚РѕРІ Рє РІС‹РґР°С‡Рµ! РќР°Р·РѕРІРёС‚Рµ РєРѕРґ ${orderId} Р±Р°СЂРёСЃС‚Р° РЅР° РєР°СЃСЃРµ С„РёР»РёР°Р»Р° ${State.branch.name}.`
+              : `РљСѓСЂСЊРµСЂ ${State.activeOrder.courier} РїСЂРёР±С‹Р» РІ РєРѕС„РµР№РЅСЋ Рё РїСЂРёРЅРёРјР°РµС‚ РІР°С€ Р·Р°РєР°Р·.`;
+          } else if (stage === 4) {
+            answer = isPickup
+              ? `Р—Р°РєР°Р· РїРѕР»СѓС‡РµРЅ. РџСЂРёСЏС‚РЅРѕРіРѕ РґРЅСЏ!`
+              : `РљСѓСЂСЊРµСЂ ${State.activeOrder.courier} РІРµР·РµС‚ РІР°С€ Р·Р°РєР°Р· РїРѕ РјР°СЂС€СЂСѓС‚Сѓ 2GIS. РџСЂРёР±С‹С‚РёРµ С‡РµСЂРµР· ~4 РјРёРЅСѓС‚С‹.`;
+          } else {
+            answer = `Р—Р°РєР°Р· ${orderId} РґРѕСЃС‚Р°РІР»РµРЅ. РџСЂРёСЏС‚РЅРѕРіРѕ Р°РїРїРµС‚РёС‚Р°!`;
+          }
         }
-      } else if (contextKey === 'delay' || query.toLowerCase().includes('задержк') || query.toLowerCase().includes('кідіріс')) {
-        answer = delay 
-          ? `Действительно, сейчас в филиале ${State.branch.name} повышенная нагрузка. Бариста готовит напитки в строгом соответствии со стандартами качества. Приносим извинения за ожидание!`
-          : `Сейчас задержек нет. Заказ готовится в штатном режиме по таймеру.`;
-      } else if (contextKey === 'oat' || query.toLowerCase().includes('молок') || query.toLowerCase().includes('сүт') || query.toLowerCase().includes('milk')) {
-        answer = `У нас есть овсяное молоко Barista (+350 ₸), миндальное молоко (+350 ₸) и безлактозное (+200 ₸). Они идеально взбиваются в плотную шелковистую пенку.`;
-      } else if (contextKey === 'recommend' || query.toLowerCase().includes('посовет') || query.toLowerCase().includes('ұсын')) {
-        answer = `Рекомендую наш сезонный хит — Salted Caramel Velvet Latte с мадагаскарской ванилью и морской солью Maldon, либо Iced Salted Caramel Cold Brew 20-часовой экстракции!`;
-      } else if (contextKey === 'bonuses' || query.toLowerCase().includes('бонус')) {
-        answer = `Вы получаете 10% кэшбэка баллами с каждого заказа. 1 бонус = 1 ₸. Ваш текущий баланс: ${State.bonusBalance} ₸. Вы можете списать их при оформлении заказа!`;
+      } else if (contextKey === 'delay' || query.toLowerCase().includes('Р·Р°РґРµСЂР¶Рє') || query.toLowerCase().includes('РєС–РґС–СЂС–СЃ')) {
+        if (State.activeOrder && State.activeOrder.isDelayed) {
+          answer = `Р’ С„РёР»РёР°Р»Рµ ${State.branch.name} СЃРµР№С‡Р°СЃ РІС‹СЃРѕРєРёР№ РїРѕС‚РѕРє Р·Р°РєР°Р·РѕРІ. Р‘Р°СЂРёСЃС‚Р° СѓРґРµР»СЏРµС‚ РѕСЃРѕР±РѕРµ РІРЅРёРјР°РЅРёРµ С‚РµС…РЅРѕР»РѕРіРёРё РїРѕРјРѕР»Р° Рё СЌРєСЃС‚СЂР°РєС†РёРё. РњС‹ РїСЂРёРЅРѕСЃРёРј РёР·РІРёРЅРµРЅРёСЏ Р·Р° РЅРµР±РѕР»СЊС€РѕРµ РѕР¶РёРґР°РЅРёРµ!`;
+        } else {
+          answer = `РЎРµР№С‡Р°СЃ Р·Р°РґРµСЂР¶РµРє РЅРµС‚. Р’СЃРµ Р·Р°РєР°Р·С‹ РіРѕС‚РѕРІСЏС‚СЃСЏ СЃС‚СЂРѕРіРѕ РїРѕ С‚Р°Р№РјРµСЂСѓ Рё СЃС‚Р°РЅРґР°СЂС‚Р°Рј РєР°С‡РµСЃС‚РІР°.`;
+        }
+      } else if (contextKey === 'oat' || query.toLowerCase().includes('РјРѕР»РѕРє') || query.toLowerCase().includes('СЃТЇС‚') || query.toLowerCase().includes('milk')) {
+        answer = `РЈ РЅР°СЃ РµСЃС‚СЊ РѕРІСЃСЏРЅРѕРµ РјРѕР»РѕРєРѕ Barista (+350 в‚ё), РјРёРЅРґР°Р»СЊРЅРѕРµ (+350 в‚ё) Рё Р±РµР·Р»Р°РєС‚РѕР·РЅРѕРµ (+200 в‚ё). РћРЅРё РёРґРµР°Р»СЊРЅРѕ РІР·Р±РёРІР°СЋС‚СЃСЏ РІ РїР»РѕС‚РЅСѓСЋ С€РµР»РєРѕРІРёСЃС‚СѓСЋ РїРµРЅРєСѓ. Р’С‹ РјРѕР¶РµС‚Рµ Р·Р°РєР°Р·Р°С‚СЊ РіРѕР»РѕСЃРѕРј: В«Р‘РѕР»СЊС€РѕР№ РєР°РїСѓС‡РёРЅРѕ РЅР° РѕРІСЃСЏРЅРѕРј РјРѕР»РѕРєРµВ».`;
+      } else if (contextKey === 'recommend' || query.toLowerCase().includes('РїРѕСЃРѕРІРµС‚') || query.toLowerCase().includes('Т±СЃС‹РЅ')) {
+        answer = `Р РµРєРѕРјРµРЅРґСѓСЋ РЅР°С€ РѕСЃРµРЅРЅРёР№ С…РёС‚ вЂ” Caramel Velvet Latte СЃ РјР°РґР°РіР°СЃРєР°СЂСЃРєРѕР№ РІР°РЅРёР»СЊСЋ Рё РјРѕСЂСЃРєРѕР№ СЃРѕР»СЊСЋ Maldon, Р»РёР±Рѕ РѕСЃРІРµР¶Р°СЋС‰РёР№ Iced Salted Cold Brew 20-С‡Р°СЃРѕРІРѕР№ СЌРєСЃС‚СЂР°РєС†РёРё!`;
+      } else if (contextKey === 'bonuses' || query.toLowerCase().includes('Р±РѕРЅСѓСЃ')) {
+        answer = `Р’С‹ РїРѕР»СѓС‡Р°РµС‚Рµ 10% РєСЌС€Р±СЌРєР° Р±Р°Р»Р»Р°РјРё СЃ РєР°Р¶РґРѕРіРѕ Р·Р°РєР°Р·Р°. 1 Р±РѕРЅСѓСЃ = 1 в‚ё. Р’Р°С€ С‚РµРєСѓС‰РёР№ Р±Р°Р»Р°РЅСЃ: ${State.bonusBalance} в‚ё. Р’С‹ РјРѕР¶РµС‚Рµ СЃРїРёСЃР°С‚СЊ РёС… РїСЂРё РѕС„РѕСЂРјР»РµРЅРёРё Р·Р°РєР°Р·Р°!`;
       } else {
-        answer = `Я записал ваш вопрос: "${query}". По заказу ${orderId} этап: ${stage}. Вы также можете позвонить напрямую в филиал: ${State.branch.address}.`;
+        answer = `РЇ Р·Р°РїРёСЃР°Р» РІР°С€ РІРѕРїСЂРѕСЃ: "${query}". Р•СЃР»Рё РІС‹ С…РѕС‚РёС‚Рµ СЃРґРµР»Р°С‚СЊ Р·Р°РєР°Р·, РїСЂРѕСЃС‚Рѕ РЅР°Р·РѕРІРёС‚Рµ РЅР°РїРёС‚РѕРє, РЅР°РїСЂРёРјРµСЂ: В«Р‘РѕР»СЊС€РѕР№ Р»Р°С‚С‚Рµ РЅР° РѕРІСЃСЏРЅРѕРј РјРѕР»РѕРєРµВ»!`;
       }
 
       setTimeout(() => {
         appendAssistantChatMessage(answer);
-      }, 500);
+        speakAiResponse(answer);
+      }, 400);
     }
 
     /* ==========================================================================
-       MAP PROVIDER ABSTRACTION & ADDRESS PICKER
+       MAP & ADDRESS PICKER
        ========================================================================== */
     let branchMapInstance = null;
     let trackingMapInstance = null;
@@ -3309,13 +3818,12 @@
           marker.on('click', () => chooseBranch(b.id));
         });
 
-        // Map Click Address Picker Event
         branchMapInstance.on('click', (e) => {
           if (window.isSelectingAddress) {
-            const addr = `г. Алматы, координаты: ${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}`;
+            const addr = `Рі. РђР»РјР°С‚С‹, РєРѕРѕСЂРґРёРЅР°С‚С‹: ${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}`;
             document.getElementById('deliv-street-input').value = addr;
             closeBranchModal();
-            showToast(`Адрес выбран на карте: ${addr}`);
+            showToast(`РђРґСЂРµСЃ РІС‹Р±СЂР°РЅ РЅР° РєР°СЂС‚Рµ: ${addr}`);
             window.isSelectingAddress = false;
           }
         });
@@ -3352,7 +3860,7 @@
 
     function openMapAddressPicker() {
       window.isSelectingAddress = true;
-      document.getElementById('map-sheet-heading').innerText = 'Нажмите на карту, чтобы выбрать адрес доставки';
+      document.getElementById('map-sheet-heading').innerText = 'РќР°Р¶РјРёС‚Рµ РЅР° РєР°СЂС‚Сѓ, С‡С‚РѕР±С‹ РІС‹Р±СЂР°С‚СЊ Р°РґСЂРµСЃ РґРѕСЃС‚Р°РІРєРё';
       openBranchModal();
     }
 
@@ -3368,7 +3876,7 @@
     function closeBranchModal() {
       document.getElementById('branch-sheet-modal').classList.remove('active');
       window.isSelectingAddress = false;
-      document.getElementById('map-sheet-heading').innerText = 'Выбор кофейни Global Coffee';
+      document.getElementById('map-sheet-heading').innerText = 'Р’С‹Р±РѕСЂ РєРѕС„РµР№РЅРё Global Coffee';
     }
 
     function renderBranchCards(branches) {
@@ -3381,11 +3889,11 @@
           <div class="branch-status-bar" style="padding:12px; border-radius:var(--radius-md);" onclick="chooseBranch('${b.id}')">
             <div>
               <div style="font-weight:600; color:var(--primary-dark);">${b.name}</div>
-              <div style="font-size:11px; color:var(--text-muted);">${b.address} • ${b.distance}</div>
-              <div style="font-size:11px; color:var(--success); font-weight:600; margin-top:2px;">● ${b.hours} • ★ ${b.rating}</div>
+              <div style="font-size:11px; color:var(--text-muted);">${b.address} вЂў ${b.distance}</div>
+              <div style="font-size:11px; color:var(--success); font-weight:600; margin-top:2px;">в—Џ ${b.hours} вЂў в… ${b.rating}</div>
             </div>
             <button class="branch-select-action-btn" style="padding:6px 12px; font-size:11px;">
-              ${isSelected ? 'Выбрано' : 'Выбрать'}
+              ${isSelected ? 'Р’С‹Р±СЂР°РЅРѕ' : 'Р’С‹Р±СЂР°С‚СЊ'}
             </button>
           </div>
         `;
@@ -3398,7 +3906,7 @@
         State.branch = found;
         updateBranchHeader();
         closeBranchModal();
-        showToast(`Филиал выбран: ${found.name}`);
+        showToast(`Р¤РёР»РёР°Р» РІС‹Р±СЂР°РЅ: ${found.name}`);
         if (branchMapInstance) branchMapInstance.flyTo([found.lat, found.lng], 15);
       }
     }
@@ -3406,20 +3914,20 @@
     function updateBranchHeader() {
       if (!State.branch) return;
       document.getElementById('header-branch-name').innerText = State.branch.name;
-      document.getElementById('header-branch-address').innerText = ` • ${State.branch.address.split(',')[0]}`;
+      document.getElementById('header-branch-address').innerText = ` вЂў ${State.branch.address.split(',')[0]}`;
       document.getElementById('track-branch-label').innerText = `${State.branch.name}`;
     }
 
     function locateUserPosition() {
       if (navigator.geolocation) {
-        showToast('Запрос GPS разрешения...');
+        showToast('Р—Р°РїСЂРѕСЃ GPS СЂР°Р·СЂРµС€РµРЅРёСЏ...');
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            showToast('Местоположение подтверждено');
+            showToast('РњРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ РїРѕРґС‚РІРµСЂР¶РґРµРЅРѕ');
             if (branchMapInstance) branchMapInstance.flyTo([pos.coords.latitude, pos.coords.longitude], 14);
           },
           () => {
-            showToast('GPS симулирован: Downtown Flagship');
+            showToast('GPS СЃРёРјСѓР»РёСЂРѕРІР°РЅ: Downtown Flagship');
             chooseBranch('branch-1');
           }
         );
@@ -3428,125 +3936,7 @@
       }
     }
 
-    /* ==========================================================================
-       CART & PAYMENT
-       ========================================================================== */
-    function openCartDrawer() {
-      renderCartList();
-      calculateCartTotals();
-      document.getElementById('cart-drawer-modal').classList.add('active');
-    }
-
-    function closeCartDrawer() {
-      document.getElementById('cart-drawer-modal').classList.remove('active');
-    }
-
-    function setOrderFulfillment(mode) {
-      State.orderFulfillment = mode;
-      State.activeOrder.fulfillment = mode;
-      document.getElementById('btn-mode-delivery').classList.toggle('active', mode === 'delivery');
-      document.getElementById('btn-mode-pickup').classList.toggle('active', mode === 'pickup');
-      document.getElementById('delivery-details-card').style.display = mode === 'delivery' ? 'block' : 'none';
-      document.getElementById('bill-delivery-row').style.display = mode === 'delivery' ? 'flex' : 'none';
-      calculateCartTotals();
-    }
-
-    function renderCartList() {
-      const container = document.getElementById('cart-items-list-container');
-      if (!container) return;
-
-      if (State.cart.length === 0) {
-        container.innerHTML = `
-          <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:12px;">
-            Ваша корзина пуста
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = State.cart.map(item => `
-        <div class="cart-item-row" style="background:var(--bg-surface); padding:8px 10px; border-radius:var(--radius-md); display:flex; gap:10px; border:1px solid var(--border-subtle);">
-          <img style="width:50px; height:50px; border-radius:var(--radius-sm); object-fit:cover;" src="${item.image}" alt="${item.name}">
-          <div style="flex:1;">
-            <div style="font-size:13px; font-weight:600;">${item.name}</div>
-            <div style="font-size:11px; color:var(--text-muted);">${item.size.toUpperCase()} • ${item.milk}</div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-              <span style="font-size:12px; font-weight:700;">${formatTenge(item.unitPrice * item.qty)}</span>
-              <span style="font-size:11px; color:var(--text-muted);">${item.qty} шт</span>
-            </div>
-          </div>
-        </div>
-      `).join('');
-
-      document.getElementById('cart-available-bonus-txt').innerText = State.bonusBalance.toLocaleString('ru-RU');
-    }
-
-    function calculateCartTotals() {
-      let subtotal = 0;
-      State.cart.forEach(i => subtotal += i.unitPrice * i.qty);
-
-      const deliveryFee = (State.orderFulfillment === 'delivery' && subtotal > 0) ? 850 : 0;
-      const useBonuses = document.getElementById('cart-use-bonuses-toggle')?.checked;
-      const discount = (useBonuses && subtotal > 0) ? Math.min(500, State.bonusBalance, subtotal) : 0;
-      const total = Math.max(0, subtotal + deliveryFee - discount);
-
-      document.getElementById('bill-subtotal-val').innerText = formatTenge(subtotal);
-      document.getElementById('bill-delivery-val').innerText = formatTenge(deliveryFee);
-      document.getElementById('bill-total-val').innerText = formatTenge(total);
-      document.getElementById('cart-checkout-btn-total').innerText = formatTenge(total);
-      document.getElementById('header-cart-total').innerText = formatTenge(total);
-
-      const discountRow = document.getElementById('bill-discount-row');
-      if (discountRow) {
-        discountRow.style.display = discount > 0 ? 'flex' : 'none';
-        document.getElementById('bill-discount-val').innerText = `-${formatTenge(discount)}`;
-      }
-
-      return { subtotal, deliveryFee, discount, total };
-    }
-
-    function openPaymentModal() {
-      if (State.cart.length === 0) {
-        showToast('Пожалуйста, добавьте напитки в корзину');
-        return;
-      }
-      const bill = calculateCartTotals();
-      document.getElementById('pay-final-amount-txt').innerText = formatTenge(bill.total);
-      closeCartDrawer();
-      document.getElementById('payment-modal-overlay').classList.add('active');
-    }
-
-    function closePaymentModal() {
-      document.getElementById('payment-modal-overlay').classList.remove('active');
-    }
-
-    function setPayMethod(m, tab) {
-      document.querySelectorAll('.payment-tab-item').forEach(el => el.classList.remove('active'));
-      tab.classList.add('active');
-    }
-
-    function processPaymentAndStartOrder() {
-      const btn = document.getElementById('confirm-pay-btn');
-      btn.innerText = 'Обработка платежа...';
-
-      setTimeout(() => {
-        const orderId = `#GC-${Math.floor(10000 + Math.random() * 90000)}`;
-        State.activeOrder.id = orderId;
-        State.activeOrder.stage = 1;
-        State.activeOrder.fulfillment = State.orderFulfillment;
-        State.activeOrder.isDelayed = false;
-
-        State.cart = [];
-        updateCartCounter();
-        closePaymentModal();
-
-        navTo('orders');
-        renderActiveStageScreen();
-        showToast(`Заказ ${orderId} успешно создан!`);
-      }, 1000);
-    }
-
-    /* Product Customization */
+    /* Product Customization Sheet */
     let custom = { size: 'small', sizeDelta: 0, sugar: 'Normal', milk: 'Regular milk', milkDelta: 0, qty: 1 };
     let currentDrink = null;
 
@@ -3587,7 +3977,7 @@
       custom.milk = m;
       custom.milkDelta = delta;
       recalcCustomPrice();
-      showToast(`Молоко: ${m}`);
+      showToast(`РњРѕР»РѕРєРѕ: ${m}`);
     }
 
     function adjustCustomQty(delta) {
@@ -3615,7 +4005,7 @@
       });
       updateCartCounter();
       closeCustomSheet();
-      showToast(`Добавлено: ${currentDrink.name}`);
+      showToast(`Р”РѕР±Р°РІР»РµРЅРѕ: ${currentDrink.name}`);
     }
 
     function updateCartCounter() {
@@ -3649,9 +4039,9 @@
           <div class="product-content">
             <div class="product-title">${p.name}</div>
             <div class="product-meta-row">
-              <span class="product-rating">★ ${p.rating.split(' ')[0]}</span>
-              <span>•</span>
-              <span>${p.calories.split('•')[0]}</span>
+              <span class="product-rating">в… ${p.rating.split(' ')[0]}</span>
+              <span>вЂў</span>
+              <span>${p.calories.split('вЂў')[0]}</span>
             </div>
             <div class="product-price-bar">
               <span class="product-price-val">${formatTenge(p.price)}</span>
@@ -3673,38 +4063,14 @@
       renderMenuGrid(PRODUCTS.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)));
     }
 
-    /* Staff Operations */
-    function setStaffTab(tab) {
-      document.querySelectorAll('.staff-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(`staff-tab-${tab}`).classList.add('active');
-
-      document.getElementById('staff-panel-alerts').style.display = tab === 'alerts' ? 'flex' : 'none';
-      document.getElementById('staff-panel-ops').style.display = tab === 'ops' ? 'flex' : 'none';
-      document.getElementById('staff-panel-sla').style.display = tab === 'sla' ? 'flex' : 'none';
-    }
-
-    function resolveAlert(cardId, statusId) {
-      document.getElementById(statusId).innerText = 'Решен';
-      document.getElementById(statusId).style.color = 'var(--success)';
-      showToast('Инцидент успешно разрешен сотрудником');
-    }
-
-    function staffAdvanceStage() {
-      const stages = getActiveStages();
-      let next = State.activeOrder.stage + 1;
-      if (next > stages.length) next = 1;
-      setStage(next);
-      showToast(`Этап заказа изменен на: ${next}`);
-    }
-
-    function staffSimulateDelay() {
-      toggleSimulatedDelay();
-    }
-
     /* Bonus Reward Celebration */
     function completeOrderAndClaimReward() {
       State.bonusBalance += 350;
       updateBonusDisplays();
+
+      // Clear active order
+      State.activeOrder = null;
+      saveActiveOrder();
 
       document.getElementById('reward-celebration-modal').classList.add('active');
       playAudioReward();
@@ -3714,13 +4080,13 @@
     function closeRewardCelebration() {
       document.getElementById('reward-celebration-modal').classList.remove('active');
       navTo('home');
-      showToast('350 бонусов начислено в ваш кошелек');
+      showToast('350 Р±РѕРЅСѓСЃРѕРІ РЅР°С‡РёСЃР»РµРЅРѕ РІ РІР°С€ РєРѕС€РµР»РµРє');
     }
 
     function updateBonusDisplays() {
       const b1 = document.getElementById('home-bonus-val');
       const b2 = document.getElementById('bonuses-screen-points');
-      if (b1) b1.innerHTML = `${State.bonusBalance.toLocaleString('ru-RU')} <span style="font-size:15px; font-weight:600; color:var(--accent);">₸</span>`;
+      if (b1) b1.innerHTML = `${State.bonusBalance.toLocaleString('ru-RU')} <span style="font-size:15px; font-weight:600; color:var(--accent);">в‚ё</span>`;
       if (b2) b2.innerText = State.bonusBalance.toLocaleString('ru-RU');
     }
 
@@ -3786,22 +4152,23 @@
 
     function toggleAudioEffect() {
       State.sound = !State.sound;
-      showToast(State.sound ? 'Звук включен' : 'Звук выключен');
+      showToast(State.sound ? 'Р—РІСѓРє РІРєР»СЋС‡РµРЅ' : 'Р—РІСѓРє РІС‹РєР»СЋС‡РµРЅ');
     }
 
     function resetPrototypeData() {
       localStorage.clear();
+      sessionStorage.clear();
       location.reload();
     }
 
     let toastTimer = null;
-    function showToast(msg) {
+    function showToast(msg, duration = 2400) {
       const toast = document.getElementById('status-toast');
       const text = document.getElementById('toast-message');
       text.innerText = msg;
       toast.classList.add('visible');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('visible'), 2400);
+      toastTimer = setTimeout(() => toast.classList.remove('visible'), duration);
     }
 
     /* Initialize on DOM Ready */
@@ -3809,12 +4176,22 @@
       State.branch = BRANCHES[0];
       const savedLang = localStorage.getItem('gc_language') || 'ru';
       switchLanguage(savedLang);
+
+      // Check Intro Screen state
+      if (sessionStorage.getItem('gc_intro_dismissed') === 'true') {
+        const intro = document.getElementById('intro-welcome-screen');
+        if (intro) intro.classList.add('dismissed');
+      }
+
+      // Check stored active order (if any)
+      loadActiveOrderFromStorage();
+
       renderShelves();
       renderMenuGrid(PRODUCTS);
       initBranchMap();
       initTrackingMap();
       renderActiveStageScreen();
     });
-  </script>
+</script>
 </body>
 </html>
