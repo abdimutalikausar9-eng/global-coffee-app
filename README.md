@@ -1,10 +1,11 @@
-# GLOBAL COFFEE — COMMERCIAL WEB APPLICATION & AI DELIVERY SYSTEM
+# GLOBAL COFFEE — COMMERCIAL WEB APPLICATION & AI VOICE ORDERING SYSTEM
 
 [![GitHub Pages Deployment](https://img.shields.io/badge/Deployment-GitHub%20Pages-success)](https://abdimutalikausar9-eng.github.io/global-coffee-app/)
 [![UI Style](https://img.shields.io/badge/Design-Commercial%20Coyote%20App-1F140E)](https://github.com/abdimutalikausar9-eng/global-coffee-app)
 [![Localization](https://img.shields.io/badge/Languages-KZ%20%7C%20RU%20%7C%20EN-D97706)](https://github.com/abdimutalikausar9-eng/global-coffee-app)
+[![Voice Ordering](https://img.shields.io/badge/AI-Voice%20Ordering%20%26%20Speech-EF4444)](https://github.com/abdimutalikausar9-eng/global-coffee-app)
 
-A customer-facing web application and AI Delivery Intelligence System for **Global Coffee**, engineered with the visual design language, restrained aesthetic, and layout hierarchy of the official Global Coffee (Coyote) mobile app.
+A customer-facing web application and AI Delivery & Voice Ordering System for **Global Coffee**, engineered with the visual design language, restrained aesthetic, and layout hierarchy of the official Global Coffee (Coyote) mobile app.
 
 ---
 
@@ -15,69 +16,72 @@ A customer-facing web application and AI Delivery Intelligence System for **Glob
 
 ---
 
-## 🌟 Key Architecture & Implemented Modules
+## 🌟 Implemented Features & UI Improvements
 
-### 1. Dynamic Sequential Order Progress & Preparation Countdown Timer
-Replaces static list-style trackers with a dynamic, sequential order experience:
-- **Adaptive Fulfillment Flows:**
-  - **Delivery Flow (6 stages):**
-    1. Order Confirmed
-    2. Preparing Your Coffee
-    3. Quality Check & Packing
-    4. Courier Assigned (with courier card & direct contact triggers)
-    5. On the Way (with live 2GIS route map & simulated GPS tracking)
-    6. Delivered (with bonus claim trigger)
-  - **Pickup Flow (5 stages):**
-    1. Order Confirmed
-    2. Preparing Your Coffee
-    3. Quality Check & Packing
-    4. Ready for Pickup (prominent `#GC-89421` pickup verification code for barista counter; no courier or delivery map)
-    5. Order Collected
-- **Intelligent Countdown Timers:**
-  - Dedicated contextual timer labels: *"Preparation time remaining"*, *"Packaging time"*, *"Estimated courier arrival"*, *"Ready at counter"*.
-  - Tabular numerals with zero-jitter monospace layout (`font-variant-numeric: tabular-nums`).
-  - **Graceful Delay Handling:** Never advances the order simply because a timer reaches zero. If preparation exceeds standard SLA or staff flags a rush, a delay alert banner appears: *"Preparation is taking longer than expected — our barista is taking extra care during peak rush to ensure barista-grade quality."*
+### 1. Introductory Welcome Screen
+- **First Screen on Open:** Displays the authentic Global Coffee promotional artwork (`image(4).png`), brand mark, and typography.
+- **Brand Identity:** Header tag *"SPECIALTY COFFEE & DELIVERY"*, bold heading **GLOBAL COFFEE APP**, and description.
+- **Clean "Enter" Action:** An elegant gold-terracotta pill button (*"Войти в приложение"* / *"Enter Application"*) with smooth fade-out transition into the storefront.
 
-### 2. Smart Map & Live Delivery Tracking
-- **2GIS Map Integration:** Interactive map with branch markers (Dostyk Plaza, Mega Alma-Ata, Downtown Flagship, Esentai Mall, Dostyk Medeu).
-- **Interactive Map Address Picker:** In checkout, users can click *"Select on 2GIS map"* to drop a pin and set their delivery coordinates directly from the map.
-- **Provider Abstraction:** Built on a modular `MapProvider` abstraction capable of swapping between 2GIS Tiles, Leaflet/OSM, or custom vector SDKs without changing application logic.
-- **Live Courier Tracking:** Displays delivery route polylines and real-time courier positioning.
+### 2. Simplified, Intuitive Customer Interface
+- **Pure Customer Experience:** All employee/employer pages, staff hub dashboards, and role switchers have been completely removed.
+- **5 Focused Navigation Tabs:** Home, Menu, Orders, Bonuses, and Profile.
 
-### 3. Grounded AI Customer Assistant (AI Concierge)
-- **Floating Trigger & Slide-Up Drawer:** Fast access to the AI Concierge via a minimalist sparkles bot icon.
-- **Context-Aware Knowledge Engine:**
-  - Directly connected to real order state (`State.activeOrder.stage`, `isDelayed`, `fulfillment`, `total`, `bonusBalance`).
-  - Strictly truthful: Never hallucinates delivery coordinates, fake confirmation codes, or invented statuses.
-  - Quick action prompt pills: *"Where is my coffee?"*, *"Recommend a drink"*, *"What plant milk options exist?"*, *"How do bonuses work?"*, *"Why is there a delay?"*.
-  - Answers coffee questions: Specialty bean origin, oat/almond milk options, syrups, and 10% loyalty cashback rules.
+### 3. Preparation Timer Bug Fix & Real Order Sequence
+- **Strict Payment Dependency:** Before an order is paid and confirmed, **no preparation timer runs**.
+- **Correct Flow:**
+  1. Customer selects coffee & bakery items from menu.
+  2. Proceeds to checkout and selects Delivery or Pickup.
+  3. Completes payment method simulation.
+  4. Payment is successfully confirmed.
+  5. The order is created (`#GC-XXXXX`) and **ONLY NOW does the preparation countdown timer start**.
+- **Dynamic Estimated Time Notification:** Immediately after payment confirmation, displays:
+  *"Ваш заказ принят! Ваш заказ будет готов примерно через [X] минут"* (where `[X]` is computed dynamically based on the number of drinks in the cart).
+- **Persistent State:** Timer is bound to the order's timestamp (`startTime` + `totalSeconds`) and saved in `localStorage`, so page reloads or tab navigation will never reset or restart the countdown.
+- **Never Fake Advancement:** When countdown reaches zero, the order does not arbitrarily jump to ready; instead, a clear delay notice appears explaining that the barista is taking extra care during peak rush.
 
-### 4. AI Delivery Monitoring & Incident Alert Center (Staff Dashboard)
-- Accessible via the top navigation bar toggle (`Role: Customer ⇄ Staff Hub`) or `#view-staff`:
-  - **Live SLA Metrics:** Average Preparation SLA (8.2m), Courier Pickup SLA (6.4m), SLA Breach Rate (1.2%), Critical Incidents count.
-  - **Incident Resolution Center:** Real-time alert cards for preparation delays, unassigned couriers, and delivery stalls with status workflow (`New` ➔ `In Progress` ➔ `Resolved`).
-  - **Live Barista & Courier Operations:** Barista stage progression controls and delay simulator.
-  - **SLA Threshold Tuning:** Interactive sliders for maximum preparation time, courier dispatch limits, and courier inactivity timeouts.
+### 4. Sequential Main-Screen Stages (No Numbered Steps)
+- **Elimination of Numbered Labels:** Numbered steps (e.g. *Step 1, Step 2, Step 3, Этап 1 из 6*) have been completely removed.
+- **Hero Stage Focus:** Stages appear one after another as the primary hero content of the screen with smooth transitions:
+  - **Delivery Flow:**
+    1. *Ваш заказ принят / Готовим ваш кофе* (Large countdown timer)
+    2. *Проверка качества и упаковка* (Packaging timer)
+    3. *Курьер назначен* (Courier card, rating, call & message actions)
+    4. *Курьер в пути* (Interactive 2GIS live route map)
+    5. *Заказ доставлен* (Confirmation checkmark & bonus claim)
+  - **Pickup Flow:**
+    1. *Ваш заказ принят / Готовим ваш кофе* (Large countdown timer)
+    2. *Проверка качества и упаковка* (Packaging timer)
+    3. *Заказ готов к выдаче* (Large pickup code `#GC-XXXXX` for the barista counter)
+    4. *Заказ получен* (Confirmation checkmark & bonus claim)
 
-### 5. Three-Language System (Қазақша / Русский / English)
-- Multi-language switcher available in the top bar (`RU | KZ | EN`) and profile preferences.
-- Dynamic key interpolation via `[data-i18n]` and dynamic rendering.
-- Complete localized dictionaries in:
-  - `translations/kk.json` (Қазақша)
-  - `translations/ru.json` (Русский)
-  - `translations/en.json` (English)
-- **Zero-CORS Embedded Fallback:** Includes `window.TRANSLATIONS` directly inside `index.html` to allow seamless local testing via `file:///` without browser cross-origin policy restrictions.
+### 5. Pitch Demo Mode with "Skip to next stage" Button
+- **Presentation Journey:** Allows pitch presenters to step through the entire order lifecycle seamlessly without waiting for real timers.
+- **Discreet Presentation Bar:** Appears only when an active paid order exists.
+- **One-Click Progression:** Clicking *"Skip to next stage"* smoothly advances the order to the next stage in the exact delivery or pickup sequence and awards bonuses upon delivery.
+- **Security Guardrail:** Does not bypass payment verification—the button is only active after checkout.
+
+### 6. AI Chat & Voice Ordering (Kazakh, Russian, English)
+- **Natural Voice Recognition:** Speech-to-text via Web Speech API (`webkitSpeechRecognition` / `SpeechRecognition`) with pulsing recording indicator.
+- **Drink & Customization Parser:** Recognizes drink names (latte, cappuccino, flat white, cold brew, raf, matcha, croissant, cheesecake), cup sizes (small, medium, large), milk varieties (oat, almond, lactose-free, regular), and quantities.
+- **Voice Confirmation Workflow:**
+  - *Customer:* «Хочу большой латте на овсяном молоке и один карамельный раф»
+  - *AI:* «Вы выбрали: Большой Caramel Velvet Latte на Oat milk (1 шт.) и Карамельный раф (1 шт.). Всё верно?»
+  - *Customer:* Confirms with voice («Да», «Верно») or clicks the interactive button.
+  - *AI:* Adds products to the existing cart and prompts to open checkout.
+- **Voice Readback:** AI speaks answers aloud using Web Speech Synthesis (`speechSynthesis.speak()`) with an audio toggle.
+- **Cart Voice Controls:** Voice commands to remove drinks or clear the cart («Очисти корзину»).
+- **Never Auto-Charges:** Voice commands never complete payment automatically; orders must be reviewed in checkout.
 
 ---
 
 ## 🎨 Design System & Commercial Coyote Aesthetic
 
 - **Typography:** `Inter` sans-serif system (`400`, `500`, `600`, and `700` weights).
-- **Numerals:** `font-variant-numeric: tabular-nums` for banking/retail-grade price alignment, timers, and bonus balances.
-- **Currency System:** Standardized to **₸ (Kazakhstani Tenge)** across the store catalog, order calculation, delivery fee, bonuses, and payment summary (e.g. `1 850 ₸`, `2 100 ₸`, `850 ₸`).
-- **Zero Unicode Emojis:** Replaced with clean, Lucide-style outline inline SVG icons with unified stroke weight (`1.8px` / `2px`) and consistent bounding boxes.
-- **Storefront & Menu Layout:** Warm espresso brand palette (`#1F140E`, `#D97706`, `#F8F5F1`), horizontal category filter pills, drink customization sheet with cup size, milk options, syrups, and live price recalculation.
-- **Loyalty & Rewards Dashboard:** Based on the official Global Coffee points screen: tabular points balance, expiration reminder, coupon tiers, and interactive celebratory confetti animation with Web Audio harmonic chime.
+- **Numerals:** `font-variant-numeric: tabular-nums` for prices, timers, and bonus balances.
+- **Currency:** Standardized to **₸ (Kazakhstani Tenge)** throughout.
+- **Zero Unicode Emojis:** Replaced with clean, Lucide-style outline inline SVG icons with unified stroke weight (`1.8px` / `2px`).
+- **Loyalty Program:** Points balance, tier badge, expiration date, and confetti celebration chime.
 
 ---
 
@@ -91,7 +95,7 @@ Replaces static list-style trackers with a dynamic, sequential order experience:
    ```text
    file:///C:/Users/Admin/.gemini/antigravity/scratch/global-coffee-app/index.html
    ```
-3. A pre-packaged archive containing all assets and translations is available at:
+3. A pre-packaged archive containing all assets, images, and translations is available at:
    ```text
    C:\Users\Admin\.gemini\antigravity\scratch\global-coffee-app\global-coffee-app.zip
    ```
