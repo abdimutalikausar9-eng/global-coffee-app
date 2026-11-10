@@ -2,6 +2,16 @@
   "lang_name": "English",
   "app_title": "Global Coffee — Delivery & Loyalty",
   "app_subtitle": "Specialty Bar & Coyote",
+  "intro": {
+    "title": "GLOBAL COFFEE APP",
+    "subtitle": "Premium specialty coffee freshly roasted with fast delivery in Almaty",
+    "enter_btn": "Enter Application"
+  },
+  "order_empty": {
+    "title": "No Active Orders",
+    "desc": "Choose your favorite coffee from the menu and place an order. Real-time preparation progress and live tracking will appear here.",
+    "btn": "Explore Menu"
+  },
   "header": {
     "change": "Change",
     "delivery": "Delivery",
@@ -133,6 +143,8 @@
     "chat": "Message",
     "i_received_order": "I Received My Order",
     "i_collected_order": "I Collected My Order",
+    "skip_stage": "Skip to next stage",
+    "pitch_desc": "Demonstrate complete order journey",
     "stage_test_title": "Interactive Stage Control (Testing)"
   },
   "bonuses": {
