@@ -1,0 +1,4360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Global Coffee — Delivery & Loyalty</title>
+  <meta name="description" content="Official Global Coffee customer application. Order specialty espresso, cold brews, fresh bakery items and earn loyalty bonuses.">
+  <meta name="theme-color" content="#1F140E">
+  
+  <!-- Typography: Inter (Professional Clean Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet Map CSS for real interactive 2GIS/OpenStreetMap experience -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <style>
+    /* ==========================================================================
+       GLOBAL COFFEE — COMMERCIAL DESIGN SYSTEM (COYOTE MOBILE APP REFERENCE)
+       ========================================================================== */
+    :root {
+      /* Brand Palette */
+      --primary-dark: #160D08;
+      --primary: #1F140E;
+      --primary-surface: #291B13;
+      --accent: #D97706;
+      --accent-hover: #B45309;
+      --accent-subtle: #FEF3C7;
+      --accent-terracotta: #C85A32;
+      
+      /* Neutrals */
+      --bg-canvas: #0F0A07;
+      --bg-app: #FBF9F7;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F3EFEA;
+      --bg-muted: #EBE5DF;
+      
+      /* Typography Colors */
+      --text-main: #181411;
+      --text-secondary: #574F49;
+      --text-muted: #8C827A;
+      --text-light: #B5ACA4;
+      
+      /* Borders & Dividers */
+      --border-subtle: #E8E2DB;
+      --border-focus: #D97706;
+      
+      /* Feedback */
+      --success: #059669;
+      --success-subtle: #ECFDF5;
+      --danger: #DC2626;
+      --danger-subtle: #FEF2F2;
+      --info: #2563EB;
+      --info-subtle: #EFF6FF;
+      
+      /* Elevation */
+      --shadow-xs: 0 1px 2px rgba(22, 13, 8, 0.04);
+      --shadow-sm: 0 2px 6px rgba(22, 13, 8, 0.06);
+      --shadow-md: 0 8px 20px rgba(22, 13, 8, 0.08);
+      --shadow-lg: 0 16px 36px rgba(22, 13, 8, 0.12);
+      
+      /* Radii */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+      
+      /* Layout Dimensions */
+      --nav-height: 68px;
+      --transition-fast: 0.15s ease;
+      --transition-base: 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      line-height: 1.45;
+      font-weight: 400;
+      letter-spacing: -0.011em;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      font-variant-numeric: tabular-nums;
+      overflow-x: hidden;
+    }
+
+    /* Mobile Application Shell */
+    .app-viewport {
+      width: 100%;
+      max-width: 440px;
+      min-height: 100vh;
+      background-color: var(--bg-app);
+      position: relative;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      transition: max-width 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    /* Desktop Mode Toggle (Optional Preview for Large Screens) */
+    .app-viewport.desktop-mode {
+      max-width: 1024px;
+    }
+
+    .view-mode-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 999;
+      background: rgba(22, 13, 8, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #FFF;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+    }
+    .view-mode-toggle:hover {
+      background: var(--primary);
+    }
+    @media (max-width: 768px) {
+      .view-mode-toggle { display: none; }
+    }
+
+    /* --------------------------------------------------------------------------
+       TOP APP HEADER
+       -------------------------------------------------------------------------- */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(251, 249, 247, 0.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .header-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-identity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .brand-logo-mark {
+      width: 34px;
+      height: 34px;
+      background: var(--primary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      flex-shrink: 0;
+    }
+    .brand-text-block {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-name {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--primary-dark);
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+    .brand-tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    /* Header Actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .header-icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition-fast);
+    }
+    .header-icon-btn:hover {
+      border-color: var(--text-muted);
+    }
+    .header-badge-dot {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 1.5px solid var(--bg-surface);
+    }
+
+    /* Cart Pill Button */
+    .header-cart-btn {
+      background: var(--primary);
+      color: #FFF;
+      border-radius: var(--radius-full);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition-fast);
+      box-shadow: var(--shadow-xs);
+    }
+    .header-cart-btn:hover {
+      background: var(--primary-surface);
+    }
+    .cart-badge-count {
+      background: var(--accent);
+      color: #FFF;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: var(--radius-full);
+      min-width: 16px;
+      text-align: center;
+    }
+
+    /* Branch Location Bar */
+    .branch-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 7px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .branch-status-bar:hover {
+      border-color: var(--accent);
+    }
+    .branch-info-col {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .status-indicator-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+    }
+    .branch-name-text {
+      font-weight: 600;
+      color: var(--text-main);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .branch-address-text {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+    .change-link {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    /* --------------------------------------------------------------------------
+       MAIN CONTENT CONTAINER & VIEW PANES
+       -------------------------------------------------------------------------- */
+    .app-main {
+      flex: 1;
+      padding-bottom: calc(var(--nav-height) + 16px);
+    }
+    .view-pane {
+      display: none;
+    }
+    .view-pane.active {
+      display: block;
+      animation: paneEnter 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes paneEnter {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 1: HOMEPAGE (CLEAN COMMERCIAL STOREFRONT)
+       -------------------------------------------------------------------------- */
+    .home-container {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* User Greeting Banner */
+    .greeting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .greeting-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--primary-dark);
+      line-height: 1.2;
+    }
+    .greeting-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* LOYALTY CARD: Clean Reference to Coyote Screenshot 1 */
+    .loyalty-widget {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .loyalty-widget:hover {
+      border-color: var(--border-focus);
+    }
+    .loyalty-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .loyalty-points-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .loyalty-points-num {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--primary);
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+    .loyalty-tier-pill {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .loyalty-progress-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .loyalty-progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: var(--radius-full);
+      width: 72%;
+      transition: width 0.4s ease;
+    }
+
+    /* PROMOTIONAL HERO BANNER: Matches Screenshot 2 (60% Off / Daily Coffee) */
+    .hero-promo-card {
+      background: linear-gradient(135deg, #7A4B29 0%, #4A2B15 100%);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      position: relative;
+      color: #FFF;
+      box-shadow: var(--shadow-sm);
+      min-height: 130px;
+      cursor: pointer;
+    }
+    .hero-promo-content {
+      flex: 1;
+      padding: 16px;
+      z-index: 2;
+    }
+    .hero-promo-badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #FCD34D;
+      margin-bottom: 4px;
+    }
+    .hero-promo-title {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .hero-promo-btn {
+      background: var(--bg-surface);
+      color: var(--primary-dark);
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .hero-promo-img {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      margin-right: -10px;
+      border-radius: 50% 0 0 50%;
+    }
+
+    /* SECTION HEADINGS */
+    .section-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .section-heading {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--primary-dark);
+    }
+    .section-action-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* HORIZONTAL PRODUCTS SHELF */
+    .horizontal-shelf {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .horizontal-shelf::-webkit-scrollbar { display: none; }
+
+    /* COMMERCIAL PRODUCT CARD (Reference Screenshot 2) */
+    .product-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      box-shadow: var(--shadow-xs);
+    }
+    .horizontal-shelf .product-card {
+      flex: 0 0 160px;
+    }
+    .product-card:hover {
+      border-color: var(--border-focus);
+      box-shadow: var(--shadow-sm);
+    }
+    .product-media {
+      width: 100%;
+      height: 120px;
+      background: var(--bg-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+    .product-thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover .product-thumbnail {
+      transform: scale(1.04);
+    }
+    .product-fav-trigger {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      z-index: 2;
+    }
+    .product-fav-trigger.active {
+      color: var(--danger);
+      background: #FFF;
+    }
+    .product-tag-badge {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: var(--primary);
+      color: #FFF;
+      font-size: 9px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .product-content {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+    .product-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .product-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .product-rating {
+      color: var(--accent);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .product-price-bar {
+      margin-top: auto;
+      padding-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .product-price-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .product-add-action {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-sm);
+      background: var(--primary);
+      color: #FFF;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .product-add-action:hover {
+      background: var(--accent);
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 2: MENU & CATEGORY FILTERING (Matches Screenshot 2)
+       -------------------------------------------------------------------------- */
+    .menu-view-container {
+      padding: 12px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Search & Filter Bar */
+    .search-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-box-field {
+      flex: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+    .search-box-field input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 13px;
+      color: inherit;
+      width: 100%;
+      font-family: inherit;
+    }
+    .search-filter-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    /* Category Filter Pills (Matches Screenshot 2) */
+    .category-pills-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .category-pills-scroll::-webkit-scrollbar { display: none; }
+
+    .category-pill {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition-fast);
+      border: 1px solid var(--border-subtle);
+    }
+    .category-pill.active {
+      background: var(--primary);
+      color: #FFF;
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Grid of Products */
+    .products-two-col-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 768px) {
+      .desktop-mode .products-two-col-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 3: FIRST SCREEN — LOCATION SELECTION (2GIS MAP SHEET)
+       -------------------------------------------------------------------------- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 11, 7, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .bottom-sheet-panel {
+      background: var(--bg-app);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 20px 20px 0 0;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .modal-overlay.active .bottom-sheet-panel {
+      transform: translateY(0);
+    }
+
+    .sheet-drag-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border-subtle);
+      border-radius: 2px;
+      margin: 8px auto 4px;
+    }
+    .sheet-header-row {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+    }
+    .sheet-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .sheet-close-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    /* Branch Search & GPS */
+    .branch-search-section {
+      padding: 10px 16px;
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .gps-location-btn {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .gps-location-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Interactive 2GIS Map Frame */
+    .map-embed-wrapper {
+      position: relative;
+      height: 220px;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    #branch-map {
+      width: 100%;
+      height: 100%;
+    }
+    .map-disclaimer-pill {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      z-index: 1000;
+      background: rgba(22, 13, 8, 0.85);
+      color: #FFF;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Branch List */
+    .branch-cards-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .branch-item-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .branch-item-card.selected, .branch-item-card:hover {
+      border-color: var(--accent);
+      background: #FFFDF9;
+    }
+    .branch-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .branch-card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .branch-card-dist {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .branch-card-address {
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .branch-card-hours {
+      font-size: 11px;
+      color: var(--success);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .branch-select-action-btn {
+      margin-top: 4px;
+      background: var(--primary);
+      color: #FFF;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+    .branch-select-action-btn:hover {
+      background: var(--primary-surface);
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 4: DRINK CUSTOMIZATION SHEET (Matches Screenshot 2)
+       -------------------------------------------------------------------------- */
+    .custom-sheet-panel {
+      background: var(--bg-surface);
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px 20px 0 0;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .modal-overlay.active .custom-sheet-panel {
+      transform: translateY(0);
+    }
+
+    .custom-scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Drink Hero in Customization */
+    .custom-drink-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .custom-back-btn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+    .custom-drink-img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+    }
+    .custom-header-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .custom-drink-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+    }
+
+    /* Minimalist Stepper inline with Title (Screenshot 2) */
+    .stepper-pill-control {
+      display: flex;
+      align-items: center;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-full);
+      padding: 2px 4px;
+      gap: 4px;
+    }
+    .stepper-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .stepper-val {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 0 4px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .custom-sub-meta {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .custom-desc-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    /* Custom Option Group */
+    .custom-group-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 12px;
+    }
+    .custom-group-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Pill Selection Row (Matches Screenshot 2: Cup Size, Sugar) */
+    .pill-options-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .option-pill-btn {
+      background: var(--bg-subtle);
+      border: 1px solid transparent;
+      border-radius: var(--radius-full);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition-fast);
+    }
+    .option-pill-btn.active {
+      background: var(--primary);
+      color: #FFF;
+      font-weight: 600;
+    }
+    .option-pill-delta {
+      font-size: 10px;
+      opacity: 0.8;
+    }
+
+    /* Radio / Checkbox Rows for Milk, Syrups, Extras */
+    .custom-choice-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      font-size: 12px;
+      transition: var(--transition-fast);
+    }
+    .custom-choice-item.active, .custom-choice-item.checked {
+      border-color: var(--accent);
+      background: #FFFDF9;
+    }
+    .choice-label-side {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+    .choice-bullet-circle {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-subtle);
+      position: relative;
+    }
+    .custom-choice-item.active .choice-bullet-circle {
+      border-color: var(--accent);
+    }
+    .custom-choice-item.active .choice-bullet-circle::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .choice-check-square {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1.5px solid var(--border-subtle);
+      position: relative;
+    }
+    .custom-choice-item.checked .choice-check-square {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Sticky Bottom Bar for Customization (Screenshot 2: Add to Cart + Price) */
+    .custom-sticky-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+    }
+    .add-to-cart-primary-btn {
+      width: 100%;
+      background: var(--primary);
+      color: #FFF;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition-fast);
+      box-shadow: var(--shadow-sm);
+    }
+    .add-to-cart-primary-btn:hover {
+      background: var(--primary-surface);
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 5: CART & CHECKOUT DRAWER
+       -------------------------------------------------------------------------- */
+    .cart-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 11, 7, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 220;
+      display: flex;
+      justify-content: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .cart-drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .cart-drawer-panel {
+      background: var(--bg-app);
+      width: 100%;
+      max-width: 420px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cart-drawer-overlay.active .cart-drawer-panel {
+      transform: translateX(0);
+    }
+
+    .cart-drawer-header {
+      padding: 14px 18px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-drawer-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cart-drawer-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Delivery / Pickup Switch */
+    .order-mode-toggle {
+      background: var(--bg-subtle);
+      border-radius: var(--radius-full);
+      padding: 3px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+    }
+    .mode-toggle-btn {
+      padding: 7px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: var(--transition-fast);
+    }
+    .mode-toggle-btn.active {
+      background: var(--bg-surface);
+      color: var(--primary-dark);
+      font-weight: 600;
+      box-shadow: var(--shadow-xs);
+    }
+
+    /* Cart Item Card */
+    .cart-item-row {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .cart-item-thumb {
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      background: var(--bg-subtle);
+    }
+    .cart-item-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .cart-item-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .cart-item-tags {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.3;
+      margin: 2px 0 4px;
+    }
+    .cart-item-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-item-price {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    /* Delivery Address Box */
+    .delivery-input-group {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .app-input {
+      width: 100%;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      background: var(--bg-surface);
+      color: var(--text-main);
+    }
+    .app-input:focus {
+      border-color: var(--border-focus);
+    }
+
+    /* Bonus Redemption Card */
+    .bonus-apply-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bonus-apply-info h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .bonus-apply-info p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Toggle Switch */
+    .toggle-control {
+      position: relative;
+      width: 38px;
+      height: 20px;
+    }
+    .toggle-control input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: #D1D5DB;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .toggle-track::before {
+      content: '';
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background: #FFF;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    .toggle-control input:checked + .toggle-track {
+      background: var(--accent);
+    }
+    .toggle-control input:checked + .toggle-track::before {
+      transform: translateX(18px);
+    }
+
+    /* Order Bill Summary */
+    .bill-summary-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .bill-line-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .bill-line-item.discount-line {
+      color: var(--success);
+      font-weight: 600;
+    }
+    .bill-total-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 8px;
+      margin-top: 4px;
+    }
+
+    .cart-drawer-footer {
+      padding: 12px 18px;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 6: PAYMENT SCREEN
+       -------------------------------------------------------------------------- */
+    .payment-panel-box {
+      background: var(--bg-surface);
+      width: 100%;
+      max-width: 440px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .payment-panel-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .payment-panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .payment-panel-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .payment-tabs-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .payment-tab-item {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 4px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition-fast);
+    }
+    .payment-tab-item.active {
+      border-color: var(--accent);
+      background: #FFFDF9;
+      color: var(--primary-dark);
+    }
+
+    /* Minimalist Virtual Card */
+    .virtual-bank-card {
+      background: linear-gradient(135deg, #24160E 0%, #160D08 100%);
+      color: #FFF;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .vcard-chip-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .vcard-number-display {
+      font-family: 'Inter', monospace;
+      font-size: 15px;
+      letter-spacing: 2px;
+      color: #FFF;
+    }
+    .vcard-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.8;
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 7: LIVE ORDER TRACKING (Matches Commercial Food Apps)
+       -------------------------------------------------------------------------- */
+    .tracking-view-layout {
+      padding: 14px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tracking-summary-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-xs);
+    }
+    .tracking-order-code {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tracking-order-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: -0.01em;
+    }
+    .tracking-timer-pill {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 6px 12px;
+      text-align: right;
+    }
+    .timer-label {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .timer-digits {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    /* Visual Timeline Stepper (Clean Outlines, No Emojis) */
+    .timeline-stepper-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-xs);
+    }
+    .timeline-step-row {
+      display: flex;
+      gap: 12px;
+      position: relative;
+      padding-bottom: 20px;
+    }
+    .timeline-step-row:last-child {
+      padding-bottom: 0;
+    }
+    .timeline-step-row:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 13px;
+      top: 30px;
+      bottom: 2px;
+      width: 2px;
+      background: var(--border-subtle);
+    }
+    .timeline-step-row.completed:not(:last-child)::after {
+      background: var(--primary);
+    }
+
+    .step-node-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      background: var(--bg-subtle);
+      border: 1.5px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .timeline-step-row.active .step-node-badge {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFF;
+    }
+    .timeline-step-row.completed .step-node-badge {
+      background: var(--success);
+      border-color: var(--success);
+      color: #FFF;
+    }
+
+    .step-info-col {
+      flex: 1;
+      padding-top: 2px;
+    }
+    .step-main-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .step-sub-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    /* Courier Details Card */
+    .courier-info-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-xs);
+    }
+    .courier-profile-side {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .courier-avatar-img {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+    }
+    .courier-name-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .courier-vehicle-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .courier-contact-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .contact-circle-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    /* Live Route Map Frame */
+    .route-map-embed {
+      height: 220px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      position: relative;
+    }
+    #tracking-map {
+      width: 100%;
+      height: 100%;
+    }
+    .route-eta-pill {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      z-index: 1000;
+      background: rgba(22, 13, 8, 0.9);
+      color: #FFF;
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Stage Controls for Demo Testing */
+    .stage-test-toolbar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .stage-pills-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+    }
+    .stage-switch-btn {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 6px 2px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      text-align: center;
+    }
+    .stage-switch-btn.active {
+      background: var(--primary);
+      color: #FFF;
+      border-color: var(--primary);
+    }
+
+    /* Delivery Arrival Trigger */
+    .order-arrival-banner {
+      background: var(--success);
+      color: #FFF;
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      text-align: center;
+      display: none;
+    }
+    .order-arrival-banner.active {
+      display: block;
+    }
+    .arrival-btn {
+      background: #FFF;
+      color: var(--success);
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 10px 24px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 8: BONUS REWARD SCREEN (Matches Screenshot 1 - Professional Card)
+       -------------------------------------------------------------------------- */
+    .reward-panel-box {
+      background: var(--bg-surface);
+      width: 100%;
+      max-width: 400px;
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+    }
+    #confetti-canvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+    .reward-badge-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-full);
+      background: var(--accent-subtle);
+      color: var(--accent);
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reward-val-display {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 9: BONUSES & LOYALTY VIEW (Direct Match to Screenshot 1)
+       -------------------------------------------------------------------------- */
+    .loyalty-view-layout {
+      padding: 14px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Card Item (Matches "1,500 Points / Expires on Dec 31, 2026") */
+    .points-balance-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .points-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .points-number-hero {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--primary-dark);
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+    .points-expiry-row {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Reward List Items (Matches Screenshot 1 list) */
+    .rewards-list-group {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-xs);
+    }
+    .reward-list-item {
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .reward-list-item:last-child {
+      border-bottom: none;
+    }
+    .reward-list-item:hover {
+      background: var(--bg-subtle);
+    }
+    .reward-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .reward-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .reward-item-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Tier Progress Card (Screenshot 1: Bronze > Earn 250 Points...) */
+    .tier-summary-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tier-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tier-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .tier-hint-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .tier-bar-track {
+      width: 100%;
+      height: 5px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .tier-bar-fill {
+      height: 100%;
+      background: var(--accent-terracotta);
+      border-radius: var(--radius-full);
+      width: 70%;
+    }
+
+    /* --------------------------------------------------------------------------
+       SECTION 10: PROFILE & SETTINGS
+       -------------------------------------------------------------------------- */
+    .profile-view-layout {
+      padding: 14px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .profile-user-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: var(--shadow-xs);
+    }
+    .profile-avatar-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+      background: var(--bg-subtle);
+    }
+
+    /* Order History Card with 4 Commercial Status Badges */
+    .order-status-chip {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .order-status-chip.preparing { background: var(--accent-subtle); color: #B45309; }
+    .order-status-chip.on-the-way { background: var(--info-subtle); color: var(--info); }
+    .order-status-chip.delivered { background: var(--success-subtle); color: var(--success); }
+    .order-status-chip.cancelled { background: var(--danger-subtle); color: var(--danger); }
+
+    .history-order-row {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .history-order-row:last-child {
+      border-bottom: none;
+    }
+
+    /* --------------------------------------------------------------------------
+       BOTTOM NAVIGATION BAR: Matches Screenshot 2 (Dark Espresso Bar)
+       -------------------------------------------------------------------------- */
+    .bottom-app-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 440px;
+      height: var(--nav-height);
+      background: var(--primary);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      z-index: 100;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.2);
+      transition: max-width 0.3s ease;
+    }
+    .app-viewport.desktop-mode .bottom-app-nav {
+      max-width: 1024px;
+    }
+
+    .nav-tab-action {
+      background: transparent;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition-fast);
+    }
+    .nav-tab-action:hover {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .nav-tab-action.active {
+      color: var(--accent);
+    }
+    .nav-tab-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .nav-tab-badge-dot {
+      position: absolute;
+      top: 10px;
+      right: 24%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* Toast Notification Banner */
+    .status-toast {
+      position: fixed;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-16px);
+      background: rgba(22, 13, 8, 0.94);
+      backdrop-filter: blur(8px);
+      color: #FFF;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .status-toast.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Large Screen Preview Switcher -->
+  <button class="view-mode-toggle" id="toggle-view-mode" title="Toggle Mobile vs Desktop Frame">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+    <span id="view-mode-text">Desktop View</span>
+  </button>
+
+  <!-- Notification Toast -->
+  <div class="status-toast" id="status-toast">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span id="toast-message">Notification</span>
+  </div>
+
+  <!-- Main Mobile Application Viewport -->
+  <div class="app-viewport" id="app-viewport">
+    
+    <!-- Top Bar -->
+    <header class="app-header">
+      <div class="header-top-row">
+        <!-- Brand Identity -->
+        <div class="brand-identity" onclick="navTo('home')">
+          <div class="brand-logo-mark">
+            <!-- Coyote / Global Coffee Minimalist Mark -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+              <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+              <line x1="6" y1="1" x2="6" y2="4"/>
+              <line x1="10" y1="1" x2="10" y2="4"/>
+              <line x1="14" y1="1" x2="14" y2="4"/>
+            </svg>
+          </div>
+          <div class="brand-text-block">
+            <span class="brand-name">Global Coffee</span>
+            <span class="brand-tag">Coyote Bar</span>
+          </div>
+        </div>
+
+        <!-- Header Actions: Notification, Profile, Cart -->
+        <div class="header-actions">
+          <button class="header-icon-btn" onclick="openNotifDrawer()" title="Notifications">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+            <span class="header-badge-dot"></span>
+          </button>
+
+          <button class="header-icon-btn" onclick="navTo('profile')" title="Profile">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          </button>
+
+          <button class="header-cart-btn" onclick="openCartDrawer()" title="Cart">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="cart-badge-count" id="header-cart-count">0</span>
+            <span id="header-cart-total">0 ₸</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Current Branch Location Pill Bar -->
+      <div class="branch-status-bar" onclick="openBranchModal()">
+        <div class="branch-info-col">
+          <span class="status-indicator-dot"></span>
+          <div>
+            <span class="branch-name-text" id="header-branch-name">Global Coffee — Downtown Flagship</span>
+            <span class="branch-address-text" id="header-branch-address"> • Abylai Khan Ave 14</span>
+          </div>
+        </div>
+        <div class="change-link">
+          <span>Change</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Views Container -->
+    <main class="app-main">
+
+      <!-- ===================================================================
+           VIEW 1: HOMEPAGE (COMMERCIAL FOOD ORDERING STOREFRONT)
+           =================================================================== -->
+      <section class="view-pane active" id="view-home">
+        <div class="home-container">
+
+          <!-- User Greeting -->
+          <div class="greeting-header">
+            <div>
+              <h1 class="greeting-title">Good morning, Alex</h1>
+              <p class="greeting-sub">Fresh specialty roasts brewed to order</p>
+            </div>
+          </div>
+
+          <!-- Loyalty Card Widget (Screenshot 1 Reference) -->
+          <div class="loyalty-widget" onclick="navTo('bonuses')">
+            <div class="loyalty-top-bar">
+              <div>
+                <span class="loyalty-points-label">Your Points</span>
+                <div class="loyalty-points-num" id="home-bonus-val">1 500 <span style="font-size:15px; font-weight:600; color:var(--accent);">₸</span></div>
+              </div>
+              <div class="loyalty-tier-pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                <span>Gold Barista</span>
+              </div>
+            </div>
+
+            <div class="loyalty-progress-container">
+              <div class="loyalty-progress-meta">
+                <span>Earn 350 pts to reach Platinum</span>
+                <span>1 500 / 2 000 ₸</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 75%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Promo Banner (Matches Screenshot 2: "Your Daily Coffee" / "60% Off") -->
+          <div class="hero-promo-card" onclick="navTo('menu')">
+            <div class="hero-promo-content">
+              <span class="hero-promo-badge">Autumn Release</span>
+              <h2 class="hero-promo-title">Your Daily Coffee, Ready In One Tap</h2>
+              <button class="hero-promo-btn">
+                <span>Order Now</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+            <img class="hero-promo-img" src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=300&q=80" alt="Specialty Drink">
+          </div>
+
+          <!-- Curated Shelf: Popular Coffee -->
+          <div class="section-bar">
+            <h3 class="section-heading">Popular Coffee</h3>
+            <span class="section-action-link" onclick="navTo('menu')">
+              <span>See all</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+          </div>
+          <div class="horizontal-shelf" id="shelf-popular-container">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Curated Shelf: Bestsellers & Seasonal -->
+          <div class="section-bar">
+            <h3 class="section-heading">Bestsellers & New</h3>
+            <span class="section-action-link" onclick="navTo('menu')">
+              <span>Explore</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+          </div>
+          <div class="horizontal-shelf" id="shelf-seasonal-container">
+            <!-- Dynamically populated -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           VIEW 2: MENU (Matches Screenshot 2: Beverages / Cold Coffee / Details)
+           =================================================================== -->
+      <section class="view-pane" id="view-menu">
+        <div class="menu-view-container">
+
+          <!-- Search Input Bar -->
+          <div class="search-input-wrap">
+            <div class="search-box-field">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="menu-search-input" placeholder="Search coffee, tea, bakery..." oninput="handleMenuSearch()">
+            </div>
+            <button class="search-filter-btn" onclick="showToast('Displaying all categories')" title="Filter">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            </button>
+          </div>
+
+          <!-- Category Pills (Screenshot 2: Hot Coffee, Cold Coffee, Cappuccino...) -->
+          <div class="category-pills-scroll" id="menu-category-scroll">
+            <button class="category-pill active" onclick="setCategoryFilter('all', this)">All</button>
+            <button class="category-pill" onclick="setCategoryFilter('coffee', this)">Hot Coffee</button>
+            <button class="category-pill" onclick="setCategoryFilter('iced', this)">Cold Coffee</button>
+            <button class="category-pill" onclick="setCategoryFilter('tea', this)">Matcha & Tea</button>
+            <button class="category-pill" onclick="setCategoryFilter('lemonades', this)">Lemonades</button>
+            <button class="category-pill" onclick="setCategoryFilter('desserts', this)">Bakery & Sweets</button>
+            <button class="category-pill" onclick="setCategoryFilter('snacks', this)">Snacks</button>
+          </div>
+
+          <!-- Two-Column Product Grid -->
+          <div class="products-two-col-grid" id="menu-products-grid">
+            <!-- Dynamically populated -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           VIEW 3: LIVE ORDER TRACKING (5-Stage Commercial Tracking)
+           =================================================================== -->
+      <section class="view-pane" id="view-orders">
+        <div class="tracking-view-layout">
+          
+          <div class="tracking-summary-card">
+            <div>
+              <span class="tracking-order-code">Active Order</span>
+              <div class="tracking-order-title" id="track-order-code">#GC-89421</div>
+              <span style="font-size:11px; color:var(--text-muted);" id="track-branch-label">Downtown Flagship • Delivery</span>
+            </div>
+            <div class="tracking-timer-pill">
+              <div class="timer-label">Estimated Delivery</div>
+              <div class="timer-digits" id="live-countdown-timer">14:48</div>
+            </div>
+          </div>
+
+          <!-- Clean 5-Stage Stepper -->
+          <div class="timeline-stepper-card">
+            <!-- Stage 1 -->
+            <div class="timeline-step-row completed" id="track-step-1">
+              <div class="step-node-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="step-info-col">
+                <div class="step-main-title">Stage 1 — Order Accepted</div>
+                <div class="step-sub-desc">Your order has been accepted by the branch</div>
+              </div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div class="timeline-step-row active" id="track-step-2">
+              <div class="step-node-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+              </div>
+              <div class="step-info-col">
+                <div class="step-main-title">Stage 2 — Preparing Your Coffee</div>
+                <div class="step-sub-desc">Grinding specialty beans & frothing milk</div>
+                <div style="margin-top:6px; display:flex; align-items:center; gap:8px;">
+                  <div class="progress-track" style="flex:1;">
+                    <div class="progress-fill" id="prep-progress-fill" style="width: 75%;"></div>
+                  </div>
+                  <span style="font-size:11px; font-weight:600; color:var(--accent);">75%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div class="timeline-step-row" id="track-step-3">
+              <div class="step-node-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+              </div>
+              <div class="step-info-col">
+                <div class="step-main-title">Stage 3 — Courier Assigned</div>
+                <div class="step-sub-desc">Courier arrived at coffee shop to collect package</div>
+              </div>
+            </div>
+
+            <!-- Stage 4 -->
+            <div class="timeline-step-row" id="track-step-4">
+              <div class="step-node-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.5V14l-3-3 4-3 2 3h2"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/></svg>
+              </div>
+              <div class="step-info-col">
+                <div class="step-main-title">Stage 4 — Courier On The Way</div>
+                <div class="step-sub-desc">Heading to your delivery address via live 2GIS route</div>
+              </div>
+            </div>
+
+            <!-- Stage 5 -->
+            <div class="timeline-step-row" id="track-step-5">
+              <div class="step-node-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="step-info-col">
+                <div class="step-main-title">Stage 5 — Order Delivered</div>
+                <div class="step-sub-desc">Your order has arrived!</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Courier Profile Card -->
+          <div class="courier-info-card">
+            <div class="courier-profile-side">
+              <img class="courier-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Courier Daniyar">
+              <div>
+                <div class="courier-name-val">Daniyar K.</div>
+                <div class="courier-vehicle-meta">4.95 Rating • Electric Scooter</div>
+              </div>
+            </div>
+            <div class="courier-contact-actions">
+              <button class="contact-circle-btn" onclick="showToast('Calling courier Daniyar...')" title="Call">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </button>
+              <button class="contact-circle-btn" onclick="showToast('Messenger opened with courier')" title="Message">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live 2GIS Route Map -->
+          <div class="route-map-embed">
+            <div class="route-eta-pill">
+              <span>Live Route: <strong>850m away</strong></span>
+              <span id="route-eta-text">ETA: 4 min</span>
+            </div>
+            <div id="tracking-map"></div>
+          </div>
+
+          <!-- Stage Testing Controls -->
+          <div class="stage-test-toolbar">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:11px; font-weight:600; text-transform:uppercase; color:var(--text-muted);">Stage Testing</span>
+              <button style="border:none; background:transparent; font-size:11px; font-weight:600; color:var(--accent); cursor:pointer;" onclick="toggleAutoPlayStages()">
+                <span id="autoplay-btn-label">Auto-Play Simulation</span>
+              </button>
+            </div>
+            <div class="stage-pills-grid">
+              <button class="stage-switch-btn" onclick="jumpToTrackingStage(1)">Stage 1</button>
+              <button class="stage-switch-btn active" onclick="jumpToTrackingStage(2)">Stage 2</button>
+              <button class="stage-switch-btn" onclick="jumpToTrackingStage(3)">Stage 3</button>
+              <button class="stage-switch-btn" onclick="jumpToTrackingStage(4)">Stage 4</button>
+              <button class="stage-switch-btn" onclick="jumpToTrackingStage(5)">Stage 5</button>
+            </div>
+          </div>
+
+          <!-- Stage 5 Arrival Completion Banner -->
+          <div class="order-arrival-banner" id="order-arrival-banner">
+            <h3 style="font-size:16px; font-weight:700;">Your order has arrived!</h3>
+            <p style="font-size:12px; opacity:0.9; margin-top:2px;">The courier has arrived at your address.</p>
+            <button class="arrival-btn" onclick="completeOrderAndClaimReward()">
+              I RECEIVED MY ORDER
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           VIEW 4: BONUSES (Direct Match to Screenshot 1 Reference)
+           =================================================================== -->
+      <section class="view-pane" id="view-bonuses">
+        <div class="loyalty-view-layout">
+          
+          <!-- Upper Points Hero Card (Matches Screenshot 1) -->
+          <div class="points-balance-card">
+            <div class="points-card-header">
+              <div>
+                <span class="loyalty-points-label">Your Points</span>
+                <div class="points-number-hero" id="bonuses-screen-points">1 500</div>
+              </div>
+              <div class="loyalty-tier-pill">
+                <span>Gold Member</span>
+              </div>
+            </div>
+            <div class="points-expiry-row">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Expires on December 31, 2026</span>
+            </div>
+          </div>
+
+          <!-- Section List Items (Matches Screenshot 1) -->
+          <div class="rewards-list-group">
+            <div class="reward-list-item" onclick="showToast('Viewing your available rewards')">
+              <div class="reward-item-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/></svg>
+                <span class="reward-item-title">Your rewards</span>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+
+            <div class="reward-list-item" onclick="showToast('1 000 ₸ coupon ready to apply at checkout')">
+              <div class="reward-item-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+                <div>
+                  <div class="reward-item-title">1 000 ₸ off coupon</div>
+                  <div class="reward-item-sub">1 000 points</div>
+                </div>
+              </div>
+              <span style="font-size:11px; font-weight:600; color:var(--accent);">Redeem</span>
+            </div>
+
+            <div class="reward-list-item" onclick="showToast('Earn 10% points on every coffee order')">
+              <div class="reward-item-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.7-2.9l-3.7 2.5"/></svg>
+                <span class="reward-item-title">Ways to earn</span>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+
+            <div class="reward-list-item" onclick="showToast('Redeem points for coffee upgrades or full payment')">
+              <div class="reward-item-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+                <span class="reward-item-title">Ways to redeem</span>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+
+          <!-- Tier Progress Box (Matches Screenshot 1: Bronze > Earn 250 Points...) -->
+          <div class="tier-summary-card">
+            <div class="tier-card-top">
+              <div class="tier-title-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                <span>Gold Barista</span>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="tier-hint-text">
+              Earn 500 Points by Dec 31, 2026 to reach Platinum Ambassador
+            </div>
+            <div class="tier-bar-track">
+              <div class="tier-bar-fill" style="width: 75%;"></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           VIEW 5: PROFILE & ORDER HISTORY
+           =================================================================== -->
+      <section class="view-pane" id="view-profile">
+        <div class="profile-view-layout">
+          
+          <!-- User Profile Summary -->
+          <div class="profile-user-card">
+            <img class="profile-avatar-circle" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80" alt="Alex Morgan">
+            <div>
+              <div style="font-size:16px; font-weight:700; color:var(--primary-dark);">Alex Morgan</div>
+              <div style="font-size:12px; color:var(--text-muted);">+7 (701) 019-2834</div>
+              <div style="font-size:11px; font-weight:600; color:var(--accent); margin-top:2px;">Gold Barista Member</div>
+            </div>
+          </div>
+
+          <!-- Order History with 4 Commercial Statuses -->
+          <div class="tier-summary-card">
+            <div style="font-size:14px; font-weight:700; color:var(--primary-dark);">Order History</div>
+            
+            <div id="order-history-list-items">
+              <!-- Preparing -->
+              <div class="history-order-row">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:13px; font-weight:600; color:var(--primary-dark);">Order #GC-89421</span>
+                  <span class="order-status-chip preparing">Preparing</span>
+                </div>
+                <div style="font-size:11px; color:var(--text-muted);">1x Specialty Flat White, 1x Salted Caramel Latte</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                  <span style="font-size:13px; font-weight:700; color:var(--primary-dark);">3 950 ₸</span>
+                  <button class="branch-select-action-btn" style="padding:4px 10px; font-size:11px; margin-top:0;" onclick="navTo('orders')">Track</button>
+                </div>
+              </div>
+
+              <!-- On the way -->
+              <div class="history-order-row">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:13px; font-weight:600; color:var(--primary-dark);">Order #GC-87114</span>
+                  <span class="order-status-chip on-the-way">On the way</span>
+                </div>
+                <div style="font-size:11px; color:var(--text-muted);">1x Iced Salted Caramel Cold Brew, 1x Butter Croissant</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                  <span style="font-size:13px; font-weight:700; color:var(--primary-dark);">3 500 ₸</span>
+                  <button class="branch-select-action-btn" style="padding:4px 10px; font-size:11px; margin-top:0;" onclick="navTo('orders')">View Map</button>
+                </div>
+              </div>
+
+              <!-- Delivered -->
+              <div class="history-order-row">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:13px; font-weight:600; color:var(--primary-dark);">Order #GC-84201</span>
+                  <span class="order-status-chip delivered">Delivered</span>
+                </div>
+                <div style="font-size:11px; color:var(--text-muted);">2x Velvet Cappuccino, 1x San Sebastian Cheesecake</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                  <span style="font-size:13px; font-weight:700; color:var(--primary-dark);">5 750 ₸</span>
+                  <button class="branch-select-action-btn" style="padding:4px 10px; font-size:11px; margin-top:0;" onclick="reorderPrevious('Order #GC-84201')">Re-order</button>
+                </div>
+              </div>
+
+              <!-- Cancelled -->
+              <div class="history-order-row">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:13px; font-weight:600; color:var(--primary-dark);">Order #GC-79102</span>
+                  <span class="order-status-chip cancelled">Cancelled</span>
+                </div>
+                <div style="font-size:11px; color:var(--text-muted);">1x Spanish Latte (Pickup - Downtown)</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                  <span style="font-size:12px; color:var(--text-muted);">2 000 ₸ (Refunded)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Saved Addresses -->
+          <div class="rewards-list-group">
+            <div style="padding:12px 16px; font-size:11px; font-weight:600; text-transform:uppercase; color:var(--text-muted); border-bottom:1px solid var(--border-subtle);">
+              Saved Delivery Addresses
+            </div>
+            <div class="reward-list-item">
+              <div class="reward-item-left">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <div>
+                  <div class="reward-item-title">Home (Apt 42)</div>
+                  <div class="reward-item-sub">Abylai Khan Ave 14, Block B</div>
+                </div>
+              </div>
+              <span style="font-size:11px; font-weight:600; color:var(--accent);">Default</span>
+            </div>
+            <div class="reward-list-item">
+              <div class="reward-item-left">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="18"/></svg>
+                <div>
+                  <div class="reward-item-title">Office (Floor 12)</div>
+                  <div class="reward-item-sub">Dostyk Ave 42, BC Dostyk</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App Audio & Preferences -->
+          <div class="rewards-list-group">
+            <div class="reward-list-item" onclick="toggleAudioEffect()">
+              <div class="reward-item-left">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <span class="reward-item-title">Reward Audio Effects</span>
+              </div>
+              <label class="toggle-control">
+                <input type="checkbox" id="profile-audio-checkbox" checked onchange="toggleAudioEffect()">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="reward-list-item" onclick="resetPrototypeData()">
+              <div class="reward-item-left" style="color:var(--danger);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <span class="reward-item-title" style="color:var(--danger);">Reset Prototype Data</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar: Matches Screenshot 2 (Sleek Dark Espresso Bar) -->
+    <nav class="bottom-app-nav">
+      <button class="nav-tab-action active" id="tab-btn-home" onclick="navTo('home')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="nav-tab-label">Home</span>
+      </button>
+
+      <button class="nav-tab-action" id="tab-btn-menu" onclick="navTo('menu')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        <span class="nav-tab-label">Menu</span>
+      </button>
+
+      <button class="nav-tab-action" id="tab-btn-orders" onclick="navTo('orders')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="nav-tab-label">Orders</span>
+        <span class="nav-tab-badge-dot"></span>
+      </button>
+
+      <button class="nav-tab-action" id="tab-btn-bonuses" onclick="navTo('bonuses')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
+        <span class="nav-tab-label">Bonuses</span>
+      </button>
+
+      <button class="nav-tab-action" id="tab-btn-profile" onclick="navTo('profile')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        <span class="nav-tab-label">Profile</span>
+      </button>
+    </nav>
+
+  </div> <!-- End App Viewport -->
+
+  <!-- =========================================================================
+       MODAL 1: LOCATION SELECTION (FIRST SCREEN / 2GIS MAP SHEET)
+       ========================================================================= -->
+  <div class="modal-overlay" id="branch-sheet-modal">
+    <div class="bottom-sheet-panel">
+      <div class="sheet-drag-handle"></div>
+      <div class="sheet-header-row">
+        <span class="sheet-title">Select Coffee Shop</span>
+        <button class="sheet-close-btn" onclick="closeBranchModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="branch-search-section">
+        <div class="search-box-field">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="branch-search-field" placeholder="Search street, district or mall..." oninput="filterBranchList()">
+        </div>
+        <button class="gps-location-btn" onclick="locateUserPosition()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          <span>Use my current location</span>
+        </button>
+      </div>
+
+      <!-- 2GIS Map Viewport -->
+      <div class="map-embed-wrapper">
+        <div class="map-disclaimer-pill">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>2GIS Maps API Ready</span>
+        </div>
+        <div id="branch-map"></div>
+      </div>
+
+      <!-- Branches List -->
+      <div class="branch-cards-list" id="branch-cards-container">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: DRINK CUSTOMIZATION SHEET (Screenshot 2 Match)
+       ========================================================================= -->
+  <div class="modal-overlay" id="customization-sheet-modal">
+    <div class="custom-sheet-panel">
+      <div class="sheet-drag-handle"></div>
+
+      <div class="custom-scroll-body">
+        <div class="custom-drink-hero">
+          <button class="custom-back-btn" onclick="closeCustomSheet()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <img class="custom-drink-img" id="custom-img" src="" alt="Drink">
+
+          <div class="custom-header-row">
+            <h2 class="custom-drink-title" id="custom-title">Drink Name</h2>
+            <!-- Stepper Inline with Header (Screenshot 2) -->
+            <div class="stepper-pill-control">
+              <button class="stepper-btn" onclick="adjustCustomQty(-1)">−</button>
+              <span class="stepper-val" id="custom-qty-display">1</span>
+              <button class="stepper-btn" onclick="adjustCustomQty(1)">+</button>
+            </div>
+          </div>
+
+          <div class="custom-sub-meta">
+            <span class="product-rating">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>4.8 (600)</span>
+            </span>
+            <span>•</span>
+            <span id="custom-volume-meta">350 ml • 20-30 min</span>
+          </div>
+
+          <p class="custom-desc-text" id="custom-desc">Drink description text.</p>
+        </div>
+
+        <!-- Option Group 1: Drink Size (Pills) -->
+        <div class="custom-group-block">
+          <span class="custom-group-title">Cup Size</span>
+          <div class="pill-options-row">
+            <button class="option-pill-btn active" onclick="setDrinkSize('small', 0, this)">
+              <span>Small</span> <span class="option-pill-delta">(+0 ₸)</span>
+            </button>
+            <button class="option-pill-btn" onclick="setDrinkSize('medium', 300, this)">
+              <span>Medium</span> <span class="option-pill-delta">(+300 ₸)</span>
+            </button>
+            <button class="option-pill-btn" onclick="setDrinkSize('large', 550, this)">
+              <span>Large</span> <span class="option-pill-delta">(+550 ₸)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Option Group 2: Sugar Level (Pills) -->
+        <div class="custom-group-block">
+          <span class="custom-group-title">Sugar</span>
+          <div class="pill-options-row">
+            <button class="option-pill-btn active" onclick="setSugarLevel('Normal', 0, this)">Normal</button>
+            <button class="option-pill-btn" onclick="setSugarLevel('Less sugar', 0, this)">Less</button>
+            <button class="option-pill-btn" onclick="setSugarLevel('No sugar', 0, this)">No sugar</button>
+            <button class="option-pill-btn" onclick="setSugarLevel('Extra sugar', 0, this)">Extra</button>
+          </div>
+        </div>
+
+        <!-- Option Group 3: Milk Options -->
+        <div class="custom-group-block">
+          <span class="custom-group-title">Milk options</span>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div class="custom-choice-item active" onclick="setMilkOption('Regular milk', 0, this)">
+              <div class="choice-label-side">
+                <span class="choice-bullet-circle"></span>
+                <span>Regular milk</span>
+              </div>
+              <span style="font-size:11px; color:var(--text-muted);">Standard</span>
+            </div>
+            <div class="custom-choice-item" onclick="setMilkOption('Lactose-free milk', 200, this)">
+              <div class="choice-label-side">
+                <span class="choice-bullet-circle"></span>
+                <span>Lactose-free milk</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+200 ₸</span>
+            </div>
+            <div class="custom-choice-item" onclick="setMilkOption('Oat milk', 350, this)">
+              <div class="choice-label-side">
+                <span class="choice-bullet-circle"></span>
+                <span>Oat milk</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+350 ₸</span>
+            </div>
+            <div class="custom-choice-item" onclick="setMilkOption('Almond milk', 350, this)">
+              <div class="choice-label-side">
+                <span class="choice-bullet-circle"></span>
+                <span>Almond milk</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+350 ₸</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option Group 4: Syrups -->
+        <div class="custom-group-block">
+          <span class="custom-group-title">Syrups</span>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div class="custom-choice-item active" onclick="setSyrupOption('No syrup', 0, this)">
+              <div class="choice-label-side">
+                <span class="choice-bullet-circle"></span>
+                <span>No syrup</span>
+              </div>
+              <span style="font-size:11px; color:var(--text-muted);">None</span>
+            </div>
+            <div class="custom-choice-item" onclick="setSyrupOption('Vanilla', 250, this)">
+              <div class="choice-label-side">
+                <span class="choice-bullet-circle"></span>
+                <span>Vanilla</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+250 ₸</span>
+            </div>
+            <div class="custom-choice-item" onclick="setSyrupOption('Caramel', 250, this)">
+              <div class="choice-label-side">
+                <span class="choice-bullet-circle"></span>
+                <span>Caramel</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+250 ₸</span>
+            </div>
+            <div class="custom-choice-item" onclick="setSyrupOption('Hazelnut', 250, this)">
+              <div class="choice-label-side">
+                <span class="choice-bullet-circle"></span>
+                <span>Hazelnut</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+250 ₸</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option Group 5: Extra Ingredients -->
+        <div class="custom-group-block">
+          <span class="custom-group-title">Extra ingredients</span>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div class="custom-choice-item" onclick="toggleExtraAddon('Extra espresso shot', 400, this)">
+              <div class="choice-label-side">
+                <span class="choice-check-square"></span>
+                <span>Extra espresso shot</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+400 ₸</span>
+            </div>
+            <div class="custom-choice-item" onclick="toggleExtraAddon('Extra milk', 200, this)">
+              <div class="choice-label-side">
+                <span class="choice-check-square"></span>
+                <span>Extra milk</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+200 ₸</span>
+            </div>
+            <div class="custom-choice-item" onclick="toggleExtraAddon('Extra syrup', 250, this)">
+              <div class="choice-label-side">
+                <span class="choice-check-square"></span>
+                <span>Extra syrup</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+250 ₸</span>
+            </div>
+            <div class="custom-choice-item" onclick="toggleExtraAddon('Whipped cream', 300, this)">
+              <div class="choice-label-side">
+                <span class="choice-check-square"></span>
+                <span>Whipped cream</span>
+              </div>
+              <span style="font-size:11px; color:var(--accent);">+300 ₸</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sticky Footer: Add To Cart (Screenshot 2 Match) -->
+      <div class="custom-sticky-footer">
+        <button class="add-to-cart-primary-btn" onclick="commitItemToCart()">
+          <span>Add To Cart</span>
+          <span id="custom-calculated-price">1 850 ₸</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       DRAWER 3: CART & CHECKOUT
+       ========================================================================= -->
+  <div class="cart-drawer-overlay" id="cart-drawer-modal">
+    <div class="cart-drawer-panel">
+      <div class="cart-drawer-header">
+        <div class="cart-drawer-title">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span>Cart & Checkout</span>
+        </div>
+        <button class="sheet-close-btn" onclick="closeCartDrawer()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="cart-drawer-scroll">
+        <!-- Delivery vs Pickup Mode -->
+        <div class="order-mode-toggle">
+          <button class="mode-toggle-btn active" id="btn-mode-delivery" onclick="setOrderFulfillment('delivery')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.5V14l-3-3 4-3 2 3h2"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/></svg>
+            <span>Delivery (20-30m)</span>
+          </button>
+          <button class="mode-toggle-btn" id="btn-mode-pickup" onclick="setOrderFulfillment('pickup')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+            <span>Pickup (7-10m)</span>
+          </button>
+        </div>
+
+        <!-- Items Container -->
+        <div id="cart-items-list-container" style="display:flex; flex-direction:column; gap:8px;">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Delivery Address Details Form -->
+        <div class="delivery-input-group" id="delivery-details-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="field-label">Delivery Address</span>
+            <span style="font-size:11px; color:var(--accent); cursor:pointer;" onclick="showToast('Address verified with 2GIS map')">Select on map</span>
+          </div>
+          <input type="text" class="app-input" id="deliv-street-input" placeholder="Street & building" value="Abylai Khan Ave 14, Block B">
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
+            <input type="text" class="app-input" id="deliv-apt-input" placeholder="Apt 42" value="42">
+            <input type="text" class="app-input" id="deliv-ent-input" placeholder="Entrance 2" value="2">
+            <input type="text" class="app-input" id="deliv-floor-input" placeholder="Floor 5" value="5">
+          </div>
+          <input type="text" class="app-input" id="deliv-notes-input" placeholder="Delivery notes for courier (e.g. Leave at door)">
+        </div>
+
+        <!-- Bonus Points Application -->
+        <div class="bonus-apply-box">
+          <div class="bonus-apply-info">
+            <h4>Apply Bonus Balance</h4>
+            <p>Available: <strong id="cart-available-bonus-txt">1 500</strong> ₸</p>
+          </div>
+          <label class="toggle-control">
+            <input type="checkbox" id="cart-use-bonuses-toggle" onchange="calculateCartTotals()">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+
+        <!-- Order Summary Breakdown -->
+        <div class="bill-summary-card">
+          <div class="bill-line-item">
+            <span>Subtotal</span>
+            <span id="bill-subtotal-val">0 ₸</span>
+          </div>
+          <div class="bill-line-item" id="bill-delivery-row">
+            <span>Delivery Fee</span>
+            <span id="bill-delivery-val">850 ₸</span>
+          </div>
+          <div class="bill-line-item discount-line" id="bill-discount-row" style="display:none;">
+            <span>Bonus Discount</span>
+            <span id="bill-discount-val">-500 ₸</span>
+          </div>
+          <div class="bill-total-line">
+            <span>Total</span>
+            <span id="bill-total-val">0 ₸</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-drawer-footer">
+        <button class="add-to-cart-primary-btn" onclick="openPaymentModal()">
+          <span>Proceed To Payment</span>
+          <span id="cart-checkout-btn-total">0 ₸</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 4: PAYMENT SCREEN
+       ========================================================================= -->
+  <div class="modal-overlay" id="payment-modal-overlay">
+    <div class="payment-panel-box">
+      <div class="payment-panel-header">
+        <span class="payment-panel-title">Payment Method</span>
+        <button class="sheet-close-btn" onclick="closePaymentModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="payment-panel-body">
+        <div style="background:var(--bg-subtle); border-radius:var(--radius-sm); padding:8px 12px; font-size:11px; color:var(--text-secondary); display:flex; gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>Demo mode simulation. No real financial transaction will take place.</span>
+        </div>
+
+        <div class="payment-tabs-row">
+          <div class="payment-tab-item active" onclick="setPayMethod('card', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <span>Bank Card</span>
+          </div>
+          <div class="payment-tab-item" onclick="setPayMethod('apple', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Fast Pay</span>
+          </div>
+          <div class="payment-tab-item" onclick="setPayMethod('cash', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>Cash</span>
+          </div>
+        </div>
+
+        <!-- Virtual Card Preview -->
+        <div class="virtual-bank-card" id="virtual-card-preview">
+          <div class="vcard-chip-row">
+            <span style="font-size:12px; font-weight:700; letter-spacing:0.04em;">GLOBAL COFFEE</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <div class="vcard-number-display" id="vcard-num-txt">5355 •••• •••• 4288</div>
+          <div class="vcard-meta-row">
+            <span>ALEX MORGAN</span>
+            <span>12/28</span>
+          </div>
+        </div>
+
+        <!-- Input Block -->
+        <div id="card-fields-container" style="display:flex; flex-direction:column; gap:8px;">
+          <div>
+            <span class="field-label">Card Number</span>
+            <input type="text" class="app-input" id="card-input-number" value="5355 4812 9011 4288" maxlength="19" oninput="maskCardInput(this)">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div>
+              <span class="field-label">Expiry (MM/YY)</span>
+              <input type="text" class="app-input" value="12/28" maxlength="5">
+            </div>
+            <div>
+              <span class="field-label">CVV</span>
+              <input type="password" class="app-input" value="882" maxlength="3">
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Total -->
+        <div style="background:var(--bg-subtle); padding:10px 14px; border-radius:var(--radius-sm); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px; color:var(--text-secondary);">Final Payment Amount:</span>
+          <strong style="font-size:16px; color:var(--primary-dark);" id="pay-final-amount-txt">0 ₸</strong>
+        </div>
+
+        <button class="add-to-cart-primary-btn" id="confirm-pay-btn" onclick="processDemoPayment()">
+          <span>Confirm & Pay</span>
+          <span id="confirm-pay-amount">0 ₸</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 5: BONUS CELEBRATION MODAL
+       ========================================================================= -->
+  <div class="modal-overlay" id="reward-celebration-modal">
+    <div class="reward-panel-box">
+      <canvas id="confetti-canvas"></canvas>
+
+      <div class="reward-badge-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+      </div>
+
+      <h3 style="font-size:18px; font-weight:700; color:var(--primary-dark); margin-bottom:4px;">Bonuses successfully added!</h3>
+      <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Thank you for your order with Global Coffee.</p>
+
+      <div class="reward-val-display">
+        <span>+</span><span id="reward-points-counter">0</span> <span>₸</span>
+      </div>
+
+      <div style="font-size:12px; color:var(--text-secondary); margin-bottom:20px;">
+        New bonus balance: <strong id="reward-new-balance-txt">1 850 ₸</strong>
+      </div>
+
+      <button class="add-to-cart-primary-btn" style="justify-content:center;" onclick="closeRewardCelebration()">
+        Back to Coffee Bar
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       DRAWER 6: NOTIFICATIONS DRAWER
+       ========================================================================= -->
+  <div class="modal-overlay" id="notif-drawer-modal">
+    <div class="bottom-sheet-panel" style="max-height:80vh;">
+      <div class="sheet-drag-handle"></div>
+      <div class="sheet-header-row">
+        <span class="sheet-title">Notifications</span>
+        <button class="sheet-close-btn" onclick="closeNotifDrawer()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div style="padding:16px; display:flex; flex-direction:column; gap:10px; overflow-y:auto;">
+        <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); padding:12px; border-radius:var(--radius-md);">
+          <div style="font-size:13px; font-weight:600; color:var(--primary-dark);">Autumn Roasts Are Live</div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Try the Salted Caramel Latte with double points all week.</div>
+          <div style="font-size:10px; color:var(--text-light); margin-top:4px;">10 minutes ago</div>
+        </div>
+        <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); padding:12px; border-radius:var(--radius-md);">
+          <div style="font-size:13px; font-weight:600; color:var(--success);">Welcome Gift Added</div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">500 ₸ welcome points added to your digital card.</div>
+          <div style="font-size:10px; color:var(--text-light); margin-top:4px;">2 hours ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       APPLICATION LOGIC & ENGINE
+       ========================================================================= -->
+  <script>
+    /* ==========================================================================
+       DATA CATALOG (Prices formatted in ₸ with realistic Kazakhstani coffee tiers)
+       ========================================================================== */
+    const BRANCHES = [
+      {
+        id: 'branch-1',
+        name: 'Global Coffee — Downtown Flagship',
+        address: 'Abylai Khan Ave 14, Almaty',
+        distance: '0.4 km',
+        hours: '07:30 - 23:00',
+        rating: 4.9,
+        lat: 43.2551,
+        lng: 76.9426
+      },
+      {
+        id: 'branch-2',
+        name: 'Global Coffee — Business Center Dostyk',
+        address: 'Dostyk Ave 42, Financial Tower',
+        distance: '1.2 km',
+        hours: '08:00 - 22:00',
+        rating: 4.8,
+        lat: 43.2425,
+        lng: 76.9560
+      },
+      {
+        id: 'branch-3',
+        name: 'Global Coffee — Green Quarter Park',
+        address: 'Mangilik El Ave 88, Promenade',
+        distance: '2.7 km',
+        hours: '08:00 - 23:00',
+        rating: 4.9,
+        lat: 43.2280,
+        lng: 76.9310
+      },
+      {
+        id: 'branch-4',
+        name: 'Global Coffee — Mega Silk Way West',
+        address: 'Kabanbay Batyr Ave, West Wing',
+        distance: '3.8 km',
+        hours: '09:00 - 22:00',
+        rating: 4.7,
+        lat: 43.2195,
+        lng: 76.9050
+      }
+    ];
+
+    const PRODUCTS = [
+      // Hot Coffee
+      {
+        id: 'p-flat-white',
+        category: 'coffee',
+        name: 'Specialty Flat White',
+        desc: 'Double shot of velvety espresso layered with silky microfoam milk.',
+        price: 1850,
+        calories: '160 kcal • 250ml',
+        badge: 'Bestseller',
+        rating: '4.9 (420)',
+        image: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=500&q=80',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-caramel-latte',
+        category: 'coffee',
+        name: 'Salted Caramel Latte',
+        desc: 'Espresso with steamed milk, artisanal salted caramel syrup and sea salt.',
+        price: 2100,
+        calories: '240 kcal • 350ml',
+        badge: 'Seasonal',
+        rating: '4.9 (680)',
+        image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=500&q=80',
+        popular: true,
+        seasonal: true
+      },
+      {
+        id: 'p-cappuccino',
+        category: 'coffee',
+        name: 'Velvet Cappuccino',
+        desc: 'Rich dark espresso topped with deep aerated milk foam and cocoa dust.',
+        price: 1750,
+        calories: '140 kcal • 300ml',
+        badge: 'Classic',
+        rating: '4.8 (310)',
+        image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=500&q=80',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-spanish-latte',
+        category: 'coffee',
+        name: 'Spanish Latte',
+        desc: 'Sweet condensed milk blended with double espresso and velvety steamed milk.',
+        price: 2000,
+        calories: '280 kcal • 350ml',
+        badge: 'Popular',
+        rating: '4.8 (290)',
+        image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-americano',
+        category: 'coffee',
+        name: 'Long Black Americano',
+        desc: 'Hot filtered water topped with double espresso preserving the crema layer.',
+        price: 1450,
+        calories: '10 kcal • 300ml',
+        badge: 'Arabica',
+        rating: '4.7 (190)',
+        image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=500&q=80',
+        popular: false,
+        seasonal: false
+      },
+      {
+        id: 'p-cortado',
+        category: 'coffee',
+        name: 'Pistachio Cortado',
+        desc: 'Equal parts espresso and steamed milk infused with roasted pistachio puree.',
+        price: 1900,
+        calories: '180 kcal • 200ml',
+        badge: 'New',
+        rating: '4.9 (140)',
+        image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=500&q=80',
+        popular: false,
+        seasonal: true
+      },
+
+      // Cold Coffee (Screenshot 2 Match)
+      {
+        id: 'p-cold-brew',
+        category: 'iced',
+        name: 'Iced Salted Caramel Cold Brew',
+        desc: 'Slow-steeped 20-hour cold brew layered with sweet salted caramel cream cap.',
+        price: 2150,
+        calories: '190 kcal • 450ml',
+        badge: 'Nitro',
+        rating: '4.9 (530)',
+        image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=500&q=80',
+        popular: true,
+        seasonal: true
+      },
+      {
+        id: 'p-iced-vanilla-oat',
+        category: 'iced',
+        name: 'Iced Vanilla Oat Latte',
+        desc: 'Barista oat milk, double espresso, pure Madagascar vanilla over crystalline ice.',
+        price: 2250,
+        calories: '210 kcal • 400ml',
+        badge: 'Plant Based',
+        rating: '4.8 (340)',
+        image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=80',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-bumble-coffee',
+        category: 'iced',
+        name: 'Bumble Citrus Espresso',
+        desc: 'Freshly squeezed sweet orange juice layered with double shot espresso and caramel.',
+        price: 2150,
+        calories: '130 kcal • 350ml',
+        badge: 'Fresh',
+        rating: '4.8 (210)',
+        image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=500&q=80',
+        popular: false,
+        seasonal: false
+      },
+
+      // Tea & Matcha
+      {
+        id: 'p-matcha-latte',
+        category: 'tea',
+        name: 'Ceremonial Matcha Latte',
+        desc: 'Grade-A Japanese ceremonial matcha whisked with warm oat milk and agave.',
+        price: 2200,
+        calories: '170 kcal • 350ml',
+        badge: 'Organic',
+        rating: '4.9 (410)',
+        image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=500&q=80',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-earl-grey',
+        category: 'tea',
+        name: 'Earl Grey Lavender Supreme',
+        desc: 'Hand-picked black tea infused with cold-pressed Italian bergamot & lavender.',
+        price: 1600,
+        calories: '5 kcal • 400ml',
+        badge: 'Classic',
+        rating: '4.7 (160)',
+        image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=500&q=80',
+        popular: false,
+        seasonal: false
+      },
+
+      // Lemonades
+      {
+        id: 'p-passionfruit-lemonade',
+        category: 'lemonades',
+        name: 'Passionfruit Mango Spritzer',
+        desc: 'Real passionfruit seeds, Alphonso mango puree, sparkling water and fresh mint.',
+        price: 1900,
+        calories: '110 kcal • 450ml',
+        badge: 'Cold',
+        rating: '4.8 (180)',
+        image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500&q=80',
+        popular: false,
+        seasonal: false
+      },
+
+      // Desserts & Bakery
+      {
+        id: 'p-butter-croissant',
+        category: 'desserts',
+        name: 'Artisanal Butter Croissant',
+        desc: 'Flaky 72-layer golden pastry baked fresh daily with European butter.',
+        price: 1350,
+        calories: '260 kcal • 80g',
+        badge: 'Fresh',
+        rating: '4.9 (780)',
+        image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=500&q=80',
+        popular: true,
+        seasonal: false
+      },
+      {
+        id: 'p-basque-cheesecake',
+        category: 'desserts',
+        name: 'San Sebastian Cheesecake',
+        desc: 'Creamy caramelised crust with molten vanilla bean center.',
+        price: 2250,
+        calories: '380 kcal • 140g',
+        badge: 'Signature',
+        rating: '4.9 (610)',
+        image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=500&q=80',
+        popular: false,
+        seasonal: true
+      },
+
+      // Snacks
+      {
+        id: 'p-salmon-bagel',
+        category: 'snacks',
+        name: 'Smoked Salmon Bagel',
+        desc: 'Toasted seeded bagel with Norwegian smoked salmon, capers and dill spread.',
+        price: 3200,
+        calories: '420 kcal • 220g',
+        badge: 'Chef Choice',
+        rating: '4.8 (390)',
+        image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=500&q=80',
+        popular: false,
+        seasonal: false
+      }
+    ];
+
+    /* Global State */
+    const State = {
+      branch: null,
+      cart: [],
+      orderFulfillment: 'delivery', // 'delivery' or 'pickup'
+      bonusBalance: 1500, // Matching Screenshot 1
+      activeOrder: {
+        id: '#GC-89421',
+        stage: 2,
+        courier: 'Daniyar K.',
+        total: 3950
+      },
+      favorites: ['p-flat-white', 'p-caramel-latte'],
+      sound: true,
+      autoTracking: false,
+      autoTrackingTimer: null
+    };
+
+    /* Utility: Format Tenge Currency */
+    function formatTenge(amount) {
+      return Number(amount).toLocaleString('ru-RU') + ' ₸';
+    }
+
+    /* Save & Load Persistent State */
+    function saveAppState() {
+      try {
+        localStorage.setItem('gc_v2_branch', JSON.stringify(State.branch));
+        localStorage.setItem('gc_v2_cart', JSON.stringify(State.cart));
+        localStorage.setItem('gc_v2_bonus', State.bonusBalance);
+        localStorage.setItem('gc_v2_favs', JSON.stringify(State.favorites));
+        localStorage.setItem('gc_v2_sound', State.sound);
+        localStorage.setItem('gc_v2_branch_set', 'true');
+      } catch (e) {
+        console.warn('Storage save failed:', e);
+      }
+    }
+
+    function loadAppState() {
+      try {
+        const storedBranch = localStorage.getItem('gc_v2_branch');
+        if (storedBranch) State.branch = JSON.parse(storedBranch);
+
+        const storedCart = localStorage.getItem('gc_v2_cart');
+        if (storedCart) State.cart = JSON.parse(storedCart);
+
+        const storedBonus = localStorage.getItem('gc_v2_bonus');
+        if (storedBonus) State.bonusBalance = parseInt(storedBonus, 10);
+
+        const storedFavs = localStorage.getItem('gc_v2_favs');
+        if (storedFavs) State.favorites = JSON.parse(storedFavs);
+
+        const storedSound = localStorage.getItem('gc_v2_sound');
+        if (storedSound !== null) State.sound = (storedSound === 'true');
+      } catch (e) {
+        console.warn('Storage load failed:', e);
+      }
+    }
+
+    /* Audio Synthesizer (Zero External File Dependencies) */
+    let synthCtx = null;
+    function playCelebrationChime() {
+      if (!State.sound) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!synthCtx) synthCtx = new AudioCtx();
+        if (synthCtx.state === 'suspended') synthCtx.resume();
+
+        const now = synthCtx.currentTime;
+        const freqs = [1046.50, 1318.51, 1567.98, 2093.00];
+        freqs.forEach((freq, idx) => {
+          const osc = synthCtx.createOscillator();
+          const gain = synthCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+          gain.gain.setValueAtTime(0, now + idx * 0.08);
+          gain.gain.linearRampToValueAtTime(0.24, now + idx * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.4);
+
+          osc.connect(gain);
+          gain.connect(synthCtx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.45);
+        });
+      } catch (err) {
+        console.warn('Audio synthesis warning:', err);
+      }
+    }
+
+    /* Initialize Application on DOM Ready */
+    let branchMapInstance = null;
+    let trackingMapInstance = null;
+    let courierMapMarker = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAppState();
+
+      // First Visit: Show Location Screen if not selected
+      const hasChosenBranch = localStorage.getItem('gc_v2_branch_set');
+      if (!hasChosenBranch || !State.branch) {
+        State.branch = BRANCHES[0];
+        openBranchModal();
+      } else {
+        updateBranchHeader();
+      }
+
+      renderShelves();
+      renderMenuGrid(PRODUCTS);
+      updateCartCounter();
+      updateBonusDisplays();
+      initBranchMap();
+      initTrackingMap();
+      startCountdown();
+
+      const audioToggle = document.getElementById('profile-audio-checkbox');
+      if (audioToggle) audioToggle.checked = State.sound;
+    });
+
+    /* Tab Navigation */
+    function navTo(tabName) {
+      document.querySelectorAll('.view-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-action').forEach(el => el.classList.remove('active'));
+
+      const pane = document.getElementById(`view-${tabName}`);
+      const btn = document.getElementById(`tab-btn-${tabName}`);
+
+      if (pane) pane.classList.add('active');
+      if (btn) btn.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (tabName === 'orders' && trackingMapInstance) {
+        setTimeout(() => trackingMapInstance.invalidateSize(), 200);
+      }
+    }
+
+    /* Desktop View Toggle */
+    document.getElementById('toggle-view-mode').addEventListener('click', () => {
+      const viewport = document.getElementById('app-viewport');
+      viewport.classList.toggle('desktop-mode');
+      const isDesktop = viewport.classList.contains('desktop-mode');
+      document.getElementById('view-mode-text').innerText = isDesktop ? 'Mobile View' : 'Desktop View';
+      if (branchMapInstance) branchMapInstance.invalidateSize();
+      if (trackingMapInstance) trackingMapInstance.invalidateSize();
+    });
+
+    /* ==========================================================================
+       BRANCH SELECTION & 2GIS MAP
+       ========================================================================== */
+    function openBranchModal() {
+      document.getElementById('branch-sheet-modal').classList.add('active');
+      renderBranchCards(BRANCHES);
+      setTimeout(() => {
+        if (branchMapInstance) branchMapInstance.invalidateSize();
+        else initBranchMap();
+      }, 250);
+    }
+
+    function closeBranchModal() {
+      document.getElementById('branch-sheet-modal').classList.remove('active');
+    }
+
+    function initBranchMap() {
+      const mapEl = document.getElementById('branch-map');
+      if (!mapEl || typeof L === 'undefined') return;
+
+      try {
+        branchMapInstance = L.map('branch-map', {
+          zoomControl: false,
+          attributionControl: false
+        }).setView([43.238949, 76.920000], 13);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19
+        }).addTo(branchMapInstance);
+
+        const customMarker = L.divIcon({
+          className: 'branch-custom-pin',
+          html: `<div style="background:#1F140E; border:2px solid #D97706; color:#FFF; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.3);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></div>`,
+          iconSize: [30, 30],
+          iconAnchor: [15, 30]
+        });
+
+        BRANCHES.forEach(branch => {
+          const marker = L.marker([branch.lat, branch.lng], { icon: customMarker }).addTo(branchMapInstance);
+          marker.bindPopup(`
+            <div style="font-family:'Inter', sans-serif; padding:4px;">
+              <strong style="color:#1F140E; font-size:12px;">${branch.name}</strong><br>
+              <span style="font-size:11px; color:#6B635B;">${branch.address}</span><br>
+              <button onclick="chooseBranch('${branch.id}')" style="background:#1F140E; color:#FFF; border:none; border-radius:4px; padding:4px 8px; font-size:11px; font-weight:600; margin-top:6px; cursor:pointer;">
+                Select this coffee shop
+              </button>
+            </div>
+          `);
+        });
+      } catch (err) {
+        console.warn('Leaflet map error:', err);
+      }
+    }
+
+    function renderBranchCards(branches) {
+      const container = document.getElementById('branch-cards-container');
+      if (!container) return;
+
+      container.innerHTML = branches.map(b => {
+        const isSelected = State.branch && State.branch.id === b.id;
+        return `
+          <div class="branch-item-card ${isSelected ? 'selected' : ''}" onclick="chooseBranch('${b.id}')">
+            <div class="branch-card-top">
+              <span class="branch-card-name">${b.name}</span>
+              <span class="branch-card-dist">${b.distance}</span>
+            </div>
+            <div class="branch-card-address">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>${b.address}</span>
+            </div>
+            <div class="branch-card-hours">
+              <span style="width:5px; height:5px; border-radius:50%; background:var(--success);"></span>
+              <span>Open: ${b.hours}</span>
+              <span style="margin-left:auto; color:var(--accent); font-weight:600;">★ ${b.rating}</span>
+            </div>
+            <button class="branch-select-action-btn">
+              ${isSelected ? 'Selected' : 'Select this coffee shop'}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function chooseBranch(branchId) {
+      const found = BRANCHES.find(b => b.id === branchId);
+      if (found) {
+        State.branch = found;
+        saveAppState();
+        updateBranchHeader();
+        closeBranchModal();
+        showToast(`Selected: ${found.name}`);
+        if (branchMapInstance) branchMapInstance.flyTo([found.lat, found.lng], 15);
+      }
+    }
+
+    function updateBranchHeader() {
+      if (!State.branch) return;
+      document.getElementById('header-branch-name').innerText = State.branch.name;
+      document.getElementById('header-branch-address').innerText = ` • ${State.branch.address.split(',')[0]}`;
+      document.getElementById('track-branch-label').innerText = `${State.branch.name} • ${State.orderFulfillment === 'delivery' ? 'Delivery' : 'Pickup'}`;
+    }
+
+    function filterBranchList() {
+      const q = document.getElementById('branch-search-field').value.toLowerCase().trim();
+      const filtered = BRANCHES.filter(b => b.name.toLowerCase().includes(q) || b.address.toLowerCase().includes(q));
+      renderBranchCards(filtered);
+    }
+
+    function locateUserPosition() {
+      if (navigator.geolocation) {
+        showToast('Requesting GPS location...');
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            showToast('Location confirmed');
+            if (branchMapInstance) branchMapInstance.flyTo([pos.coords.latitude, pos.coords.longitude], 14);
+          },
+          () => {
+            showToast('Location simulated: Downtown Flagship');
+            chooseBranch('branch-1');
+          }
+        );
+      } else {
+        chooseBranch('branch-1');
+      }
+    }
+
+    /* ==========================================================================
+       SHELVES & MENU
+       ========================================================================== */
+    function renderShelves() {
+      const popularContainer = document.getElementById('shelf-popular-container');
+      const seasonalContainer = document.getElementById('shelf-seasonal-container');
+
+      const popular = PRODUCTS.filter(p => p.popular);
+      const seasonal = PRODUCTS.filter(p => p.seasonal || p.badge === 'New');
+
+      if (popularContainer) popularContainer.innerHTML = popular.map(p => createProductCardMarkup(p)).join('');
+      if (seasonalContainer) seasonalContainer.innerHTML = seasonal.map(p => createProductCardMarkup(p)).join('');
+    }
+
+    function renderMenuGrid(items) {
+      const grid = document.getElementById('menu-products-grid');
+      if (grid) grid.innerHTML = items.map(p => createProductCardMarkup(p)).join('');
+    }
+
+    function createProductCardMarkup(p) {
+      const isFav = State.favorites.includes(p.id);
+      return `
+        <div class="product-card" onclick="openCustomSheet('${p.id}')">
+          <div class="product-media">
+            <img class="product-thumbnail" src="${p.image}" alt="${p.name}" loading="lazy">
+            ${p.badge ? `<span class="product-tag-badge">${p.badge}</span>` : ''}
+            <button class="product-fav-trigger ${isFav ? 'active' : ''}" onclick="toggleFavItem(event, '${p.id}', this)" title="Favorite">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            </button>
+          </div>
+          <div class="product-content">
+            <div class="product-title">${p.name}</div>
+            <div class="product-meta-row">
+              <span class="product-rating">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>${p.rating.split(' ')[0]}</span>
+              </span>
+              <span>•</span>
+              <span>${p.calories.split('•')[0].trim()}</span>
+            </div>
+            <div class="product-price-bar">
+              <span class="product-price-val">${formatTenge(p.price)}</span>
+              <button class="product-add-action" title="Add">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleFavItem(e, productId, btn) {
+      e.stopPropagation();
+      const idx = State.favorites.indexOf(productId);
+      if (idx > -1) {
+        State.favorites.splice(idx, 1);
+        btn.classList.remove('active');
+        btn.querySelector('svg').setAttribute('fill', 'none');
+        showToast('Removed from favorites');
+      } else {
+        State.favorites.push(productId);
+        btn.classList.add('active');
+        btn.querySelector('svg').setAttribute('fill', 'currentColor');
+        showToast('Added to favorites');
+      }
+      saveAppState();
+    }
+
+    function setCategoryFilter(category, btn) {
+      document.querySelectorAll('.category-pill').forEach(el => el.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      if (category === 'all') {
+        renderMenuGrid(PRODUCTS);
+      } else {
+        const filtered = PRODUCTS.filter(p => p.category === category);
+        renderMenuGrid(filtered);
+      }
+    }
+
+    function handleMenuSearch() {
+      const q = document.getElementById('menu-search-input').value.toLowerCase().trim();
+      const filtered = PRODUCTS.filter(p => 
+        p.name.toLowerCase().includes(q) || 
+        p.desc.toLowerCase().includes(q) || 
+        p.category.toLowerCase().includes(q)
+      );
+      renderMenuGrid(filtered);
+    }
+
+    /* ==========================================================================
+       DRINK CUSTOMIZATION (Matches Screenshot 2)
+       ========================================================================== */
+    let activeProduct = null;
+    let custom = {
+      size: 'small',
+      sizeDelta: 0,
+      sugar: 'Normal',
+      sugarDelta: 0,
+      milk: 'Regular milk',
+      milkDelta: 0,
+      syrup: 'No syrup',
+      syrupDelta: 0,
+      extras: [],
+      qty: 1
+    };
+
+    function openCustomSheet(productId) {
+      const p = PRODUCTS.find(item => item.id === productId);
+      if (!p) return;
+
+      activeProduct = p;
+      custom = {
+        size: 'small',
+        sizeDelta: 0,
+        sugar: 'Normal',
+        sugarDelta: 0,
+        milk: 'Regular milk',
+        milkDelta: 0,
+        syrup: 'No syrup',
+        syrupDelta: 0,
+        extras: [],
+        qty: 1
+      };
+
+      document.getElementById('custom-title').innerText = p.name;
+      document.getElementById('custom-desc').innerText = p.desc;
+      document.getElementById('custom-img').src = p.image;
+      document.getElementById('custom-volume-meta').innerText = `${p.calories.split('•')[1] || '350 ml'} • 20-30 min`;
+      document.getElementById('custom-qty-display').innerText = '1';
+
+      // Reset pill states
+      document.querySelectorAll('.custom-group-block .pill-options-row').forEach(row => {
+        row.querySelectorAll('.option-pill-btn').forEach((btn, idx) => {
+          btn.classList.toggle('active', idx === 0);
+        });
+      });
+
+      document.querySelectorAll('.custom-choice-item').forEach(el => {
+        el.classList.remove('active', 'checked');
+      });
+
+      recalcCustomPrice();
+      document.getElementById('customization-sheet-modal').classList.add('active');
+    }
+
+    function closeCustomSheet() {
+      document.getElementById('customization-sheet-modal').classList.remove('active');
+    }
+
+    function setDrinkSize(name, delta, btn) {
+      custom.size = name;
+      custom.sizeDelta = delta;
+      btn.parentElement.querySelectorAll('.option-pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      recalcCustomPrice();
+    }
+
+    function setSugarLevel(name, delta, btn) {
+      custom.sugar = name;
+      custom.sugarDelta = delta;
+      btn.parentElement.querySelectorAll('.option-pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      recalcCustomPrice();
+    }
+
+    function setMilkOption(name, delta, el) {
+      custom.milk = name;
+      custom.milkDelta = delta;
+      el.parentElement.querySelectorAll('.custom-choice-item').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      recalcCustomPrice();
+    }
+
+    function setSyrupOption(name, delta, el) {
+      custom.syrup = name;
+      custom.syrupDelta = delta;
+      el.parentElement.querySelectorAll('.custom-choice-item').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      recalcCustomPrice();
+    }
+
+    function toggleExtraAddon(name, delta, el) {
+      const idx = custom.extras.findIndex(x => x.name === name);
+      if (idx > -1) {
+        custom.extras.splice(idx, 1);
+        el.classList.remove('checked');
+      } else {
+        custom.extras.push({ name: name, delta: delta });
+        el.classList.add('checked');
+      }
+      recalcCustomPrice();
+    }
+
+    function adjustCustomQty(delta) {
+      custom.qty = Math.max(1, custom.qty + delta);
+      document.getElementById('custom-qty-display').innerText = custom.qty;
+      recalcCustomPrice();
+    }
+
+    function recalcCustomPrice() {
+      if (!activeProduct) return;
+      let unitPrice = activeProduct.price + custom.sizeDelta + custom.milkDelta + custom.sugarDelta + custom.syrupDelta;
+      custom.extras.forEach(x => unitPrice += x.delta);
+      const total = unitPrice * custom.qty;
+      document.getElementById('custom-calculated-price').innerText = formatTenge(total);
+    }
+
+    function commitItemToCart() {
+      if (!activeProduct) return;
+      let unitPrice = activeProduct.price + custom.sizeDelta + custom.milkDelta + custom.sugarDelta + custom.syrupDelta;
+      custom.extras.forEach(x => unitPrice += x.delta);
+
+      const item = {
+        id: 'cart-' + Date.now(),
+        productId: activeProduct.id,
+        name: activeProduct.name,
+        image: activeProduct.image,
+        unitPrice: unitPrice,
+        qty: custom.qty,
+        size: custom.size,
+        milk: custom.milk,
+        sugar: custom.sugar,
+        syrup: custom.syrup,
+        extras: custom.extras.map(x => x.name)
+      };
+
+      State.cart.push(item);
+      saveAppState();
+      updateCartCounter();
+      closeCustomSheet();
+      showToast(`Added ${item.qty}x ${item.name} to Cart`);
+    }
+
+    /* ==========================================================================
+       CART & CHECKOUT
+       ========================================================================== */
+    function openCartDrawer() {
+      renderCartList();
+      calculateCartTotals();
+      document.getElementById('cart-drawer-modal').classList.add('active');
+    }
+
+    function closeCartDrawer() {
+      document.getElementById('cart-drawer-modal').classList.remove('active');
+    }
+
+    function setOrderFulfillment(type) {
+      State.orderFulfillment = type;
+      document.getElementById('btn-mode-delivery').classList.toggle('active', type === 'delivery');
+      document.getElementById('btn-mode-pickup').classList.toggle('active', type === 'pickup');
+      document.getElementById('delivery-details-card').style.display = type === 'delivery' ? 'flex' : 'none';
+      document.getElementById('bill-delivery-row').style.display = type === 'delivery' ? 'flex' : 'none';
+      updateBranchHeader();
+      calculateCartTotals();
+    }
+
+    function renderCartList() {
+      const container = document.getElementById('cart-items-list-container');
+      if (!container) return;
+
+      if (State.cart.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:24px 10px; color:var(--text-muted);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:6px;"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <div style="font-size:13px; font-weight:600; color:var(--text-main);">Your cart is empty</div>
+            <div style="font-size:11px;">Explore our menu and add your favorite brews.</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = State.cart.map(item => {
+        const specs = [
+          item.size.toUpperCase(),
+          item.milk,
+          item.sugar,
+          item.syrup !== 'No syrup' ? item.syrup : '',
+          ...item.extras
+        ].filter(Boolean).join(' • ');
+
+        return `
+          <div class="cart-item-row">
+            <img class="cart-item-thumb" src="${item.image}" alt="${item.name}">
+            <div class="cart-item-details">
+              <div>
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-tags">${specs}</div>
+              </div>
+              <div class="cart-item-bottom-row">
+                <span class="cart-item-price">${formatTenge(item.unitPrice * item.qty)}</span>
+                <div class="stepper-pill-control">
+                  <button class="stepper-btn" onclick="modifyCartQty('${item.id}', -1)">−</button>
+                  <span class="stepper-val">${item.qty}</span>
+                  <button class="stepper-btn" onclick="modifyCartQty('${item.id}', 1)">+</button>
+                  <button style="border:none; background:transparent; color:var(--danger); cursor:pointer; margin-left:4px;" onclick="removeCartItem('${item.id}')">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('cart-available-bonus-txt').innerText = State.bonusBalance.toLocaleString('ru-RU');
+    }
+
+    function modifyCartQty(id, delta) {
+      const item = State.cart.find(x => x.id === id);
+      if (item) {
+        item.qty += delta;
+        if (item.qty <= 0) {
+          State.cart = State.cart.filter(x => x.id !== id);
+        }
+        saveAppState();
+        renderCartList();
+        calculateCartTotals();
+        updateCartCounter();
+      }
+    }
+
+    function removeCartItem(id) {
+      State.cart = State.cart.filter(x => x.id !== id);
+      saveAppState();
+      renderCartList();
+      calculateCartTotals();
+      updateCartCounter();
+      showToast('Item removed');
+    }
+
+    function calculateCartTotals() {
+      let subtotal = 0;
+      State.cart.forEach(i => subtotal += i.unitPrice * i.qty);
+
+      const deliveryFee = (State.orderFulfillment === 'delivery' && subtotal > 0) ? 850 : 0;
+      const useBonuses = document.getElementById('cart-use-bonuses-toggle')?.checked;
+      
+      let discount = 0;
+      if (useBonuses && subtotal > 0) {
+        discount = Math.min(500, State.bonusBalance, subtotal);
+      }
+
+      const total = Math.max(0, subtotal + deliveryFee - discount);
+
+      document.getElementById('bill-subtotal-val').innerText = formatTenge(subtotal);
+      document.getElementById('bill-delivery-val').innerText = formatTenge(deliveryFee);
+      
+      const discountRow = document.getElementById('bill-discount-row');
+      if (discountRow) {
+        discountRow.style.display = discount > 0 ? 'flex' : 'none';
+        document.getElementById('bill-discount-val').innerText = `-${formatTenge(discount)}`;
+      }
+
+      document.getElementById('bill-total-val').innerText = formatTenge(total);
+      document.getElementById('cart-checkout-btn-total').innerText = formatTenge(total);
+      document.getElementById('header-cart-total').innerText = formatTenge(total);
+
+      return { subtotal, deliveryFee, discount, total };
+    }
+
+    function updateCartCounter() {
+      const count = State.cart.reduce((s, i) => s + i.qty, 0);
+      document.getElementById('header-cart-count').innerText = count;
+
+      let subtotal = 0;
+      State.cart.forEach(i => subtotal += i.unitPrice * i.qty);
+      document.getElementById('header-cart-total').innerText = formatTenge(subtotal);
+    }
+
+    /* ==========================================================================
+       PAYMENT SCREEN
+       ========================================================================== */
+    function openPaymentModal() {
+      if (State.cart.length === 0) {
+        showToast('Your cart is empty');
+        return;
+      }
+      const bill = calculateCartTotals();
+      document.getElementById('pay-final-amount-txt').innerText = formatTenge(bill.total);
+      document.getElementById('confirm-pay-amount').innerText = formatTenge(bill.total);
+
+      closeCartDrawer();
+      document.getElementById('payment-modal-overlay').classList.add('active');
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal-overlay').classList.remove('active');
+    }
+
+    function setPayMethod(method, tab) {
+      document.querySelectorAll('.payment-tab-item').forEach(el => el.classList.remove('active'));
+      tab.classList.add('active');
+
+      const cardPreview = document.getElementById('virtual-card-preview');
+      const cardInputs = document.getElementById('card-fields-container');
+
+      if (method === 'card') {
+        cardPreview.style.display = 'flex';
+        cardInputs.style.display = 'flex';
+      } else if (method === 'apple') {
+        cardPreview.style.display = 'none';
+        cardInputs.innerHTML = `
+          <div style="background:var(--primary); color:#FFF; border-radius:var(--radius-md); padding:14px; text-align:center; cursor:pointer;" onclick="showToast('Fast Pay biometric authorized')">
+            <span style="font-size:14px; font-weight:700;">Fast Pay / Touch ID</span>
+            <p style="font-size:11px; opacity:0.8; margin-top:2px;">Biometric instant authorization</p>
+          </div>
+        `;
+      } else {
+        cardPreview.style.display = 'none';
+        cardInputs.innerHTML = `
+          <div style="background:var(--bg-subtle); border-radius:var(--radius-md); padding:12px; font-size:12px; color:var(--text-secondary);">
+            Pay cash directly to the courier upon delivery.
+          </div>
+        `;
+      }
+    }
+
+    function maskCardInput(input) {
+      let v = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+      let masked = '';
+      for (let i = 0; i < v.length; i++) {
+        if (i > 0 && i % 4 === 0) masked += ' ';
+        masked += v[i];
+      }
+      input.value = masked;
+      document.getElementById('vcard-num-txt').innerText = masked || '5355 •••• •••• 4288';
+    }
+
+    function processDemoPayment() {
+      const btn = document.getElementById('confirm-pay-btn');
+      btn.disabled = true;
+      btn.innerText = 'Processing Demo Payment...';
+
+      setTimeout(() => {
+        const orderNum = `#GC-${Math.floor(10000 + Math.random() * 90000)}`;
+        State.activeOrder.id = orderNum;
+
+        // Bonus deduction if applied
+        if (document.getElementById('cart-use-bonuses-toggle')?.checked) {
+          State.bonusBalance = Math.max(0, State.bonusBalance - 500);
+        }
+
+        State.cart = [];
+        saveAppState();
+        updateCartCounter();
+        updateBonusDisplays();
+
+        btn.disabled = false;
+        btn.innerHTML = `<span>Confirm & Pay</span> <span id="confirm-pay-amount">0 ₸</span>`;
+        closePaymentModal();
+
+        document.getElementById('track-order-code').innerText = orderNum;
+        navTo('orders');
+        jumpToTrackingStage(2);
+        showToast(`Order ${orderNum} created successfully`);
+      }, 1200);
+    }
+
+    /* ==========================================================================
+       ORDER TRACKING (5 STAGES + 2GIS MAP)
+       ========================================================================== */
+    function initTrackingMap() {
+      const mapEl = document.getElementById('tracking-map');
+      if (!mapEl || typeof L === 'undefined') return;
+
+      try {
+        trackingMapInstance = L.map('tracking-map', {
+          zoomControl: false,
+          attributionControl: false
+        }).setView([43.2450, 76.9380], 14);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19
+        }).addTo(trackingMapInstance);
+
+        const branchIcon = L.divIcon({
+          html: `<div style="background:#1F140E; color:#FFF; padding:5px; border-radius:50%; border:1.5px solid #D97706;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></div>`,
+          iconSize: [24, 24]
+        });
+        L.marker([43.2551, 76.9426], { icon: branchIcon }).addTo(trackingMapInstance);
+
+        const homeIcon = L.divIcon({
+          html: `<div style="background:#059669; color:#FFF; padding:5px; border-radius:50%; border:1.5px solid #FFF;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>`,
+          iconSize: [24, 24]
+        });
+        L.marker([43.2380, 76.9350], { icon: homeIcon }).addTo(trackingMapInstance);
+
+        L.polyline([
+          [43.2551, 76.9426],
+          [43.2500, 76.9410],
+          [43.2450, 76.9390],
+          [43.2410, 76.9370],
+          [43.2380, 76.9350]
+        ], { color: '#D97706', weight: 3, dashArray: '6, 6' }).addTo(trackingMapInstance);
+
+        const courierIcon = L.divIcon({
+          html: `<div style="background:#D97706; color:#FFF; padding:6px; border-radius:50%; border:2px solid #FFF; box-shadow:0 0 12px rgba(217,119,6,0.6);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.5V14l-3-3 4-3 2 3h2"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/></svg></div>`,
+          iconSize: [28, 28],
+          iconAnchor: [14, 14]
+        });
+        courierMapMarker = L.marker([43.2450, 76.9390], { icon: courierIcon }).addTo(trackingMapInstance);
+      } catch (e) {
+        console.warn('Tracking map err:', e);
+      }
+    }
+
+    function jumpToTrackingStage(stageNum) {
+      State.activeOrder.stage = stageNum;
+
+      for (let i = 1; i <= 5; i++) {
+        const row = document.getElementById(`track-step-1`.replace('1', i));
+        if (!row) continue;
+        row.classList.remove('completed', 'active');
+        if (i < stageNum) row.classList.add('completed');
+        else if (i === stageNum) row.classList.add('active');
+      }
+
+      document.querySelectorAll('.stage-switch-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx + 1 === stageNum);
+      });
+
+      const arrivalBox = document.getElementById('order-arrival-banner');
+      if (stageNum === 5) {
+        arrivalBox.classList.add('active');
+        document.getElementById('live-countdown-timer').innerText = '00:00';
+        document.getElementById('route-eta-text').innerText = 'Arrived';
+        if (courierMapMarker) courierMapMarker.setLatLng([43.2380, 76.9350]);
+      } else {
+        arrivalBox.classList.remove('active');
+        if (stageNum === 4) {
+          document.getElementById('route-eta-text').innerText = 'ETA: 3 min';
+          if (courierMapMarker) courierMapMarker.setLatLng([43.2410, 76.9370]);
+        } else if (stageNum === 3) {
+          document.getElementById('route-eta-text').innerText = 'At branch';
+          if (courierMapMarker) courierMapMarker.setLatLng([43.2500, 76.9410]);
+        } else {
+          document.getElementById('route-eta-text').innerText = 'Brewing';
+          if (courierMapMarker) courierMapMarker.setLatLng([43.2551, 76.9426]);
+        }
+      }
+    }
+
+    function toggleAutoPlayStages() {
+      if (State.autoTracking) {
+        clearInterval(State.autoTrackingTimer);
+        State.autoTracking = false;
+        document.getElementById('autoplay-btn-label').innerText = 'Auto-Play Simulation';
+        showToast('Simulation paused');
+      } else {
+        State.autoTracking = true;
+        document.getElementById('autoplay-btn-label').innerText = 'Pause Simulation';
+        showToast('Auto simulation running');
+        let stage = State.activeOrder.stage;
+        State.autoTrackingTimer = setInterval(() => {
+          stage = stage >= 5 ? 1 : stage + 1;
+          jumpToTrackingStage(stage);
+        }, 3200);
+      }
+    }
+
+    function startCountdown() {
+      let seconds = 14 * 60 + 48;
+      setInterval(() => {
+        if (seconds > 0 && State.activeOrder.stage < 5) {
+          seconds--;
+          const m = Math.floor(seconds / 60);
+          const s = seconds % 60;
+          const display = document.getElementById('live-countdown-timer');
+          if (display) display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+      }, 1000);
+    }
+
+    /* ==========================================================================
+       BONUS REWARD CELEBRATION
+       ========================================================================== */
+    function completeOrderAndClaimReward() {
+      State.activeOrder.stage = 5;
+      const rewardPoints = 350;
+      State.bonusBalance += rewardPoints;
+      saveAppState();
+
+      document.getElementById('reward-celebration-modal').classList.add('active');
+      playCelebrationChime();
+      renderConfettiCanvas();
+
+      // Number counter
+      let current = 0;
+      const counterEl = document.getElementById('reward-points-counter');
+      const timer = setInterval(() => {
+        current += 25;
+        if (current >= rewardPoints) {
+          current = rewardPoints;
+          clearInterval(timer);
+        }
+        counterEl.innerText = current;
+      }, 30);
+
+      document.getElementById('reward-new-balance-txt').innerText = formatTenge(State.bonusBalance);
+      updateBonusDisplays();
+    }
+
+    function closeRewardCelebration() {
+      document.getElementById('reward-celebration-modal').classList.remove('active');
+      navTo('home');
+      showToast('Bonuses credited to your account');
+    }
+
+    function renderConfettiCanvas() {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+
+      const particles = [];
+      const colors = ['#D97706', '#C85A32', '#FBBF24', '#1F140E', '#059669'];
+      for (let i = 0; i < 75; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          r: Math.random() * 4 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 10,
+          vy: (Math.random() - 0.5) * 10 - 2,
+          gravity: 0.16,
+          alpha: 1
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.alpha -= 0.012;
+          if (p.alpha > 0) {
+            active = true;
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+        if (active) requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    function updateBonusDisplays() {
+      const homeBonus = document.getElementById('home-bonus-val');
+      const bonusScreenPts = document.getElementById('bonuses-screen-points');
+      if (homeBonus) homeBonus.innerHTML = `${State.bonusBalance.toLocaleString('ru-RU')} <span style="font-size:15px; font-weight:600; color:var(--accent);">₸</span>`;
+      if (bonusScreenPts) bonusScreenPts.innerText = State.bonusBalance.toLocaleString('ru-RU');
+    }
+
+    function toggleAudioEffect() {
+      State.sound = !State.sound;
+      saveAppState();
+      showToast(State.sound ? 'Audio effects enabled' : 'Audio muted');
+    }
+
+    function reorderPrevious(orderName) {
+      showToast(`Re-ordering items from ${orderName}`);
+      const flatWhite = PRODUCTS.find(p => p.id === 'p-flat-white');
+      if (flatWhite) {
+        State.cart.push({
+          id: 'cart-' + Date.now(),
+          productId: flatWhite.id,
+          name: flatWhite.name,
+          image: flatWhite.image,
+          unitPrice: flatWhite.price + 350,
+          qty: 1,
+          size: 'medium',
+          milk: 'Oat milk',
+          sugar: 'No sugar',
+          syrup: 'No syrup',
+          extras: ['Extra espresso shot']
+        });
+        saveAppState();
+        updateCartCounter();
+        openCartDrawer();
+      }
+    }
+
+    function resetPrototypeData() {
+      if (confirm('Reset prototype demo state to default?')) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
+    /* Drawers & Toast */
+    function openNotifDrawer() {
+      document.getElementById('notif-drawer-modal').classList.add('active');
+    }
+    function closeNotifDrawer() {
+      document.getElementById('notif-drawer-modal').classList.remove('active');
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const toastEl = document.getElementById('status-toast');
+      const msgEl = document.getElementById('toast-message');
+      if (!toastEl || !msgEl) return;
+
+      msgEl.innerText = msg;
+      toastEl.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toastEl.classList.remove('visible');
+      }, 2400);
+    }
+  </script>
+</body>
+</html>
